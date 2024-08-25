@@ -23,7 +23,7 @@ export default function DetailSection({ cotizationDetail, hotels, aerolinePrice 
     return (
         <div className="grid grid-cols-2 gap-2">
             {hotels.sort( (a,b) => a.priceByAdults - b.priceByAdults).map(({name,priceByAdults,priceByKids},index) => (
-                <table key={index} className="min-w-full border-2 border-slate-300">
+                <table key={index} className="min-w-full border-2 bg-white shadow-lg border-slate-100">
                     <thead className="[&_th]:p-4 ">
                         <th className="text-start" >Servicio</th>
                         <th>1 Adulto</th>

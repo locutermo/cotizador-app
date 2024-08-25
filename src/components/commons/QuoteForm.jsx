@@ -33,7 +33,7 @@ export default function QuoteForm({save,detail,hotels,aerolines,onChangeAeroline
     }
 
     return (
-        <div className="grid grid-cols-4 border-2 border-slate-300 gap-4 p-4">
+        <div className="grid grid-cols-4 border-2 bg-white shadow-lg gap-4 p-4">
             <Input title="# Adultos" onBlur={e => {onFocusOut(e,'adults')}} onFocus={e => { onFocus(e,'adults') }} min={1} value={detail.adults} onChange={e => { onChangeInputNumber(e,'adults') }} defaultValue={1} type={'number'} />
             <Input title="# Niños " onBlur={e => {onFocusOut(e,'kids')}} onFocus={e => { onFocus(e,'kids') }}  min={0} value={detail.kids} onChange={e => { onChangeInputNumber(e,'kids') }} defaultValue={0} type={'number'} />
             <Input title="Fecha de inicio"  type="date" value={detail.startDate} onChange={e => { onChangeInput(e,'startDate') }}/>

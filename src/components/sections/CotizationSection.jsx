@@ -11,7 +11,6 @@ export default function CotizationSection() {
     const [cotizationDetail, setCotizationDetail] = useState({ adults: 1, days: 1, kids: 0, adultFee: 100, kidFee: 100, traslado: TRASLADO_PRICE,islaSaona:ISLA_SAONA });
     const [aerolinePrices, setAerolinePrices] = useState(AEROLINES)
     const [hotelPrices, setHotelPrices] = useState(HOTELS)
-    const { adults, kids } = cotizationDetail
 
 
     const onUpdateOptions = (option, dispatch) => {

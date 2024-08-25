@@ -5,7 +5,7 @@ export default function TablePrice({ options, type,detail, onUpdateOptions }) {
     useEffect(()=>{
     },[detail])
 
-    return <table className="min-w-full border-2 border-slate-300">
+    return <table className="min-w-full border-2 border-slate-200 bg-white shadow-lg">
         <thead className="[&_th]:px-4 py-2">
             <th>Nombre</th>
             <th>Total</th>
