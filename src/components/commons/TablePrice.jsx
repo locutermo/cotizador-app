@@ -24,7 +24,6 @@ export default function TablePrice({ options, type,detail, onUpdateOptions }) {
 }
 
 const TablePriceRow = ({ option,detail, type,onUpdateOptions }) => {
-    const id = useId()
     const [price,setPrice] = useState(option.price)
     const {adults,kids}  = detail
 
@@ -34,11 +33,16 @@ const TablePriceRow = ({ option,detail, type,onUpdateOptions }) => {
     const calAdultPriceToHotel = price => (price>0 ) && Math.round( (2*price) / ( 2*parseInt(adults) + parseInt(kids ||  0) ))
     const calKidsPriceToHotel = price => (price>0 && kids>0 ) && Math.round(price / (2*parseInt(adults) + parseInt(kids) ))
 
+    useEffect(()=>{
+        console.log("Actualizando precios por renderizar el option "+option.name)
+        console.log("De:"+price+" a "+option.price)
+        setPrice(option.price)
+    },[option])
+
     useEffect(() => {
 
         onUpdateOptions({
             ...option,
-            id,
             price,
             priceByAdults: type==="aeroline" ?  calAdultPriceToAeroline(price) : calAdultPriceToHotel(price),
             priceByKids: type==="aeroline" ?  calKidsPriceToAeroline(price) : calKidsPriceToHotel(price),
@@ -46,11 +50,12 @@ const TablePriceRow = ({ option,detail, type,onUpdateOptions }) => {
     },[detail])
 
     const onUpdateRow = useCallback((e) => {
+        console.log(option.name)
+        console.log(e.target.value)
         setPrice(e.target.value);
         onUpdateOptions({
             ...option,
-            id,
-            price:e.target.value,
+            price:parseInt(e.target.value),
             priceByAdults: type==="aeroline" ?  calAdultPriceToAeroline(e.target.value) : calAdultPriceToHotel(e.target.value),
             priceByKids: type==="aeroline" ?  calKidsPriceToAeroline(e.target.value) : calKidsPriceToHotel(e.target.value),
         })
@@ -59,11 +64,11 @@ const TablePriceRow = ({ option,detail, type,onUpdateOptions }) => {
   
     
 
-    return <tr id={id} className="text-center [&_td]:py-2 [&_td]:px-4">
+    return <tr className="text-center [&_td]:py-2 [&_td]:px-4">
         <td className="text-start w-5/12">{option?.name}</td>
         <td className="w-2/12">
             <input type="number"
-                value={option.price}
+                value={option.price||''}
                 min={0}
                 onChange={onUpdateRow}
                 className="border-gray-400 bg-slate-50 py-1 px-2 w-full  text-center">

@@ -1,12 +1,12 @@
 import './App.css';
-import QuoteForm from './components/commons/QuoteForm';
 import CotizationSection from './components/sections/CotizationSection';
+import DetailSection from './components/sections/DetailSection';
 
 function App() {
   return (
-    <div className="p-2 bg-slate-50 min-h-screen">
-        <CotizationSection/>
-
+    <div className="p-2 bg-slate-50 min-h-screen grid grid-cols-2">
+      <CotizationSection />
+      <DetailSection/>
     </div>
   );
 }

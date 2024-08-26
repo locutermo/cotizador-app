@@ -1,19 +1,24 @@
 import { useEffect } from "react"
+import { useApp } from "../../contexts/AppContext"
 
-export default function DetailSection({ cotizationDetail, hotels, aerolinePrice }) {
+export default function DetailSection() {
 
+    const {cotizationDetail,hotelPrices,aerolinePrices} = useApp();
+    const hotels = hotelPrices.filter( e => e.price)
     const {traslado,islaSaona,adults,kids,adultFee,kidFee} = cotizationDetail
     const islaSaonaKid = islaSaona/2
     const trasladoKid = traslado/2
-    const aerolinePriceByOne = Math.round(aerolinePrice/((kids|0)+adults))
-
+    const aerolinePricesFiltered = aerolinePrices.filter(e => e.price).map(aeroline => aeroline.price)
+    const minAerolinePrice = aerolinePricesFiltered.length > 0 && Math.min(...aerolinePricesFiltered)
+    const aerolinePriceByOne = Math.round(minAerolinePrice/((kids|0)+adults))
+    
     useEffect(() => {
 
     }, [cotizationDetail])
 
-    const totalOperativity=(aerolinePrice,hotelPrice,traslado,islaSaona)=>{
+    const totalOperativity=(minAerolinePrice,hotelPrice,traslado,islaSaona)=>{
         return (
-            (!isNaN(parseInt(aerolinePrice))?parseInt(aerolinePrice):0)+
+            (!isNaN(parseInt(minAerolinePrice))?parseInt(minAerolinePrice):0)+
             (!isNaN(parseInt(traslado))?parseInt(traslado):0)+
             (!isNaN(parseInt(islaSaona))?parseInt(islaSaona):0)+
             (!isNaN(parseInt(hotelPrice))?parseInt(hotelPrice):0)
@@ -21,9 +26,9 @@ export default function DetailSection({ cotizationDetail, hotels, aerolinePrice 
     }
 
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 grid-rows-3 gap-2">
             {hotels.sort( (a,b) => a.priceByAdults - b.priceByAdults).map(({name,priceByAdults,priceByKids},index) => (
-                <table key={index} className="min-w-full border-2 bg-white shadow-lg border-slate-100">
+                    <table key={index} className="min-w-full border-2 bg-white shadow-lg border-slate-100">
                     <thead className="[&_th]:p-4 ">
                         <th className="text-start" >Servicio</th>
                         <th>1 Adulto</th>
