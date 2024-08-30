@@ -1,13 +1,16 @@
 import './App.css';
-import CotizationSection from './components/sections/CotizationSection';
-import DetailSection from './components/sections/DetailSection';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { routes } from './routes/routes';
+const router = createBrowserRouter(routes)
 
 function App() {
   return (
-    <div className="p-2 bg-slate-50 min-h-screen grid grid-cols-2">
-      <CotizationSection />
-      <DetailSection/>
-    </div>
+    <RouterProvider
+      router={router}
+    />
   );
 }
 
