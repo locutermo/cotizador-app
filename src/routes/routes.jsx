@@ -9,10 +9,11 @@ export const routes = [
         element: <DefaultLayout/>,
         errorElement: <ErrorPage/>,
         children:[
-            {
-                path: 'cotizations',
-                element: <Cotization/>
-            }
+            {path: 'cotizations',element: <Cotization/>},
+            {path: 'reservations',element: <h1>RESERVACIONES</h1>},
+            {path: 'customers',element: <h1>CLIENTES</h1>},
+            {path: 'profile',element: <h1>PERFIL</h1>},
+            {path: 'settings',element: <h1>AJUSTES</h1>},
         ]
     }
 ]
