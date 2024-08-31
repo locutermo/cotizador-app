@@ -5,8 +5,9 @@ export default function DetailSection() {
 
     const {cotizationDetail,hotelPrices,aerolinePrices} = useSelector(state => state.cotization);
     const hotels = hotelPrices.filter( e => e.price)
-    const {traslado,islaSaona,adults,kids,adultFee,kidFee} = cotizationDetail
+    const {traslado,islaSaona,adults,kids,adultFee,kidFee,santoDomingo} = cotizationDetail
     const islaSaonaKid = islaSaona/2
+    const santoDomingoKid = santoDomingo/2
     const trasladoKid = traslado/2
     const aerolinePricesFiltered = aerolinePrices.filter(e => e.price).map(aeroline => aeroline.price)
     const minAerolinePrice = aerolinePricesFiltered.length > 0 && Math.min(...aerolinePricesFiltered)
@@ -16,12 +17,14 @@ export default function DetailSection() {
 
     }, [cotizationDetail])
 
-    const totalOperativity=(minAerolinePrice,hotelPrice,traslado,islaSaona)=>{
+    //Refactorizar: Enviar por parametro un objeto y Usar map reduce e iterar sobre el objeto para sumar y aplicar lo mismo para todos los casos
+    const totalOperativity=(minAerolinePrice,hotelPrice,traslado,islaSaona,santoDomingo)=>{
         return (
             (!isNaN(parseInt(minAerolinePrice))?parseInt(minAerolinePrice):0)+
             (!isNaN(parseInt(traslado))?parseInt(traslado):0)+
             (!isNaN(parseInt(islaSaona))?parseInt(islaSaona):0)+
-            (!isNaN(parseInt(hotelPrice))?parseInt(hotelPrice):0)
+            (!isNaN(parseInt(hotelPrice))?parseInt(hotelPrice):0)+
+            (!isNaN(parseInt(santoDomingo))?parseInt(santoDomingo):0)
         )
     }
 
@@ -51,7 +54,11 @@ export default function DetailSection() {
                             {islaSaona>0 && (<td className="text-start">Isla Saona</td>)}
                             {islaSaona>0 && (<td>${islaSaona}</td>)}
                             {kids>0 && (<td>${islaSaonaKid}</td>)}
-                            
+                        </tr>
+                        <tr>
+                            {santoDomingo>0 && (<td className="text-start">Santo Domingo</td>)}
+                            {santoDomingo>0 && (<td>${santoDomingo}</td>)}
+                            {(kids>0 && santoDomingo > 0)&& (<td>${santoDomingoKid}</td>)}
                         </tr>
                         <tr>
                             <td className="text-start">{name}</td>
@@ -61,8 +68,8 @@ export default function DetailSection() {
                         </tr>
                         <tr>
                             <td className="text-start">Total operatividad</td>
-                            <td>${totalOperativity(aerolinePriceByOne,priceByAdults,traslado,islaSaona)}</td>
-                            {kids>0 && (<td>${totalOperativity(aerolinePriceByOne,priceByKids,trasladoKid,islaSaonaKid)}</td>)}
+                            <td>${totalOperativity(aerolinePriceByOne,priceByAdults,traslado,islaSaona,santoDomingo)}</td>
+                            {kids>0 && (<td>${totalOperativity(aerolinePriceByOne,priceByKids,trasladoKid,islaSaonaKid,santoDomingoKid)}</td>)}
                         </tr>
                         <tr>
                             {(adultFee > 0 || kidFee) && (<td className="text-start">Fee</td>)}
@@ -76,8 +83,8 @@ export default function DetailSection() {
                         </tr>
                         <tr className="[&_td]:text-blue-800 [&_td]:font-semibold">
                             <td></td>
-                            <td>${totalOperativity(aerolinePriceByOne,priceByAdults,traslado,islaSaona)+((adultFee||0)*1.18)}</td>
-                            {kids>0 && (<td>${totalOperativity(aerolinePriceByOne,priceByKids,trasladoKid,islaSaonaKid) + ((kidFee||0)*1.18)}</td>)}
+                            <td>${totalOperativity(aerolinePriceByOne,priceByAdults,traslado,islaSaona,santoDomingo)+((adultFee||0)*1.18)}</td>
+                            {kids>0 && (<td>${totalOperativity(aerolinePriceByOne,priceByKids,trasladoKid,islaSaonaKid,santoDomingoKid) + ((kidFee||0)*1.18)}</td>)}
                         </tr>
                     </tbody>
                 </table>
