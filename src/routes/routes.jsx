@@ -9,6 +9,7 @@ export const routes = [
         element: <DefaultLayout/>,
         errorElement: <ErrorPage/>,
         children:[
+            {index:true, element:<Home/>},
             {path: 'cotizations',element: <Cotization/>},
             {path: 'reservations',element: <h1>RESERVACIONES</h1>},
             {path: 'customers',element: <h1>CLIENTES</h1>},

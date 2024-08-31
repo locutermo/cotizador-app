@@ -97,7 +97,7 @@ export default function MultiSelectDropdown({
           </ul>
         )}
         <ul ref={optionsListRef}>
-          {options.map((option, i) => {
+          {options?.map((option, i) => {
             return (
               <li key={option}>
                 <label

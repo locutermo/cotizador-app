@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux"
 export default function Home() {
-    return <div className="bg-red-200 w-full min-h-lvh">
-        <h1>Hola</h1>
+    const states = useSelector(state => state.cotization)
+    return <div className="w-full min-h-lvh">
+        <h1>Estados: {JSON.stringify(states)}</h1>
     </div>
 }

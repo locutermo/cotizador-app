@@ -1,9 +1,9 @@
 import { useEffect } from "react"
-import { useApp } from "../../contexts/AppContext"
-
+import { useSelector } from "react-redux";
 export default function DetailSection() {
 
-    const {cotizationDetail,hotelPrices,aerolinePrices} = useApp();
+
+    const {cotizationDetail,hotelPrices,aerolinePrices} = useSelector(state => state.cotization);
     const hotels = hotelPrices.filter( e => e.price)
     const {traslado,islaSaona,adults,kids,adultFee,kidFee} = cotizationDetail
     const islaSaonaKid = islaSaona/2

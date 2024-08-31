@@ -2,34 +2,28 @@ import { useState } from "react";
 import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 
-export default function QuoteForm({save,detail,hotels,aerolines,onChangeAerolines,onChangeHotels}) {
+export default function QuoteForm({updateOnAttribute,detail,hotels,aerolines,onChangeAerolines,onChangeHotels}) {
 
     const onChangeInput = (e,attribute) => {
-        const valueToChange = e.target.value
-        save(prevValue => ({...prevValue,[attribute]:valueToChange}))
+        const value = e.target.value
+        updateOnAttribute({attribute,value})
     }
 
     const onChangeInputNumber=(e,attribute)=>{
-        const valueToChange = e.target.value
-
-        save(prevValue => ({...prevValue,[attribute]:parseInt(valueToChange) }))
+        const value = e.target.value
+        updateOnAttribute({attribute,value:parseInt(value) })
     }
 
     const onFocus=(e,attribute)=>{
-        console.log('onFocus')
-        const valueToChange = e.target.value
-        console.log(valueToChange)
-        if(valueToChange==0)
-            save(prevValue => ({...prevValue,[attribute]:''  }))
+        const value = e.target.value
+        if(value==0) updateOnAttribute({attribute,value:'' })
     }
 
 
     const onFocusOut=(e,attribute)=>{
-        console.log("On focus out")
-        const valueToChange = e.target.value
-        console.log(valueToChange)
-        if(valueToChange=='')
-            save(prevValue => ({...prevValue,[attribute]:0  }))
+        const value = e.target.value
+        if(value=='')
+            updateOnAttribute({attribute,value:0  })
     }
 
     return (

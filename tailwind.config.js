@@ -1,12 +1,10 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}",'./public/index.html'],
   darkMode: 'class',
   theme: {
-    fontFamily: {
-      satoshi: ['Satoshi', 'sans-serif'],
-    },
+   
     screens: {
       '2xsm': '375px',
       xsm: '425px',
@@ -204,12 +202,6 @@ module.exports = {
       opacity: {
         65: '.65',
       },
-      backgroundImage: {
-        video: "url('../images/video/video.png')",
-      },
-      content: {
-        'icon-copy': 'url("../images/icon/icon-copy-alt.svg")',
-      },
       transitionProperty: { width: 'width', stroke: 'stroke' },
       borderWidth: {
         6: '6px',
@@ -249,6 +241,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: []
 }
 
