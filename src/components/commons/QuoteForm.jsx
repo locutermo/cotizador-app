@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useDeferredValue } from "react";
 import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 
-export default function QuoteForm({ updateOnAttribute, detail, hotels, aerolines, onChangeAerolines, onChangeHotels }) {
-
+export default function QuoteForm({save, updateOnAttribute, detail, hotels, aerolines, onChangeAerolines, onChangeHotels }) {
     const onChangeInput = (e, attribute) => {
         const value = e.target.value
         updateOnAttribute({ attribute, value })
@@ -31,10 +30,13 @@ export default function QuoteForm({ updateOnAttribute, detail, hotels, aerolines
             <div className="col-span-2">
                 <Input title="Nombres y Apellidos" />
             </div>
-            <Input title="Fecha de inicio" type="date" value={detail.startDate} onChange={e => { onChangeInput(e, 'startDate') }} />
-            <Input title="# días" onBlur={e => { onFocusOut(e, 'days') }} onFocus={e => { onFocus(e, 'days') }} type="number" min={1} value={detail.days} defaultValue={1} onChange={e => { onChangeInputNumber(e, 'days') }} />
-            <Input title="# Adultos" onBlur={e => { onFocusOut(e, 'adults') }} onFocus={e => { onFocus(e, 'adults') }} min={1} value={detail.adults} onChange={e => { onChangeInputNumber(e, 'adults') }} defaultValue={1} type={'number'} />
-            <Input title="# Niños " onBlur={e => { onFocusOut(e, 'kids') }} onFocus={e => { onFocus(e, 'kids') }} min={0} value={detail.kids} onChange={e => { onChangeInputNumber(e, 'kids') }} defaultValue={0} type={'number'} />
+            <div className="col-span-2">
+                <Input title="Fecha de Salida" type="date" value={detail.startDate} onChange={e => { onChangeInput(e, 'startDate') }} />
+            </div>
+
+            <Input title="Nº días" onBlur={e => { onFocusOut(e, 'days') }} onFocus={e => { onFocus(e, 'days') }} type="number" min={1} value={detail.days} defaultValue={1} onChange={e => { onChangeInputNumber(e, 'days') }} />
+            <Input title="Nº Adultos" onBlur={e => { onFocusOut(e, 'adults') }} onFocus={e => { onFocus(e, 'adults') }} min={1} value={detail.adults} onChange={e => { onChangeInputNumber(e, 'adults') }} defaultValue={1} type={'number'} />
+            <Input title="Nº Niños " onBlur={e => { onFocusOut(e, 'kids') }} onFocus={e => { onFocus(e, 'kids') }} min={0} value={detail.kids} onChange={e => { onChangeInputNumber(e, 'kids') }} defaultValue={0} type={'number'} />
 
 
             <Input title="fee Adulto" onBlur={e => { onFocusOut(e, 'adultFee') }} onFocus={e => { onFocus(e, 'adultFee') }} type="number" min={100} value={detail.adultFee} defaultValue={100} onChange={e => { onChangeInputNumber(e, 'adultFee') }} />
@@ -59,6 +61,9 @@ export default function QuoteForm({ updateOnAttribute, detail, hotels, aerolines
                         options={hotels}
                         onChange={e => { onChangeHotels(e) }} />
                 </div>
+            </div>
+            <div className="col-span-4 text-center p-2 dark:bg-boxdark dark:text-white">
+                <button className="hover:text-blue-700" onClick={save}>Guardar</button>
             </div>
 
         </div>)

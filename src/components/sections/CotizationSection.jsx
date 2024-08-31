@@ -5,7 +5,7 @@ import TablePrice from "../commons/TablePrice";
 import { AEROLINES, HOTELS } from "../../util/constants";
 import { useSelector, useDispatch } from 'react-redux'
 import { 
-    setCotizationDetail, 
+    addReservation, 
     setAerolinePrices, 
     setHotelPrices,
     updateAerolineOption,
@@ -60,6 +60,7 @@ export default function CotizationSection() {
         <div className="flex flex-col gap-4 ">
 
             <QuoteForm
+                save={e => {dispatch(addReservation())}}
                 detail={cotizationDetail}
                 aerolines={AEROLINES.map(e => e.name)}
                 hotels={HOTELS.map(e => e.name)}

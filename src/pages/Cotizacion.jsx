@@ -6,8 +6,7 @@ function Cotization() {
   return (
     <>
       <Breadcrumb pageName="Cotizaciones" homeName='Inicio'/>
-      <div className="gap-4 min-h-screen grid grid-cols-2">
-
+      <div className="gap-4 min-h-screen grid grid-cols-1 lg:grid-cols-2">
         <CotizationSection />
         <DetailSection />
       </div>
