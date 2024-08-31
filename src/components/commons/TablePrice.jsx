@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react"
+import Input from "../primitive/Input"
 
 export default function TablePrice({ options, type, detail, onUpdateOptions }) {
     const { adults, kids } = detail
     useEffect(() => {
     }, [detail])
 
-    return <table className="min-w-full border-2 border-slate-200 bg-white shadow-lg">
+    return <table className="min-w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
         <thead className="[&_th]:px-4 py-2">
             <th>Nombre</th>
             <th>Total</th>
@@ -67,12 +68,11 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
     return <tr className="text-center [&_td]:py-2 [&_td]:px-4">
         <td className="text-start w-5/12">{option?.name}</td>
         <td className="w-2/12">
-            <input type="number"
+            <Input type="number"
                 value={option.price || ''}
                 min={0}
                 onChange={onUpdateRow}
-                className="border-gray-400 bg-slate-50 py-1 px-2 w-full  text-center">
-            </input>
+            />
         </td>
         <td className="w-2/12">{type === "aeroline" ? calAdultPriceToAeroline(price) : calAdultPriceToHotel(price)}</td>
         <td className="w-2/12">{type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price)}</td>

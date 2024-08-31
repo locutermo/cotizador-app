@@ -73,14 +73,14 @@ export default function MultiSelectDropdown({
         )}
       </div>
 
-      <div className="absolute z-50 bg-white border transition-opacity opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto w-full max-h-60 overflow-y-scroll">
+      <div className="absolute z-50 transition-opacity opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto w-full max-h-60 overflow-y-scroll border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
         {isJsEnabled && (
           <ul>
             <li>
               <button
                 onClick={handleSelectAllClick}
                 disabled={!isSelectAllEnabled}
-                className="w-full text-left px-2 py-1 text-blue-600 disabled:opacity-50"
+                className="w-full text-left px-2 py-1 text-blue-600 disabled:opacity-50 dark:text-yellow-200"
               >
                 {"Seleccionar todos"}
               </button>
@@ -89,7 +89,7 @@ export default function MultiSelectDropdown({
               <button
                 onClick={handleClearSelectionClick}
                 disabled={!isClearSelectionEnabled}
-                className="w-full text-left px-2 py-1 text-blue-600 disabled:opacity-50"
+                className="w-full text-left px-2 py-1 text-blue-600 disabled:opacity-50 dark:text-yellow-200"
               >
                 {"Limpiar"}
               </button>
@@ -101,14 +101,14 @@ export default function MultiSelectDropdown({
             return (
               <li key={option}>
                 <label
-                  className={`flex whitespace-nowrap cursor-pointer px-2 py-1 transition-colors hover:bg-blue-100 [&:has(input:checked)]:bg-blue-200`}
+                  className={`flex whitespace-nowrap cursor-pointer px-2 py-1 transition-colors hover:bg-blue-100 dark:hover:bg-yellow-50 dark:[&:has(input:checked)]:bg-yellow-50 [&:has(input:checked)]:bg-blue-200`}
                 >
                   <input
                     type="checkbox"
                     checked={selectedOptions.find(e => e==option)}
                     name={formFieldName}
                     value={option}
-                    className="cursor-pointer"
+                    className="cursor-pointer dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     onChange={handleChange}
                   />
                   <span className="ml-1">{option}</span>

@@ -27,7 +27,7 @@ export default function QuoteForm({ updateOnAttribute, detail, hotels, aerolines
     }
 
     return (
-        <div className="grid grid-cols-4 border-2 bg-white shadow-lg dark:bg-white gap-4 p-4">
+        <div className="grid grid-cols-4 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
             <div className="col-span-2">
                 <Input title="Nombres y Apellidos" />
             </div>
