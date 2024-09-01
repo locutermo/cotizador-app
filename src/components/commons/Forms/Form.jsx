@@ -18,11 +18,11 @@ export default function Form({ title, inputs, callback, initialValues }) {
     }, [initialValues])
 
     const clean = () => {
-        let newData = {}
+        let newData = {...data}
         inputs.forEach(input => {
             newData[input.attribute] = ''
         });
-
+        newData['id'] = data.id
         setData(newData)
     }
 
