@@ -46,7 +46,7 @@ export default function Form({ title, inputs, callback, initialValues }) {
             ))}
             <div className="flex justify-between">
                 <button className="text-red-700" onClick={e => { clean() }}>Limpiar</button>
-                <button onClick={e => { callback(data) }}>Guardar</button>
+                <button onClick={e => { callback(data);clean() }}>Guardar</button>
             </div>
         </div>
     )

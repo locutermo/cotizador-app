@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux'
 import { getClients } from './features/clients/thunks'
 import { getReservations } from './features/reservations/thunks'
 import { getDestinations } from "./features/destinations/thunks";
+import { getHotels } from "./features/hotels/thunks";
+import { getAerolines } from "./features/aerolines/thunks";
 const router = createHashRouter(routes)
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
   useEffect(() => {
 
     dispatch(getDestinations())
+    dispatch(getHotels())
+    dispatch(getAerolines())
     dispatch(getClients())
     dispatch(getReservations())
 

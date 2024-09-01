@@ -6,6 +6,8 @@ import Reservation from "../pages/Reservation";
 import Clients from "../pages/Clients";
 import ClientCotizations from "../pages/ClientCotizations";
 import Destination from "../pages/Destination";
+import Aerolines from "../pages/Aeroline";
+import Hotels from "../pages/Hotel";
 
 export const routes = [
     {
@@ -17,6 +19,8 @@ export const routes = [
             { path: 'cotizations', element: <Cotization />},
             { path: 'reservations', element: <Reservation/>},
             { path: 'destinations', element: <Destination/>},
+            { path: 'hotels', element: <Hotels/>},
+            { path: 'aerolines', element: <Aerolines/>},
             { path: 'customers', element: <Clients/>},
             { path: 'customers/:id/reservations', element: <ClientCotizations/>},
             { path: 'profile', element: <h1>PERFIL</h1> },
