@@ -11,7 +11,7 @@ export default function Form({ title, inputs, callback, initialValues }) {
             inputs.forEach(input => {
                 newData[input.attribute] = initialValues[input.attribute] ||''
             });
-            setData(newData)
+            setData({id:initialValues.id,...newData})
         }
 
         
@@ -34,8 +34,9 @@ export default function Form({ title, inputs, callback, initialValues }) {
                     {title}
                 </div>
             )}
-            {inputs.map(({ title, attribute, type }, index) => (
-                <Input
+            {inputs.map(({ title, attribute, type,disabled=false }, index) => (
+                <Input  
+                    disabled={disabled}
                     key={index}
                     title={title}
                     type={type || 'text'}

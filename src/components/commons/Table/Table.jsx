@@ -7,11 +7,11 @@ const renderElementByType = (element, header) => {
     );
 
     case 'callbacks': return (
-      <>
+      <div className="flex items-center space-x-3.5 justify-center">
         {header['callbacks'].map(({ icon, Component, callback }, index) => (
           <Component onClick={() => { callback(element) }} />
         ))}
-      </>
+      </div>
     );
 
     default: return <p className="text-black dark:text-white">{element[header['attribute']]}</p>

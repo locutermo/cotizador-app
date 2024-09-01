@@ -3,12 +3,12 @@ import Form from "../components/commons/Forms/Form";
 import Table from "../components/commons/Table/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addClient, removeClient } from "../features/clients/thunks";
+import { addClient, editClient, removeClient } from "../features/clients/thunks";
 import { clientsFormattedSelector } from "../features/clients/clientSlice";
 import { useState } from "react";
 export default function Clients() {
   const dispatch = useDispatch()
-  const [selected,setSelected] = useState()
+  const [selected, setSelected] = useState()
   const clients = useSelector(clientsFormattedSelector)
   const navigate = useNavigate();
 
@@ -56,11 +56,11 @@ export default function Clients() {
         },
         {
           Component: (props) => (<button {...props}>Editar</button>),
-          callback: e => {console.log({e});setSelected(e)}
+          callback: e => { console.log({ e }); setSelected(e) }
         },
         {
           Component: (props) => (
-            <button {...props} className="hover:text-primary mx-4">
+            <button {...props} className="hover:text-primary">
               <svg
                 className="fill-current"
                 width="18"
@@ -119,10 +119,19 @@ export default function Clients() {
     <>
       <Breadcrumb current={{ name: 'Clientes' }} previous={{ name: "Inicio", url: '' }} />
       <div className="flex gap-4">
-        <div className="w-3/12">
+        <div className="w-3/12 grid grid-cols-1 gap-4">
           <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addClient(data)) }} />
-            {JSON.stringify(selected)}
-          <Form title="Edición" initialValues={selected} inputs={inputs} callback={(data) => { dispatch(addClient(data)) }} />
+          {selected && (
+            <Form 
+              title="Edición" 
+              initialValues={selected} 
+              inputs={[{ title: "ID", disabled: true, attribute: 'id', type: 'text' }, ...inputs]} 
+              callback={(data) => { 
+                dispatch(editClient(data));
+                setSelected(null) 
+              }} 
+            />
+          )}
         </div>
         <div className="w-9/12">
           <Table data={clients} headers={headers} />

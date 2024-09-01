@@ -4,7 +4,8 @@ import {
   fetchClients,
   fetchClientsReservations,
   createClient,
-  deleteClient
+  deleteClient,
+  updateClient
 } from '../../services/clients'
 
 
@@ -40,6 +41,18 @@ export const removeClient = createAsyncThunk(
     try {
       const res = await deleteClient(id)
       return id
+    } catch (err) {
+      return thunkAPI.rejectWithValue({ error: err.message })
+    }
+  }
+)
+
+export const editClient = createAsyncThunk(
+  'clients/editClient',
+  async ({id,...client},thunkAPI) => {
+    try {
+      const res = await updateClient(id,client)
+      return res.data[0]
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })
     }

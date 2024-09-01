@@ -1,5 +1,5 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
-import { getClients, addClient, removeClient } from './thunks'
+import { getClients, addClient, removeClient,editClient } from './thunks'
 import { formatClients } from '../../util/util'
 
 
@@ -38,6 +38,13 @@ export const clientSlice = createSlice({
     builder.addCase(removeClient.fulfilled, (state, action) => {
       state.clients = state.clients.filter( e => e.id !== action.payload)
     })
+
+    builder.addCase(editClient.fulfilled, (state, action) => {
+      const payload = action.payload
+      console.log("Payload: " ,payload)
+      state.clients = state.clients.map( e => e.id === payload.id ? payload : e)
+    })
+
 
   }
 })
