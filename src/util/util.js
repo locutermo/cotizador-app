@@ -1,7 +1,4 @@
 export const formatClients = (data) => {
-
-  console.log({ data })
-
   return data?.map(element => ({
     ...element,
     reservations: element.reservations ? element.reservations[0]?.count : 0

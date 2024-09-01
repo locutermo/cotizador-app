@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { getClients } from './features/clients/thunks'
 import { getReservations } from './features/reservations/thunks'
-
+import { getDestinations } from "./features/destinations/thunks";
 const router = createHashRouter(routes)
 
 function App() {
@@ -18,8 +18,10 @@ function App() {
 
   useEffect(() => {
 
+    dispatch(getDestinations())
     dispatch(getClients())
     dispatch(getReservations())
+
 
   })
 
