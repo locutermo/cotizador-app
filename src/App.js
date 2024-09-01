@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   RouterProvider,
+  createHashRouter
 } from "react-router-dom";
 import { routes } from './routes/routes';
 import { useEffect } from "react";
@@ -8,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { getClients } from './features/clients/thunks'
 import { getReservations } from './features/reservations/thunks'
 
-const router = createBrowserRouter(routes)
+const router = createHashRouter(routes)
 
 function App() {
 
