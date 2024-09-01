@@ -3,36 +3,49 @@ import Table from "../components/commons/Table/Table";
 import { useSelector } from "react-redux";
 
 export default function Reservation() {
-  const data = []
+  const { reservations } = useSelector(state => state.reservation)
 
-  const formatData = (data) => {
-    return data.map(element => ({
-      ...element,
-      reservations: element.reservations[0].count
-    }))
-  }
+
+
+  
   const headers = [
     {
-      attribute: 'name',
-      title: 'Nombre',
+      attribute: 'created_at',
+      title: 'Fecha cotizado',
       type: 'text',
     },
     {
-      attribute: 'created_at',
-      type: 'datetime',
-      title: 'Creado'
+      attribute: 'customer',
+      title: 'Cliente',
+      type: 'text',
     },
     {
-      attribute: 'reservations',
-      title: "Cantidad de cotizaciones",
+      attribute: 'place',
+      title: 'Destino',
+      type: 'text'
+    },
+    {
+      attribute: 'startDate',
+      title: "Fecha de salida",
+      type: 'datetime'
+    },
+    {
+      attribute: 'days',
+      title: "Cantidad de días",
       type: 'number'
+    },
+    {
+      attribute: 'endDate',
+      title: "Fecha de retorno",
+      type: 'datetime'
     },
   ]
 
   return (
     <>
       <Breadcrumb pageName="Reservas" homeName='Inicio' />
-      <Table data={formatData(data)} headers={headers} />
+      {JSON.stringify(reservations)}
+      <Table data={reservations} headers={headers} />
     </>
   )
 }

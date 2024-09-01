@@ -6,18 +6,20 @@ import { routes } from './routes/routes';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { getClients } from './features/clients/thunks'
+import { getReservations } from './features/reservations/thunks'
 
 const router = createBrowserRouter(routes)
 
 function App() {
 
   const dispatch = useDispatch()
-  const {status} = useSelector((state) => state.client)
+
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(getClients())
-    }
+
+    dispatch(getClients())
+    dispatch(getReservations())
+
   }, [])
 
   return (

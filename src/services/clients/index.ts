@@ -1,4 +1,4 @@
-import { supabase } from '../util/supabase'
+import { supabase } from '../../util/supabase'
 
 interface Client {
     name: string,
@@ -68,3 +68,5 @@ export const updateClient = async (id: number, client: Client) => {
         .eq('id', id)
         .select()
 }
+
+

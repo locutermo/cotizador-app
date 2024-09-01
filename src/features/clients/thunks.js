@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { 
     fetchClients, 
     fetchClientsReservations 
-} from '../../services'
+} from '../../services/clients'
 
 
 export const getClients = createAsyncThunk(

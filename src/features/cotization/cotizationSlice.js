@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { AEROLINES, HOTELS, ISLA_SAONA, TRASLADO_PRICE } from '../../util/constants'
-import { fetchClients, fetchClientReservations } from '../../services'
+import { fetchClients, fetchClientReservations } from '../../services/clients'
 
 
 export const getClients = createAsyncThunk(

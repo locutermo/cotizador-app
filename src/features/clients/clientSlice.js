@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { getClients,getClientsReservations } from './thunks'
+import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
+import { getClients, getClientsReservations } from './thunks'
+import { formatClients } from '../../util/util'
 
 
 const initialState = {
@@ -13,7 +14,7 @@ export const clientSlice = createSlice({
   initialState,
   reducers: {
     addClient: (state, action) => {
-        state.clients.push(action.payload)
+      state.clients.push(action.payload)
     },
   },
   extraReducers: (builder) => {
@@ -23,7 +24,7 @@ export const clientSlice = createSlice({
     })
 
     builder.addCase(getClients.fulfilled, (state, action) => {
-      state.clients = action.payload
+      state.clients = formatClients(action.payload)
       state.status = 'successful'
     })
 
@@ -34,6 +35,16 @@ export const clientSlice = createSlice({
 
   }
 })
+
+
+// const selectSelf = (state) => state
+
+// export const clientWithReservationsSelector = createDraftSafeSelector(
+//   selectSelf,
+//   (state) => state.value,
+// )
+
+
 
 export const {
   addClient,

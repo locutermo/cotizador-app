@@ -8,13 +8,6 @@ export default function Clients() {
   const { clients } = useSelector(state => state.client)
   const navigate = useNavigate();
 
-  const formatData = (data) => {
-    return data.map(element => ({
-      ...element,
-      reservations: element.reservations[0].count
-    }))
-  }
-
   const headers = [
     {
       attribute: 'name',
@@ -65,7 +58,7 @@ export default function Clients() {
   return (
     <>
         <Breadcrumb current={{name:'Clientes'}} previous={{name:"Inicio",url:''}} />
-        <Table data={formatData(clients)} headers={headers} />
+        <Table data={clients} headers={headers} />
     </>
   )
 }
