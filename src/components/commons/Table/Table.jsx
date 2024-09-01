@@ -1,4 +1,10 @@
+import 'moment/locale/es'
+import moment from 'moment';
+moment().locale('es');
+
+
 const renderElementByType = (element, header) => {
+
   switch (header['type']) {
     case 'text': return (
       <h5 className="font-medium text-black dark:text-white">
@@ -6,9 +12,15 @@ const renderElementByType = (element, header) => {
       </h5>
     );
 
-    case 'datetime':  return (
+    case 'date': return (
       <p className="font-medium text-black dark:text-white">
-        {element[header['attribute']]}
+        { element[header['attribute']] ? moment(element[header['attribute']]).format('ll') : '-'}
+      </p>
+    )
+
+    case 'datetime': return (
+      <p className="font-medium text-black dark:text-white">
+        {moment(element[header['attribute']]).calendar()}
       </p>
     )
 

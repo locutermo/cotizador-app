@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { getReservations,createReservationWithAerolinesAndHotels } from './thunks'
+import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
+import { getReservations, createReservationWithAerolinesAndHotels } from './thunks'
 import { formatReservations, formatReservationWithDestinations } from '../../util/util'
 
 
@@ -33,19 +33,31 @@ export const reservationSlice = createSlice({
       state.error = action.error
     })
 
-    builder.addCase(createReservationWithAerolinesAndHotels.fulfilled, (state,action) => {
+    builder.addCase(createReservationWithAerolinesAndHotels.fulfilled, (state, action) => {
       const reservationFormatted = formatReservationWithDestinations(action.payload)
-      state.reservations = [...state.reservations,reservationFormatted]
+      state.reservations = [...state.reservations, reservationFormatted]
       console.log(reservationFormatted)
     })
 
-    builder.addCase(createReservationWithAerolinesAndHotels.rejected, (state,action) => {
+    builder.addCase(createReservationWithAerolinesAndHotels.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.error
     })
 
   }
 })
+
+export const reservationsSelector = (state) => state.reservation.reservations
+export const reservationsOrdered = createDraftSafeSelector(
+  reservationsSelector,
+  (state) => {
+    const copy = [...state]
+    const sorted = copy.sort((a, b) => a.created_at - b.created_at)
+    return sorted.reverse()
+  },
+)
+
+
 
 
 

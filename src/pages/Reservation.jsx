@@ -1,9 +1,9 @@
 import Breadcrumb from "../components/commons/Breadcrumbs/Breadcrumb";
 import Table from "../components/commons/Table/Table";
 import { useSelector } from "react-redux";
-
+import { reservationsOrdered } from "../features/reservations/reservationSlice";
 export default function Reservation() {
-  const { reservations } = useSelector(state => state.reservation)
+  const reservations = useSelector(reservationsOrdered)
 
 
 
@@ -12,7 +12,7 @@ export default function Reservation() {
     {
       attribute: 'created_at',
       title: 'Fecha cotizado',
-      type: 'text',
+      type: 'datetime',
     },
     {
       attribute: 'customer',
@@ -27,7 +27,7 @@ export default function Reservation() {
     {
       attribute: 'startDate',
       title: "Fecha de salida",
-      type: 'datetime'
+      type: 'date'
     },
     {
       attribute: 'days',
@@ -37,7 +37,7 @@ export default function Reservation() {
     {
       attribute: 'endDate',
       title: "Fecha de retorno",
-      type: 'datetime'
+      type: 'date'
     },
   ]
 
