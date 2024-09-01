@@ -45,7 +45,7 @@ export const fetchClientsReservations = async () => {
         `)
 }
 
-export const addClient = async (client: Client) => {
+export const createClient = async (client: Client) => {
     return await supabase
         .from('clients')
         .insert([
@@ -68,5 +68,13 @@ export const updateClient = async (id: number, client: Client) => {
         .eq('id', id)
         .select()
 }
+
+export const deleteClient = async (id: number) => {
+    return await supabase
+        .from('clients')
+        .delete()
+        .eq('id', id)
+}
+
 
 
