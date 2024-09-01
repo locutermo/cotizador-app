@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import QuoteForm from "../commons/QuoteForm";
 import TablePrice from "../commons/TablePrice";
 import { AEROLINES, HOTELS } from "../../util/constants";
@@ -24,12 +24,12 @@ export default function CotizationSection() {
     const onChangeSelector = (newArray, name) => {
 
 
-        if (name == "aeroline") {
+        if (name === "aeroline") {
             const setSelected = new Set(newArray);
             const setPrevious = new Set(aerolinePrices.map(e => e.name))
 
             const intersection = new Set([...setSelected].filter(x => setPrevious.has(x)))
-            let newAerolines = aerolinePrices.filter(aeroline => [...intersection].find(e => e == aeroline.name))
+            let newAerolines = aerolinePrices.filter(aeroline => [...intersection].find(e => e === aeroline.name))
 
 
             const difference = new Set([...setSelected].filter(x => !setPrevious.has(x)))
@@ -39,12 +39,12 @@ export default function CotizationSection() {
 
             dispatch(setAerolinePrices(newAerolines))
         }
-        if (name == "hotel") {
+        if (name === "hotel") {
             const setSelected = new Set(newArray);
             const setPrevious = new Set(hotelPrices.map(e => e.name))
 
             const intersection = new Set([...setSelected].filter(x => setPrevious.has(x)))
-            let newHotels = hotelPrices?.filter(aeroline => [...intersection].find(e => e == aeroline.name))
+            let newHotels = hotelPrices?.filter(aeroline => [...intersection].find(e => e === aeroline.name))
 
 
             const difference = new Set([...setSelected].filter(x => !setPrevious.has(x)))

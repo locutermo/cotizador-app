@@ -105,7 +105,7 @@ export default function MultiSelectDropdown({
                 >
                   <input
                     type="checkbox"
-                    checked={selectedOptions.find(e => e==option)}
+                    checked={selectedOptions.find(e => e===option)}
                     name={formFieldName}
                     value={option}
                     className="cursor-pointer dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

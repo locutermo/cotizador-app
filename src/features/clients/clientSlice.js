@@ -1,5 +1,5 @@
-import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
-import { getClients, addClient, removeClient,editClient } from './thunks'
+import { createSlice } from '@reduxjs/toolkit'
+import { getClients, addClient, removeClient, editClient } from './thunks'
 import { formatClients } from '../../util/util'
 
 
@@ -36,33 +36,25 @@ export const clientSlice = createSlice({
     })
 
     builder.addCase(removeClient.fulfilled, (state, action) => {
-      state.clients = state.clients.filter( e => e.id !== action.payload)
+      state.clients = state.clients.filter(e => e.id !== action.payload)
     })
 
     builder.addCase(editClient.fulfilled, (state, action) => {
       const payload = action.payload
-      console.log("Payload: " ,payload)
-      state.clients = state.clients.map( e => e.id === payload.id ? payload : e)
+      console.log("Payload: ", payload)
+      state.clients = state.clients.map(e => e.id === payload.id ? payload : e)
     })
 
 
   }
 })
 
-
-// al crear el selector tenemos acceso a todos los selectores que estan en el combine
 export const clientsFormattedSelector = (state) => formatClients(state.client.clients)
 
-// export const clientWithReservationsSelector = createDraftSafeSelector(
-//   selectSelf,
-//   (state) => state.value,
-// )
 
+// export const {
 
-
-export const {
-  
-} = clientSlice.actions
+// } = clientSlice.actions
 
 
 export default clientSlice.reducer

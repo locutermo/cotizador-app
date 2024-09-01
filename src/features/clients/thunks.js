@@ -39,7 +39,7 @@ export const removeClient = createAsyncThunk(
   'clients/removeClient',
   async (id,thunkAPI) => {
     try {
-      const res = await deleteClient(id)
+      await deleteClient(id)
       return id
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })

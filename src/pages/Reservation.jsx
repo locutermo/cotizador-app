@@ -44,7 +44,6 @@ export default function Reservation() {
   return (
     <>
       <Breadcrumb pageName="Reservas" homeName='Inicio' />
-      {JSON.stringify(reservations)}
       <Table data={reservations} headers={headers} />
     </>
   )

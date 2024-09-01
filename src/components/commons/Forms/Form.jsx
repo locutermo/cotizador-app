@@ -15,7 +15,7 @@ export default function Form({ title, inputs, callback, initialValues }) {
         }
 
         
-    }, [initialValues])
+    }, [initialValues,inputs])
 
     const clean = () => {
         let newData = {...data}

@@ -1,4 +1,3 @@
-import { useState, useDeferredValue } from "react";
 import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 
@@ -15,13 +14,13 @@ export default function QuoteForm({save, updateOnAttribute, detail, hotels, aero
 
     const onFocus = (e, attribute) => {
         const value = e.target.value
-        if (value == 0) updateOnAttribute({ attribute, value: '' })
+        if (value === 0) updateOnAttribute({ attribute, value: '' })
     }
 
 
     const onFocusOut = (e, attribute) => {
         const value = e.target.value
-        if (value == '')
+        if (value === '')
             updateOnAttribute({ attribute, value: 0 })
     }
 

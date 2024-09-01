@@ -35,8 +35,6 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
     const calKidsPriceToHotel = price => (price > 0 && kids > 0) && Math.round(price / (2 * parseInt(adults) + parseInt(kids)))
 
     useEffect(() => {
-        console.log("Actualizando precios por renderizar el option " + option.name)
-        console.log("De:" + price + " a " + option.price)
         setPrice(option.price)
     }, [option])
 
