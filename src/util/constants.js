@@ -5,6 +5,7 @@ export const AEROLINES = [
 ]
 export const TRASLADO_PRICE = 50
 export const ISLA_SAONA = 80
+export const SANTO_DOMINGO = 80
 export const HOTELS = [
     { "name": "Occidental Caribe 4* Básico" },
     { "name": "Ocean Blue & Sand 4*" },

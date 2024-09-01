@@ -26,7 +26,6 @@ export const addClient = createAsyncThunk(
   async (data,thunkAPI) => {
     try {
       const res = await createClient(data)
-      console.log("Add client",{res:res.data[0]})
       return res.data[0]
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })

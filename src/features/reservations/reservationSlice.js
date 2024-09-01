@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getReservations } from './thunks'
-import { formatReservations } from '../../util/util'
+import { getReservations,createReservationWithAerolinesAndHotels } from './thunks'
+import { formatReservations, formatReservationWithDestinations } from '../../util/util'
 
 
 const initialState = {
@@ -29,6 +29,17 @@ export const reservationSlice = createSlice({
     })
 
     builder.addCase(getReservations.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.error
+    })
+
+    builder.addCase(createReservationWithAerolinesAndHotels.fulfilled, (state,action) => {
+      const reservationFormatted = formatReservationWithDestinations(action.payload)
+      state.reservations = [...state.reservations,reservationFormatted]
+      console.log(reservationFormatted)
+    })
+
+    builder.addCase(createReservationWithAerolinesAndHotels.rejected, (state,action) => {
       state.status = 'failed'
       state.error = action.error
     })

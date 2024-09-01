@@ -5,15 +5,19 @@ import TablePrice from "../commons/TablePrice";
 import { AEROLINES, HOTELS } from "../../util/constants";
 import { useSelector, useDispatch } from 'react-redux'
 import { 
-    addReservation, 
     setAerolinePrices, 
     setHotelPrices,
     updateAerolineOption,
     updateHotelOption,
     updateOnAttributeDetail
 } from '../../features/cotization/cotizationSlice'
+
+import { createReservationWithAerolinesAndHotels } from "../../features/reservations/thunks";
+import { clientOptionsSelector } from "../../features/clients/clientSlice";
+
 export default function CotizationSection() {
     const { cotizationDetail, aerolinePrices, hotelPrices } = useSelector(state => state.cotization)
+    const clientOptions = useSelector(clientOptionsSelector)
     const dispatch = useDispatch()
 
 
@@ -60,7 +64,8 @@ export default function CotizationSection() {
         <div className="flex flex-col gap-4 ">
 
             <QuoteForm
-                save={e => {dispatch(addReservation())}}
+                clientOptions={clientOptions}
+                save={e => {dispatch(createReservationWithAerolinesAndHotels({cotizationDetail,aerolinePrices,hotelPrices}))}}
                 detail={cotizationDetail}
                 aerolines={AEROLINES.map(e => e.name)}
                 hotels={HOTELS.map(e => e.name)}

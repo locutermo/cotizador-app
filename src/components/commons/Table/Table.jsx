@@ -6,6 +6,12 @@ const renderElementByType = (element, header) => {
       </h5>
     );
 
+    case 'datetime':  return (
+      <p className="font-medium text-black dark:text-white">
+        {element[header['attribute']]}
+      </p>
+    )
+
     case 'callbacks': return (
       <div className="flex items-center space-x-3.5 justify-center">
         {header['callbacks'].map(({ icon, Component, callback }, index) => (

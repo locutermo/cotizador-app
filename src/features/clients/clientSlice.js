@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
 import { getClients, addClient, removeClient, editClient } from './thunks'
 import { formatClients } from '../../util/util'
 
@@ -50,6 +50,11 @@ export const clientSlice = createSlice({
 })
 
 export const clientsFormattedSelector = (state) => formatClients(state.client.clients)
+
+export const clientOptionsSelector = createDraftSafeSelector(
+  clientsFormattedSelector,
+  (state) => state.map(element => ({label:element.name,value:element.id})),
+)
 
 
 // export const {
