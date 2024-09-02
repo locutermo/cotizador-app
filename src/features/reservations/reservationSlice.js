@@ -57,7 +57,10 @@ export const reservationsOrdered = createDraftSafeSelector(
   },
 )
 
-
+export const reservationFoundSelector = (id) => createDraftSafeSelector(
+  reservationsSelector,
+  (state) => state.find(e => e.id === id),
+)
 
 
 
