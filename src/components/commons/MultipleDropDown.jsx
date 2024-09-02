@@ -10,7 +10,17 @@ export default function MultiSelectDropdown({
 }) {
   const [isJsEnabled, setIsJsEnabled] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(options);
-  const optionsListRef = useRef(null);
+  const optionsListRef = useRef();
+
+  useEffect(() => {
+    setSelectedOptions(options)
+    const optionsInputs = optionsListRef.current.querySelectorAll("input");
+    optionsInputs.forEach((input) => {
+      input.checked = true;
+    });
+
+    onChange(options);
+  }, [options])
 
   useEffect(() => {
     setIsJsEnabled(true);
@@ -18,18 +28,23 @@ export default function MultiSelectDropdown({
 
   const handleChange = (e) => {
     const isChecked = e.target.checked;
-    const option = e.target.value;
+    const optionName = e.target.name
+    const selectedOptionsFormatted = selectedOptions.map(e => e?.label)
 
-    const selectedOptionSet = new Set(selectedOptions);
+    const selectedOptionSet = new Set(selectedOptionsFormatted);
 
     if (isChecked) {
-      selectedOptionSet.add(option);
+      selectedOptionSet.add(optionName);
     } else {
-      selectedOptionSet.delete(option);
+      selectedOptionSet.delete(optionName);
     }
 
-    const newSelectedOptions = Array.from(selectedOptionSet);
+    let newSelectedOptions = Array.from(selectedOptionSet);
 
+    newSelectedOptions = newSelectedOptions.map(selected => {
+      const found = options.find(e => e?.label === selected)
+      return found
+    })
     setSelectedOptions(newSelectedOptions);
     onChange(newSelectedOptions);
   };
@@ -99,19 +114,19 @@ export default function MultiSelectDropdown({
         <ul ref={optionsListRef}>
           {options?.map((option, i) => {
             return (
-              <li key={option}>
+              <li key={option.value}>
                 <label
                   className={`flex whitespace-nowrap cursor-pointer px-2 py-1 transition-colors hover:bg-blue-100 dark:hover:bg-yellow-50 dark:[&:has(input:checked)]:bg-yellow-50 [&:has(input:checked)]:bg-blue-200`}
                 >
                   <input
                     type="checkbox"
-                    checked={selectedOptions.find(e => e===option)}
-                    name={formFieldName}
-                    value={option}
+                    checked={selectedOptions.find(e => e === option.label)}
+                    name={option.label}
+                    value={option.value}
                     className="cursor-pointer dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     onChange={handleChange}
                   />
-                  <span className="ml-1">{option}</span>
+                  <span className="ml-1">{option.label}</span>
                 </label>
               </li>
             );

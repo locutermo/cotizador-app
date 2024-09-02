@@ -33,10 +33,11 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
       const hotelsReservationFiltered = hotelPrices.filter(e => e.price)
 
       const aerolinesReservationFormatted = aerolinesReservationFiltered.map(element => {
+        console.log({element})
         return formatAerolineReservationToDatabase({
           ...element,
           reservations_id: reservationCreated.id,
-          aerolines_id: 1
+          aerolines_id: element.id
         })
       })
 
@@ -44,7 +45,7 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
         return formatHotelReservationToDatabase({
           ...element,
           reservations_id: reservationCreated.id,
-          hotels_id: 1
+          hotels_id: element.id
         })
       })
       

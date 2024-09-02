@@ -36,6 +36,7 @@ export const formatAerolineReservationToDatabase = (reservation) => {
   const {
     priceByAdults,
     priceByKids,
+    id,
     name,
     ...rest
   } = reservation
@@ -50,6 +51,7 @@ export const formatAerolineReservationToDatabase = (reservation) => {
 export const formatHotelReservationToDatabase = (reservation) => {
   const {
     priceByAdults,
+    id,
     priceByKids,
     name,
     ...rest

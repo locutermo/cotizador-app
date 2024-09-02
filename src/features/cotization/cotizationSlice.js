@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { AEROLINES, HOTELS, ISLA_SAONA, SANTO_DOMINGO, TRASLADO_PRICE } from '../../util/constants'
+import { ISLA_SAONA, SANTO_DOMINGO, TRASLADO_PRICE } from '../../util/constants'
 
 
 const initialState = {
@@ -13,8 +13,8 @@ const initialState = {
     islaSaona: ISLA_SAONA,
     santoDomingo: SANTO_DOMINGO 
   },
-  aerolinePrices: AEROLINES,
-  hotelPrices: HOTELS
+  aerolinePrices: [],
+  hotelPrices: [] 
 }
 
 export const cotizationSlice = createSlice({

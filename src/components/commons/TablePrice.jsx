@@ -49,8 +49,6 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
     }, [detail])
 
     const onUpdateRow = useCallback((e) => {
-        console.log(option.name)
-        console.log(e.target.value)
         setPrice(e.target.value);
         onUpdateOptions({
             ...option,

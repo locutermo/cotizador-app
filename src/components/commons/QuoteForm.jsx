@@ -1,7 +1,7 @@
 import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 import Select from "../primitive/Select";
-export default function QuoteForm({ clientOptions,save, updateOnAttribute, detail, hotels, aerolines, onChangeAerolines, onChangeHotels }) {
+export default function QuoteForm({ clientOptions, save, updateOnAttribute, detail, hotels, aerolines, onChangeAerolines, onChangeHotels }) {
     const onChangeInput = (e, attribute) => {
         const value = e.target.value
         updateOnAttribute({ attribute, value })
