@@ -11,10 +11,12 @@ const renderElementByType = (element, header) => {
         {element[header['attribute']]}
       </h5>
     );
-
+    case 'custom': return (
+      <header.Component element={element}/>
+    );
     case 'date': return (
       <p className="font-medium text-black dark:text-white">
-        { element[header['attribute']] ? moment(element[header['attribute']]).format('ll') : '-'}
+        {element[header['attribute']] ? moment(element[header['attribute']]).format('ll') : '-'}
       </p>
     )
 
