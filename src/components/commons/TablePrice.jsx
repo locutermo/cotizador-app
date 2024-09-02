@@ -8,18 +8,28 @@ export default function TablePrice({ options, type, detail, onUpdateOptions }) {
 
     return <table className="min-w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
         <thead className="[&_th]:px-4 py-2">
-            <th>Nombre</th>
-            <th>Total</th>
-            <th>P. x adulto</th>
-            <th>P. x niño</th>
-            {adults > 1 && (<th>P. x {adults} adultos</th>)}
-            {kids > 1 && (<th>P. x {kids} niños</th>)}
+            <tr>
+                <th>Nombre</th>
+                <th>Total</th>
+                <th>P. x adulto</th>
+                <th>P. x niño</th>
+                {adults > 1 && (<th>P. x {adults} adultos</th>)}
+                {kids > 1 && (<th>P. x {kids} niños</th>)}
+            </tr>
         </thead>
         <tbody className="[&_td]:text-sm">
-            {options?.map((option, index) => (
+            {options.length > 0 ? options.map((option, index) => (
                 <TablePriceRow key={index} option={option} type={type} detail={detail} onUpdateOptions={onUpdateOptions} />
 
-            ))}
+            )) : (<tr>
+                <td
+                    className="border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8 text-center p-8 my-10"
+                    colSpan={5}
+                >
+                    No hay opciones seleccionadas
+                </td>
+            </tr>)
+            }
         </tbody>
     </table>
 }

@@ -41,7 +41,6 @@ export const clientSlice = createSlice({
 
     builder.addCase(editClient.fulfilled, (state, action) => {
       const payload = action.payload
-      console.log("Payload: ", payload)
       state.clients = state.clients.map(e => e.id === payload.id ? payload : e)
     })
 

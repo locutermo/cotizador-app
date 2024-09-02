@@ -9,7 +9,11 @@ export const fetchHotels = async () => {
 
     return await supabase
         .from('hotels')
-        .select()
+        .select(`
+            *,
+            reservations_hotels(count)
+
+        `)
 }
 
 export const createHotel = async (hotel: Hotel) => {

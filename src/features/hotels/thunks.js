@@ -13,6 +13,7 @@ export const getHotels = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const res = await fetchHotels()
+      console.log({res})
       return res.data
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })

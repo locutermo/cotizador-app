@@ -5,6 +5,13 @@ export const formatClients = (data) => {
   }))
 }
 
+export const formatHotels = (data) => {
+  return data?.map(element => ({
+    ...element,
+    reservations: element.reservations ? element.reservations[0]?.count : 0
+  }))
+}
+
 
 export const formatCotizationToDatabase = (cotization) => {
   const {

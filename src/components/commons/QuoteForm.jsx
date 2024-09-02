@@ -33,16 +33,16 @@ export default function QuoteForm({ clientOptions, save, updateOnAttribute, deta
                 <Input title="Fecha de Salida" type="date" value={detail.startDate} onChange={e => { onChangeInput(e, 'startDate') }} />
             </div>
 
-            <Input title="Nº días" onBlur={e => { onFocusOut(e, 'days') }} onFocus={e => { onFocus(e, 'days') }} type="number" min={1} value={detail.days} defaultValue={1} onChange={e => { onChangeInputNumber(e, 'days') }} />
-            <Input title="Nº Adultos" onBlur={e => { onFocusOut(e, 'adults') }} onFocus={e => { onFocus(e, 'adults') }} min={1} value={detail.adults} onChange={e => { onChangeInputNumber(e, 'adults') }} defaultValue={1} type={'number'} />
-            <Input title="Nº Niños " onBlur={e => { onFocusOut(e, 'kids') }} onFocus={e => { onFocus(e, 'kids') }} min={0} value={detail.kids} onChange={e => { onChangeInputNumber(e, 'kids') }} defaultValue={0} type={'number'} />
+            <Input title="Nº días" onBlur={e => { onFocusOut(e, 'days') }} onFocus={e => { onFocus(e, 'days') }} type="number" min={1} value={detail.days} onChange={e => { onChangeInputNumber(e, 'days') }} />
+            <Input title="Nº Adultos" onBlur={e => { onFocusOut(e, 'adults') }} onFocus={e => { onFocus(e, 'adults') }} min={1} value={detail.adults} onChange={e => { onChangeInputNumber(e, 'adults') }} type={'number'} />
+            <Input title="Nº Niños " onBlur={e => { onFocusOut(e, 'kids') }} onFocus={e => { onFocus(e, 'kids') }} min={0} value={detail.kids} onChange={e => { onChangeInputNumber(e, 'kids') }}  type={'number'} />
 
 
-            <Input title="fee Adulto" onBlur={e => { onFocusOut(e, 'adultFee') }} onFocus={e => { onFocus(e, 'adultFee') }} type="number" min={100} value={detail.adultFee} defaultValue={100} onChange={e => { onChangeInputNumber(e, 'adultFee') }} />
-            <Input title="fee Niño" onBlur={e => { onFocusOut(e, 'kidFee') }} onFocus={e => { onFocus(e, 'kidFee') }} type="number" min={100} value={detail.kidFee} defaultValue={100} onChange={e => { onChangeInputNumber(e, 'kidFee') }} />
-            <Input title="Traslado" onBlur={e => { onFocusOut(e, 'traslado') }} onFocus={e => { onFocus(e, 'traslado') }} type="number" min={0} value={detail.traslado} defaultValue={25} onChange={e => { onChangeInputNumber(e, 'traslado') }} />
-            <Input title="Isla Saona" onBlur={e => { onFocusOut(e, 'islaSaona') }} onFocus={e => { onFocus(e, 'islaSaona') }} type="number" min={0} value={detail.islaSaona} defaultValue={80} onChange={e => { onChangeInputNumber(e, 'islaSaona') }} />
-            <Input title="Santo Domingo" onBlur={e => { onFocusOut(e, 'santoDomingo') }} onFocus={e => { onFocus(e, 'santoDomingo') }} type="number" min={0} value={detail.santoDomingo} defaultValue={80} onChange={e => { onChangeInputNumber(e, 'santoDomingo') }} />
+            <Input title="fee Adulto" onBlur={e => { onFocusOut(e, 'adultFee') }} onFocus={e => { onFocus(e, 'adultFee') }} type="number" min={100} value={detail.adultFee}  onChange={e => { onChangeInputNumber(e, 'adultFee') }} />
+            <Input title="fee Niño" onBlur={e => { onFocusOut(e, 'kidFee') }} onFocus={e => { onFocus(e, 'kidFee') }} type="number" min={100} value={detail.kidFee} onChange={e => { onChangeInputNumber(e, 'kidFee') }} />
+            <Input title="Traslado" onBlur={e => { onFocusOut(e, 'traslado') }} onFocus={e => { onFocus(e, 'traslado') }} type="number" min={0} value={detail.traslado} onChange={e => { onChangeInputNumber(e, 'traslado') }} />
+            <Input title="Isla Saona" onBlur={e => { onFocusOut(e, 'islaSaona') }} onFocus={e => { onFocus(e, 'islaSaona') }} type="number" min={0} value={detail.islaSaona} onChange={e => { onChangeInputNumber(e, 'islaSaona') }} />
+            <Input title="Santo Domingo" onBlur={e => { onFocusOut(e, 'santoDomingo') }} onFocus={e => { onFocus(e, 'santoDomingo') }} type="number" min={0} value={detail.santoDomingo} onChange={e => { onChangeInputNumber(e, 'santoDomingo') }} />
 
             <div className="col-span-4  flex gap-4">
                 <div className="w-1/2">
@@ -65,7 +65,8 @@ export default function QuoteForm({ clientOptions, save, updateOnAttribute, deta
                 <button className="hover:text-blue-700" onClick={save}>Guardar</button>
             </div>
 
-        </div>)
+        </div>
+    )
 
 
 }

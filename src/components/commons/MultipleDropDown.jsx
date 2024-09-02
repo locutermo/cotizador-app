@@ -9,18 +9,17 @@ export default function MultiSelectDropdown({
   prompt = "Selecciona una o más opciones",
 }) {
   const [isJsEnabled, setIsJsEnabled] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState(options);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const optionsListRef = useRef();
 
   useEffect(() => {
-    setSelectedOptions(options)
-    const optionsInputs = optionsListRef.current.querySelectorAll("input");
-    optionsInputs.forEach((input) => {
-      input.checked = true;
-    });
+    console.log("Renderizando multipledropdown")
+    if (selectedOptions.length === 0) {
+      handleSelectAllClick()
+    }
+    
 
-    onChange(options);
-  }, [options])
+  }, [])
 
   useEffect(() => {
     setIsJsEnabled(true);
@@ -52,7 +51,7 @@ export default function MultiSelectDropdown({
   const isSelectAllEnabled = selectedOptions.length < options.length;
 
   const handleSelectAllClick = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const optionsInputs = optionsListRef.current.querySelectorAll("input");
     optionsInputs.forEach((input) => {
