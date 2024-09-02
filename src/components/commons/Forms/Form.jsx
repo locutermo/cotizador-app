@@ -32,7 +32,7 @@ export default function Form({ title, inputs, callback, initialValues }) {
 
 
     return (
-        <div className="grid grid-cols-1 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+        <div className="grid grid-cols-1 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 ">
             {title && (
                 <div className="uppercase dark:text-white">
                     {title}

@@ -119,17 +119,17 @@ export default function Clients() {
     <>
       <Breadcrumb current={{ name: 'Clientes' }} previous={{ name: "Inicio", url: '' }} />
       <div className="flex gap-4">
-        <div className="w-3/12 grid grid-cols-1 gap-4">
+        <div className="w-3/12 flex flex-col gap-4 h-auto">
           <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addClient(data)) }} />
           {selected && (
-            <Form 
-              title="Edición" 
-              initialValues={selected} 
-              inputs={[{ title: "ID", disabled: true, attribute: 'id', type: 'text' }, ...inputs]} 
-              callback={(data) => { 
+            <Form
+              title="Edición"
+              initialValues={selected}
+              inputs={[{ title: "ID", disabled: true, attribute: 'id', type: 'text' }, ...inputs]}
+              callback={(data) => {
                 dispatch(editClient(data));
-                setSelected(null) 
-              }} 
+                setSelected(null)
+              }}
             />
           )}
         </div>

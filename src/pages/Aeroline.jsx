@@ -77,7 +77,7 @@ export default function Aerolines() {
         <>
             <Breadcrumb current={{ name: 'Aerolineas' }} previous={{ name: "Inicio", url: '' }} />
             <div className="flex gap-4">
-                <div className="w-3/12 grid grid-cols-1 gap-4">
+                <div className="w-3/12 flex flex-col gap-4 h-auto">
                     <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addAeroline(data)) }} />
                     {selected && (
                         <Form
