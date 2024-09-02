@@ -6,9 +6,10 @@ export const formatClients = (data) => {
 }
 
 export const formatHotels = (data) => {
-  return data?.map(element => ({
+
+  return data?.map(({reservations_hotels,...element}) => ({
     ...element,
-    reservations: element.reservations ? element.reservations[0]?.count : 0
+    reservations: reservations_hotels ? reservations_hotels[0]?.count : 0
   }))
 }
 

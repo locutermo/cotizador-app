@@ -80,7 +80,13 @@ export default function Hotels() {
                         </button>
                     ),
                     callback: (e) => {
-                        dispatch(removeHotel(e.id))
+                        if (e.reservations > 0) {
+                            alert("No se puede eliminar porque tiene cotizaciones realizadas para este hotel")
+                        } else {
+                            console.log("Eliminando")
+                            dispatch(removeHotel(e.id))
+                        }
+
                     }
 
                 }
