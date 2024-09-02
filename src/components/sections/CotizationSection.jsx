@@ -5,6 +5,7 @@ import TablePrice from "../commons/TablePrice";
 import { AEROLINES, HOTELS } from "../../util/constants";
 import { useSelector, useDispatch } from 'react-redux'
 import { 
+    clean,
     setAerolinePrices, 
     setHotelPrices,
     updateAerolineOption,
@@ -79,7 +80,11 @@ export default function CotizationSection() {
 
             <QuoteForm
                 clientOptions={clientOptions}
-                save={e => {dispatch(createReservationWithAerolinesAndHotels({cotizationDetail,aerolinePrices,hotelPrices}))}}
+                save={e => {
+                    dispatch(createReservationWithAerolinesAndHotels({cotizationDetail,aerolinePrices,hotelPrices}));
+                    dispatch(clean())
+
+                }}
                 detail={cotizationDetail}
                 aerolines={aerolineOptions}
                 hotels={hotelOptions}

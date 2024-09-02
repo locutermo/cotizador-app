@@ -3,24 +3,39 @@ import { ISLA_SAONA, SANTO_DOMINGO, TRASLADO_PRICE } from '../../util/constants'
 
 
 const initialState = {
-  cotizationDetail: { 
-    adults: 1, 
-    days: 1, 
-    kids: 0, 
-    adultFee: 100, 
-    kidFee: 100, 
-    traslado: TRASLADO_PRICE, 
+  cotizationDetail: {
+    adults: 1,
+    days: 1,
+    kids: 0,
+    adultFee: 100,
+    kidFee: 100,
+    traslado: TRASLADO_PRICE,
     islaSaona: ISLA_SAONA,
-    santoDomingo: SANTO_DOMINGO 
+    santoDomingo: SANTO_DOMINGO
   },
   aerolinePrices: [],
-  hotelPrices: [] 
+  hotelPrices: []
 }
 
 export const cotizationSlice = createSlice({
   name: 'cotization',
   initialState,
   reducers: {
+    clean: (state, action) => {
+      state.cotizationDetail = {
+        adults: 1,
+        days: 1,
+        kids: 0,
+        adultFee: 100,
+        kidFee: 100,
+        traslado: TRASLADO_PRICE,
+        islaSaona: ISLA_SAONA,
+        santoDomingo: SANTO_DOMINGO
+      }
+      state.aerolinePrices = []
+      state.hotelPrices = []
+
+    },
     setCotizationDetail: (state, action) => {
       state.cotizationDetail = action.payload
     },
@@ -48,6 +63,7 @@ export const cotizationSlice = createSlice({
 })
 
 export const {
+  clean,
   setCotizationDetail,
   setAerolinePrices,
   setHotelPrices,
