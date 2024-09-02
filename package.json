@@ -1,6 +1,6 @@
 {
-  "name": "18",
-  "homepage": "https://cotizador-app-beta.vercel.app/",
+  "name": "Rutamundial",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
