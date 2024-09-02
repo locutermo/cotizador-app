@@ -9,20 +9,24 @@ export default function Form({ title, inputs, callback, initialValues }) {
         if (initialValues) {
             let newData = {}
             inputs.forEach(input => {
-                newData[input.attribute] = initialValues[input.attribute] ||''
+                newData[input.attribute] = initialValues[input.attribute] || ''
             });
-            setData({id:initialValues.id,...newData})
+            setData({ id: initialValues.id, ...newData })
         }
 
-        
-    }, [initialValues,inputs])
+
+    }, [initialValues, inputs])
 
     const clean = () => {
-        let newData = {...data}
+        let newData = { ...data }
         inputs.forEach(input => {
             newData[input.attribute] = ''
         });
-        newData['id'] = data.id
+        const id = data.id
+        if (id) {
+            newData['id'] = data.id
+        }
+
         setData(newData)
     }
 
@@ -34,9 +38,10 @@ export default function Form({ title, inputs, callback, initialValues }) {
                     {title}
                 </div>
             )}
-            {inputs.map(({ title, attribute, type,disabled=false }, index) => (
-                <Input  
+            {inputs.map(({ title, attribute, type, disabled = false, ...restAttributes }, index) => (
+                <Input
                     disabled={disabled}
+                    {...restAttributes}
                     key={index}
                     title={title}
                     type={type || 'text'}
@@ -46,7 +51,7 @@ export default function Form({ title, inputs, callback, initialValues }) {
             ))}
             <div className="flex justify-between">
                 <button className="text-red-700" onClick={e => { clean() }}>Limpiar</button>
-                <button onClick={e => { callback(data);clean() }}>Guardar</button>
+                <button onClick={e => { callback(data); clean() }}>Guardar</button>
             </div>
         </div>
     )

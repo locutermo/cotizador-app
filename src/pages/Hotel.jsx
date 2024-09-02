@@ -92,7 +92,9 @@ export default function Hotels() {
         {
             title: 'Estrellas',
             attribute: 'stars',
-            type: 'number'
+            type: 'number',
+            min:1,
+            max:5,
         }
     ]
 

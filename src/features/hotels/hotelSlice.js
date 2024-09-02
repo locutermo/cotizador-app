@@ -1,6 +1,5 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
 import { getHotels, addHotel, removeHotel, editHotel } from './thunks'
-import { formatHotels } from '../../util/util'
 
 
 const initialState = {

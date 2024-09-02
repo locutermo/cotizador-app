@@ -25,6 +25,7 @@ export const addHotel = createAsyncThunk(
   async (data,thunkAPI) => {
     try {
       const res = await createHotel(data)
+      console.log('hotels/addHotel', {res,data})
       return res.data[0]
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })
