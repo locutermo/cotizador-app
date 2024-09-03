@@ -22,6 +22,7 @@ export const hotelSlice = createSlice({
     })
 
     builder.addCase(getHotels.fulfilled, (state, action) => {
+      console.log({hotels:action.payload})
       state.hotels = action.payload
       state.status = 'successful'
     })
@@ -52,7 +53,7 @@ export const hotelsFormattedSelector = (state) => formatHotels(state.hotel.hotel
 
 export const hotelOptionsSelector = createDraftSafeSelector(
   hotelsFormattedSelector,
-  (state) => state.map(element => ({label:element.name,value:element.id})),
+  (state) => state.map(element => ({label:`${element.name} - ${element.stars}*`,value:element.id})),
 )
 
 export default hotelSlice.reducer

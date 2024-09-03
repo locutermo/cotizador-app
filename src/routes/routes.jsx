@@ -8,7 +8,6 @@ import ClientCotizations from "../pages/ClientCotizations";
 import Destination from "../pages/Destination";
 import Aerolines from "../pages/Aeroline";
 import Hotels from "../pages/Hotel";
-import CotizationDetail from "../components/commons/CotizationDetail";
 import ReservationDetail from "../pages/ReservationDetail";
 
 export const routes = [
@@ -18,7 +17,7 @@ export const routes = [
         errorElement: <ErrorPage />,
         children: [
             { index: true, element: <Home /> },
-            { path: 'cotizations', element: <Cotization />},
+            { path: 'cotizations', element: <Cotization/>},
             { path: 'reservations', element: <Reservation/>},
             { path: 'reservations/:id/detail', element: <ReservationDetail/>},
             { path: 'destinations', element: <Destination/>},
