@@ -24,6 +24,7 @@ export default function QuoteForm({ clientOptions, save, updateOnAttribute, deta
             updateOnAttribute({ attribute, value: 0 })
     }
 
+
     return (
         <div className="grid grid-cols-4 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
             <div className="col-span-2">
@@ -61,8 +62,8 @@ export default function QuoteForm({ clientOptions, save, updateOnAttribute, deta
                         onChange={e => { onChangeHotels(e) }} />
                 </div>
             </div>
-            <div className="col-span-4 text-center p-2 dark:bg-boxdark dark:text-white">
-                <button className="hover:text-blue-700" onClick={save}>Guardar</button>
+            <div className="col-span-4 text-center p-2 dark:bg-boxdark dark:text-white hover:animate-pulse">
+                <button className="shadow-default dark:bg-blue-900 bg-blue-700 text-white w-full rounded-lg p-2" onClick={save}>Guardar</button>
             </div>
 
         </div>
