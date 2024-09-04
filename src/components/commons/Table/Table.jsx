@@ -46,7 +46,7 @@ const Table = ({ data, headers }) => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               {headers.map((header, key) => (
-                <th key={key} className="min-w-[220px] text-center py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th key={key} className="w-auto text-center py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                   {header.title}
                 </th>
               ))}
