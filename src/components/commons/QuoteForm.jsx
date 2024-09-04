@@ -28,7 +28,7 @@ export default function QuoteForm({ clientOptions, save, updateOnAttribute, deta
     return (
         <div className="grid grid-cols-4 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
             <div className="col-span-2">
-                <Select options={clientOptions} title="Nombres y Apellidos" onChange={e => { onChangeInput(e, 'customer') }} value={detail.customer} />
+                <Select options={[{label:"Selecciona el cliente",value:""},...clientOptions]} title="Nombres y Apellidos" onChange={e => { onChangeInput(e, 'customer') }} value={detail.customer} />
             </div>
             <div className="col-span-2">
                 <Input title="Fecha de Salida" type="date" value={detail.startDate} onChange={e => { onChangeInput(e, 'startDate') }} />
