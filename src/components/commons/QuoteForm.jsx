@@ -186,7 +186,7 @@ export default function QuoteForm({
             prompt="Aerolineas"
             formFieldName="Aerolineas"
             options={aerolines}
-            optionsSelected={optionsSelected?.aerolines}
+            optionsSelected={optionsSelected?.aerolines||[]}
             onChange={(e) => {
               onChangeAerolines(e);
             }}
@@ -197,7 +197,7 @@ export default function QuoteForm({
             prompt="Hoteles"
             formFieldName="Hoteles"
             options={hotels}
-            optionsSelected={optionsSelected?.hotels}
+            optionsSelected={optionsSelected?.hotels||[]}
             onChange={(e) => {
               onChangeHotels(e);
             }}

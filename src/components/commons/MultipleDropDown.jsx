@@ -14,7 +14,8 @@ export default function MultiSelectDropdown({
   const optionsListRef = useRef();
 
   useEffect(() => {
-    if (selectedOptions.length === 0) {
+    console.log("Renderizando MultipleDropDown")
+    if (selectedOptions.length === 0 && optionsSelected.length > 0) {
       const optionsInputs = optionsListRef.current.querySelectorAll("input");
       optionsInputs.forEach((input) => {
         if(optionsSelected.find(e => e.id === parseInt(input.value)))
@@ -22,7 +23,6 @@ export default function MultiSelectDropdown({
       });
   
       const newOptions = [...optionsSelected.map(e => ({value:e.id,label:e.name}))]
-      console.log({newOptions})
       setSelectedOptions(newOptions);
       onChange(newOptions);
       
