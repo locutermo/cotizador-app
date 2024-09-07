@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 export default function MultiSelectDropdown({
   formFieldName,
+  optionsSelected=[],
   options,
   onChange,
   prompt = "Selecciona una o más opciones",
@@ -14,12 +15,22 @@ export default function MultiSelectDropdown({
 
   useEffect(() => {
     if (selectedOptions.length === 0) {
-      // handleSelectAllClick()
+      const optionsInputs = optionsListRef.current.querySelectorAll("input");
+      optionsInputs.forEach((input) => {
+        console.log({value:parseInt(input.value)})
+        if(optionsSelected.find(e => e.id === parseInt(input.value)))
+          input.checked = true;
+      });
+  
+      const newOptions = [...optionsSelected.map(e => ({value:e.id,label:e.name}))]
+      console.log({newOptions})
+      setSelectedOptions(newOptions);
+      onChange(newOptions);
       
     }
 
 
-  }, [])
+  }, [optionsSelected])
 
   useEffect(() => {
     setIsJsEnabled(true);
@@ -51,7 +62,7 @@ export default function MultiSelectDropdown({
   const isSelectAllEnabled = selectedOptions.length < options.length;
 
   const handleSelectAllClick = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     const optionsInputs = optionsListRef.current.querySelectorAll("input");
     optionsInputs.forEach((input) => {

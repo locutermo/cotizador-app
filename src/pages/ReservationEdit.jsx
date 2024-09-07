@@ -53,7 +53,7 @@ export default function ReservationEdit() {
 
   useEffect(() => {
     if (selector) {
-      console.log({selector})
+      console.log({ selector });
       setDetail(selector.cotizationDetail);
       setAerolines(selector.aerolinePrices);
       setHotels(selector.hotelPrices);
@@ -99,6 +99,10 @@ export default function ReservationEdit() {
           <QuoteForm
             initialValues={{}}
             detail={detail}
+            optionsSelected={{
+              hotels:selector?.hotelPrices,
+              aerolines:selector?.aerolinePrices,
+            }}
             clientOptions={clientOptions}
             aerolines={aerolineOptions}
             hotels={hotelOptions}
@@ -154,15 +158,17 @@ export default function ReservationEdit() {
           {hotels.length > 0 && (
             <table className="min-w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
               <thead className="[&_th]:p-4  [&_th]:border-2 [&_th]:border-blue-300">
-                <th className="text-start">Hotel</th>
-                <th>Total Adulto</th>
-                {kids > 0 && <th>Total Niño</th>}
+                <tr>
+                  <th className="text-start">Hotel</th>
+                  <th>Total Adulto</th>
+                  {kids > 0 && <th>Total Niño</th>}
+                </tr>
               </thead>
               <tbody className="text-center [&_td]:px-4 [&_td]:py-2">
                 {[...hotels]
                   .sort((a, b) => a.price - b.price)
                   .map(({ name, priceByAdults, priceByKids }, index) => (
-                    <tr className="[&_td]:border-2 [&_td]:border-blue-200">
+                    <tr key={index} className="[&_td]:border-2 [&_td]:border-blue-200">
                       <td className="text-start">{name}</td>
                       <td>
                         $
