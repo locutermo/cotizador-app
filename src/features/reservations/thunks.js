@@ -34,7 +34,7 @@ export const removeReservation = createAsyncThunk(
   "reservations/deleteReservation",
   async (id, thunkAPI) => {
     try {
-      const res = await deleteReservation(id);
+      await deleteReservation(id);
       return id;
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message });

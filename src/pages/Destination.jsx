@@ -2,7 +2,6 @@ import Breadcrumb from "../components/commons/Breadcrumbs/Breadcrumb";
 import Form from "../components/commons/Forms/Form";
 import Table from "../components/commons/Table/Table";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { addDestination, editDestination, removeDestination } from "../features/destinations/thunks";
 import { destinationsFormattedSelector } from "../features/destinations/destinationSlice";
 import { useState } from "react";

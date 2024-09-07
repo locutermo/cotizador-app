@@ -17,7 +17,6 @@ export default function MultiSelectDropdown({
     if (selectedOptions.length === 0) {
       const optionsInputs = optionsListRef.current.querySelectorAll("input");
       optionsInputs.forEach((input) => {
-        console.log({value:parseInt(input.value)})
         if(optionsSelected.find(e => e.id === parseInt(input.value)))
           input.checked = true;
       });
@@ -38,21 +37,19 @@ export default function MultiSelectDropdown({
 
   const handleChange = (e) => {
     const isChecked = e.target.checked;
-    const optionName = e.target.name
-    const selectedOptionsFormatted = selectedOptions.map(e => e?.label)
-
+    const optionId = parseInt(e.target.value)
+    const selectedOptionsFormatted = selectedOptions.map(e => e?.value)
     const selectedOptionSet = new Set(selectedOptionsFormatted);
 
     if (isChecked) {
-      selectedOptionSet.add(optionName);
+      selectedOptionSet.add(optionId);
     } else {
-      selectedOptionSet.delete(optionName);
+      selectedOptionSet.delete(optionId);
     }
 
     let newSelectedOptions = Array.from(selectedOptionSet);
-
-    newSelectedOptions = newSelectedOptions.map(selected => {
-      const found = options.find(e => e?.label === selected)
+    newSelectedOptions = newSelectedOptions.map( idSelected => {
+      const found = options.find(e => e?.value === idSelected)
       return found
     })
     setSelectedOptions(newSelectedOptions);

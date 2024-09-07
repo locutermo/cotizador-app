@@ -1,6 +1,5 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
 import { getDestinations, addDestination, removeDestination, editDestination } from './thunks'
-import { formatDestinations } from '../../util/util'
 
 
 const initialState = {

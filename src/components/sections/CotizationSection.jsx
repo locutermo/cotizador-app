@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import QuoteForm from "../commons/QuoteForm";
 import TablePrice from "../commons/TablePrice";
-import { AEROLINES, HOTELS } from "../../util/constants";
 import { useSelector, useDispatch } from 'react-redux'
 import {
     clean,
