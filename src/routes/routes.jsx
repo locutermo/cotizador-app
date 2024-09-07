@@ -9,6 +9,7 @@ import Destination from "../pages/Destination";
 import Aerolines from "../pages/Aeroline";
 import Hotels from "../pages/Hotel";
 import ReservationDetail from "../pages/ReservationDetail";
+import ReservationEdit from "../pages/ReservationEdit";
 
 export const routes = [
     {
@@ -19,7 +20,8 @@ export const routes = [
             { index: true, element: <Home /> },
             { path: 'cotizations', element: <Cotization/>},
             { path: 'reservations', element: <Reservation/>},
-            { path: 'reservations/:id/detail', element: <ReservationDetail/>},
+            { path: 'reservations/:reservationId/detail', element: <ReservationDetail/>},
+            { path: 'reservations/:reservationId/edit', element: <ReservationEdit/>},
             { path: 'destinations', element: <Destination/>},
             { path: 'hotels', element: <Hotels/>},
             { path: 'aerolines', element: <Aerolines/>},

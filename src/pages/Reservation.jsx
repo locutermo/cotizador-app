@@ -19,7 +19,7 @@ export default function Reservation() {
       type: 'datetime',
     },
     {
-      attribute: 'customer',
+      attribute: 'customerName',
       title: 'Cliente',
       type: 'text',
     },
@@ -77,7 +77,7 @@ export default function Reservation() {
 
 
           </button>),
-          callback: e => { alert("Editar") }
+          callback: (e) => { navigate(`/reservations/${e.id}/edit`) }
         },
         {
           Component: (props) => (
@@ -125,7 +125,7 @@ export default function Reservation() {
   return (
     <>
       <Breadcrumb pageName="Reservas" homeName='Inicio' />
-      <Table data={reservations} headers={headers} />
+      <Table data={reservations.map(e => ({...e.cotizationDetail,id:e.id}))} headers={headers} />
     </>
   )
 }

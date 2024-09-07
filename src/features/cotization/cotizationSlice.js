@@ -30,7 +30,8 @@ export const cotizationSlice = createSlice({
         kidFee: 100,
         traslado: TRASLADO_PRICE,
         islaSaona: ISLA_SAONA,
-        santoDomingo: SANTO_DOMINGO
+        santoDomingo: SANTO_DOMINGO,
+        customer:''
       }
       state.aerolinePrices = []
       state.hotelPrices = []

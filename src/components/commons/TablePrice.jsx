@@ -12,13 +12,13 @@ export default function TablePrice({ options, type, detail, onUpdateOptions }) {
                 <th>Nombre</th>
                 <th>Total</th>
                 <th>P. x adulto</th>
-                <th>P. x niño</th>
+                {kids>0 && (<th>P. x niño</th>)}
                 {adults > 1 && (<th>P. x {adults} adultos</th>)}
                 {kids > 1 && (<th>P. x {kids} niños</th>)}
             </tr>
         </thead>
         <tbody className="[&_td]:text-sm">
-            {options.length > 0 ? options.map((option, index) => (
+            {options?.length > 0 ? options.map((option, index) => (
                 <TablePriceRow key={index} option={option} type={type} detail={detail} onUpdateOptions={onUpdateOptions} />
 
             )) : (<tr>
@@ -49,12 +49,11 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
     }, [option])
 
     useEffect(() => {
-
+        console.log({option})
         onUpdateOptions({
             ...option,
-            price,
-            priceByAdults: type === "aeroline" ? calAdultPriceToAeroline(price) : calAdultPriceToHotel(price),
-            priceByKids: type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price),
+            priceByAdults: type === "aeroline" ? calAdultPriceToAeroline(option.price) : calAdultPriceToHotel(option.price),
+            priceByKids: type === "aeroline" ? calKidsPriceToAeroline(option.price) : calKidsPriceToHotel(option.price),
         })
     }, [detail])
 
@@ -81,8 +80,8 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
             />
         </td>
         <td className="w-2/12">{type === "aeroline" ? calAdultPriceToAeroline(price) : calAdultPriceToHotel(price)}</td>
-        <td className="w-2/12">{type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price)}</td>
+        {kids>0 && (<td className="w-2/12">{type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price)}</td>)}
         {adults > 1 && (<td className="w-1/12">{type === "aeroline" ? (price > 0 && adults * calAdultPriceToAeroline(price)) : (price && adults * calAdultPriceToHotel(price))}</td>)}
-        {kids > 1 && (<td className="w-1/12">{type === "aeroline" ? (price > 0 && kids * calKidsPriceToAeroline(price)) : (price > 0 && kids * calKidsPriceToHotel(price))}</td>)}
+        {kids > 1  && (<td className="w-1/12">{type === "aeroline" ? (price > 0 && kids * calKidsPriceToAeroline(price)) : (price > 0 && kids * calKidsPriceToHotel(price))}</td>)}
     </tr>
 }
