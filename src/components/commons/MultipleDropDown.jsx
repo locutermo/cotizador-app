@@ -13,7 +13,6 @@ export default function MultiSelectDropdown({
   const optionsListRef = useRef();
 
   useEffect(() => {
-    console.log("Renderizando multipledropdown")
     if (selectedOptions.length === 0) {
       // handleSelectAllClick()
       

@@ -3,6 +3,7 @@ import {
   getReservations,
   createReservationWithAerolinesAndHotels,
   editReservation,
+  removeReservation
 } from "./thunks";
 import { formatReservationWithDestinations } from "../../util/util";
 
@@ -29,7 +30,6 @@ export const reservationSlice = createSlice({
       const newReservations = action.payload.map((e) =>
         formatReservationWithDestinations(e)
       );
-      console.log({ newReservations });
       state.reservations = newReservations;
       state.status = "successful";
     });
@@ -39,14 +39,17 @@ export const reservationSlice = createSlice({
       state.error = action.error;
     });
 
+    builder.addCase(removeReservation.fulfilled, (state, action) => {
+      state.status = "successful";
+      state.reservations = state.reservations.filter(e => e.id !== action.payload)
+    });
+
     builder.addCase(editReservation.fulfilled, (state, action) => {
       const payload = action.payload;
       const { cotizationDetail, hotelPrices, aerolinePrices } = payload;
       //Actualizacion de detalles de la reservation
-      console.log({ payload });
       state.reservations = state.reservations.map((e) => {
         if (e.id === cotizationDetail.id) {
-          console.log("SI entro");
 
           return formatReservationWithDestinations({
             ...cotizationDetail,
@@ -59,10 +62,7 @@ export const reservationSlice = createSlice({
               ...hotelPrices.toUpdate,
             ],
           });
-        } else {
-          console.log("No entro");
-        }
-
+        } 
         return e;
       });
     });
@@ -74,7 +74,6 @@ export const reservationSlice = createSlice({
           action.payload
         );
         state.reservations = [...state.reservations, reservationFormatted];
-        console.log(reservationFormatted);
       }
     );
 

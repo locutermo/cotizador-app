@@ -41,7 +41,6 @@ export const destinationSlice = createSlice({
 
     builder.addCase(editDestination.fulfilled, (state, action) => {
       const payload = action.payload
-      console.log("Payload: ", payload)
       state.destinations = state.destinations.map(e => e.id === payload.id ? payload : e)
     })
 

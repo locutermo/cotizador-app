@@ -21,6 +21,12 @@ export const updateReservation = async (
     `);
 };
 
+export const deleteReservation = async (
+  id: string
+) => {
+  return await supabase.from("reservations").delete().eq("id", id);
+};
+
 export const assignAerolineToReservation = async (
   aerolines: AerolineReservations[]
 ) => {

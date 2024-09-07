@@ -49,7 +49,6 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
     }, [option])
 
     useEffect(() => {
-        console.log({option})
         onUpdateOptions({
             ...option,
             priceByAdults: type === "aeroline" ? calAdultPriceToAeroline(option.price) : calAdultPriceToHotel(option.price),

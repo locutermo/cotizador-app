@@ -22,14 +22,14 @@ const renderElementByType = (element, header) => {
 
     case 'datetime': return (
       <p className="font-medium text-black dark:text-white">
-        {moment(element[header['attribute']]).calendar()}
+        {moment(element[header['attribute']]).format('lll')}
       </p>
     )
 
     case 'callbacks': return (
       <div className="flex items-center space-x-3.5 justify-center">
         {header['callbacks'].map(({ icon, Component, callback }, index) => (
-          <Component onClick={() => { callback(element) }} />
+          <Component key={index} onClick={() => { callback(element) }} />
         ))}
       </div>
     );
@@ -56,7 +56,7 @@ const Table = ({ data, headers }) => {
             {data?.map((element, key) => (
               <tr key={key}>
                 {headers.map(header => (
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-center">
+                  <td key={Math.random()} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-center">
                     {renderElementByType(element, header)}
                   </td>
                 ))}

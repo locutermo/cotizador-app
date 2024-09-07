@@ -109,7 +109,6 @@ export const formatReservationWithDestinations = (data: ReservationTable): Cotiz
     ...element
 
   } = data
-  console.log({reservations_aerolines,reservations_hotels})
   return ({
     id,
     cotizationDetail: {

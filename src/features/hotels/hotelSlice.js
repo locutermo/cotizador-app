@@ -22,7 +22,6 @@ export const hotelSlice = createSlice({
     })
 
     builder.addCase(getHotels.fulfilled, (state, action) => {
-      console.log({hotels:action.payload})
       state.hotels = action.payload
       state.status = 'successful'
     })

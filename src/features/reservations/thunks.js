@@ -10,6 +10,7 @@ import {
   updateHotelByReservation,
   deleteAerolineByReservation,
   deleteHotelByReservation,
+  deleteReservation,
 } from "../../services/reservations";
 import {
   formatAerolineReservationToDatabase,
@@ -22,8 +23,19 @@ export const getReservations = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const res = await fetchReservations();
-      console.log({ res });
       return res.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue({ error: err.message });
+    }
+  }
+);
+
+export const removeReservation = createAsyncThunk(
+  "reservations/deleteReservation",
+  async (id, thunkAPI) => {
+    try {
+      const res = await deleteReservation(id);
+      return id;
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message });
     }
@@ -33,18 +45,11 @@ export const getReservations = createAsyncThunk(
 export const editReservation = createAsyncThunk(
   "reservations/editReservation",
   async ({ id, cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
-    console.log({ id, cotizationDetail, aerolinePrices, hotelPrices });
-
     try {
       const res = await updateReservation(
         id,
         formatCotizationToDatabase(cotizationDetail)
       );
-      console.log("reservations/editReservation", {
-        cotizationDetail,
-        aerolinePrices,
-        hotelPrices,
-      });
 
       /**
        * Creacion de cotizaciones y vuelos
@@ -81,13 +86,12 @@ export const editReservation = createAsyncThunk(
        * Eliminacion de cotizaciones de vuelos y hoteles
        */
 
-      // Cuando tengo 2 hoteles registrados y uno de ellos le coloco 0, no está eliminando
-      const aerolinesDeletedResponses = await Promise.all(
+      Promise.all(
         aerolinePrices.toDelete.map(({ table_id }) =>
           deleteAerolineByReservation(table_id)
         )
       );
-      const hotelsDeletedResponses = await Promise.all(
+      Promise.all(
         hotelPrices.toDelete.map(({ table_id }) =>
           deleteHotelByReservation(table_id)
         )
@@ -116,15 +120,6 @@ export const editReservation = createAsyncThunk(
         )
       );
 
-      console.log({
-        res,
-        aerolinesAddedResponses,
-        aerolinesUpdatedResponses,
-        aerolinesDeletedResponses,
-        hotelsAddedResponses,
-        hotelUpdateResponses,
-        hotelsDeletedResponses,
-      });
       return {
         cotizationDetail: res.data[0],
         hotelPrices: {
@@ -148,8 +143,6 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
   "reservations/createReservationWithAerolinesAndHotels",
   async ({ cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
     try {
-      console.log("reservations/createReservationWithAerolinesAndHotels");
-
       const cotizationDetailFormattedToDatabase =
         formatCotizationToDatabase(cotizationDetail);
       const responseReservation = await createReservation({
@@ -161,37 +154,30 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
         (e) => e.price > 0
       );
       const hotelsReservationFiltered = hotelPrices.filter((e) => e.price > 0);
-      console.log({aerolinesReservationFiltered});
-      
+
       const aerolinesReservationFormatted = aerolinesReservationFiltered.map(
         (element) => {
-          const {id,...restFormatted} =  formatAerolineReservationToDatabase({
+          const { id, ...restFormatted } = formatAerolineReservationToDatabase({
             ...element,
             reservations_id: reservationCreated.id,
             aerolines_id: element.id,
           });
 
-          return restFormatted
-
+          return restFormatted;
         }
       );
 
       const hotelsReservationFormatted = hotelsReservationFiltered.map(
         (element) => {
-          const {id,...restFormatted} = formatHotelReservationToDatabase({
+          const { id, ...restFormatted } = formatHotelReservationToDatabase({
             ...element,
             reservations_id: reservationCreated.id,
             hotels_id: element.id,
           });
 
-          return restFormatted
-
+          return restFormatted;
         }
       );
-
-      console.log({hotelsReservationFormatted});
-
-      console.log({ cotizationDetail, aerolinePrices, hotelPrices });
 
       const responseAerolinesReservations = await assignAerolineToReservation(
         aerolinesReservationFormatted
@@ -201,11 +187,7 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
         hotelsReservationFormatted
       );
       const hotelsReservationCreated = responseHotelsReservations.data;
-      console.log({
-        reservationCreated,
-        aerolinesReservationCreated,
-        hotelsReservationCreated,
-      });
+
       return {
         ...reservationCreated,
         reservations_aerolines: aerolinesReservationCreated,
