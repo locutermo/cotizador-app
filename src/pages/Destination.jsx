@@ -2,35 +2,115 @@ import Breadcrumb from "../components/commons/Breadcrumbs/Breadcrumb";
 import Form from "../components/commons/Forms/Form";
 import Table from "../components/commons/Table/Table";
 import { useSelector, useDispatch } from "react-redux";
-import { addDestination, editDestination, removeDestination } from "../features/destinations/thunks";
+import {
+    addDestination,
+    editDestination,
+    removeDestination,
+} from "../features/destinations/thunks";
 import { destinationsFormattedSelector } from "../features/destinations/destinationSlice";
 import { useState } from "react";
+import Modal from "../components/commons/Modal/Modal";
+import { useModal } from "../hooks/useModal";
+import DragAsign from "../components/commons/DragAsign/DragAsign";
+import { TABLE_NAMES } from "../util/constants";
+import { inputs } from '../util/configurations/destination'
+import { aerolineToAssign } from "../features/aerolines/aerolineSlice";
+import { hotelToAssign } from "../features/hotels/hotelSlice";
 export default function Destinations() {
-    const dispatch = useDispatch()
-    const [selected, setSelected] = useState()
-    const destinations = useSelector(destinationsFormattedSelector)
-
+    const dispatch = useDispatch();
+    const [isOpenAeroline, toogleAeroline] = useModal();
+    const [isOpenHotel, toogleHotel] = useModal();
+    const [selected, setSelected] = useState();
+    const destinations = useSelector(destinationsFormattedSelector);
+    const aerolinesToAssign = useSelector(aerolineToAssign)
+    const hotelsToAssign = useSelector(hotelToAssign)
     const headers = [
         {
-            attribute: 'name',
-            title: 'Nombre',
-            type: 'text',
+            attribute: "name",
+            title: "Nombre",
+            type: "text",
         },
         {
-            attribute: 'country',
-            type: 'text',
-            title: 'País'
+            attribute: "country",
+            type: "text",
+            title: "País",
         },
         {
-            title: 'Acciones',
-            type: 'callbacks',
+            title: "Acciones",
+            type: "callbacks",
             callbacks: [
                 {
-                    Component: (props) => (<button {...props}> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                    </svg>
-                    </button>),
-                    callback: e => { console.log({ e }); setSelected(e) }
+                    Component: (props) => (
+                        <button {...props}>
+                            {" "}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
+                                />
+                            </svg>
+                        </button>
+                    ),
+                    callback: (e) => {
+                        toogleHotel();
+                    },
+                },
+                {
+                    Component: (props) => (
+                        <button {...props}>
+                            {" "}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                                />
+                            </svg>
+                        </button>
+                    ),
+                    callback: (e) => {
+                        toogleAeroline()
+                    },
+                },
+                {
+                    Component: (props) => (
+                        <button {...props}>
+                            {" "}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="size-5"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                />
+                            </svg>
+                        </button>
+                    ),
+                    callback: (e) => {
+                        console.log({ e });
+                        setSelected(e);
+                    },
                 },
                 {
                     Component: (props) => (
@@ -64,54 +144,55 @@ export default function Destinations() {
                     ),
                     callback: (e) => {
                         if (e.reservations > 0) {
-                            alert("No se puede eliminar, ya tiene cotizaciones")
+                            alert("No se puede eliminar, ya tiene cotizaciones");
                         } else {
-                            dispatch(removeDestination(e.id))
+                            dispatch(removeDestination(e.id));
                         }
-                    }
-
-                }
-            ]
-        }
-    ]
-
-    const inputs = [
-        {
-            title: 'Nombre',
-            attribute: 'name',
-            type: 'text'
+                    },
+                },
+            ],
         },
-        {
-            title: 'País',
-            attribute: 'country',
-            type: 'text'
-        }
-    ]
-
-
+    ];
     return (
         <>
-            <Breadcrumb current={{ name: 'Destinos' }} previous={{ name: "Inicio", url: '' }} />
+            <Breadcrumb
+                current={{ name: "Destinos" }}
+                previous={{ name: "Inicio", url: "" }}
+            />
             <div className="flex gap-4">
                 <div className="w-3/12 grid grid-cols-1 gap-4">
-                    <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addDestination(data)) }} />
+                    <Form
+                        title="Creación"
+                        inputs={inputs}
+                        callback={(data) => {
+                            dispatch(addDestination(data));
+                        }}
+                    />
                     {selected && (
                         <Form
                             title="Edición"
                             initialValues={selected}
-                            inputs={[{ title: "ID", disabled: true, attribute: 'id', type: 'text' }, ...inputs]}
+                            inputs={[
+                                { title: "ID", disabled: true, attribute: "id", type: "text" },
+                                ...inputs,
+                            ]}
                             callback={(data) => {
                                 dispatch(editDestination(data));
-                                setSelected(null)
+                                setSelected(null);
                             }}
                         />
                     )}
                 </div>
                 <div className="w-9/12">
+                    <Modal isOpen={isOpenAeroline} toogle={toogleAeroline}>
+                        <DragAsign type={TABLE_NAMES.TABLE_AEROLINE} items={aerolinesToAssign}/>
+                    </Modal>
+                    <Modal isOpen={isOpenHotel} toogle={toogleHotel}>
+                        <DragAsign type={TABLE_NAMES.TABLE_HOTEL} items={hotelsToAssign}/>
+                    </Modal>
                     <Table data={destinations} headers={headers} />
                 </div>
             </div>
-
         </>
-    )
+    );
 }

@@ -1,5 +1,6 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
 import { getAerolines, addAeroline, removeAeroline, editAeroline } from './thunks'
+import { COLUMN_NAMES } from '../../util/constants'
 
 
 const initialState = {
@@ -53,5 +54,11 @@ export const aerolineOptionsSelector = createDraftSafeSelector(
   aerolinesFormattedSelector,
   (state) => state.map(element => ({label:element.name,value:element.id})),
 )
+
+export const aerolineToAssign = createDraftSafeSelector(
+  aerolinesFormattedSelector,
+  (state) => state.map(element => ({name:element.name,id:element.id,column:COLUMN_NAMES.VALUES_TO_ASSIGN})),
+)
+
 
 export default aerolineSlice.reducer

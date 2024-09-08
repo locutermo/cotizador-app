@@ -1,6 +1,7 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit'
 import { getHotels, addHotel, removeHotel, editHotel } from './thunks'
 import { formatHotels } from '../../util/util'
+import { COLUMN_NAMES } from '../../util/constants'
 
 
 const initialState = {
@@ -54,5 +55,11 @@ export const hotelOptionsSelector = createDraftSafeSelector(
   hotelsFormattedSelector,
   (state) => state.map(element => ({label:`${element.name} - ${element.stars}*`,value:element.id})),
 )
+
+export const hotelToAssign = createDraftSafeSelector(
+  hotelsFormattedSelector,
+  (state) => state.map(element => ({name:element.name,id:element.id,column:COLUMN_NAMES.VALUES_TO_ASSIGN})),
+)
+
 
 export default hotelSlice.reducer

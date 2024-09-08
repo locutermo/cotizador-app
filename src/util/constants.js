@@ -20,3 +20,15 @@ export const HOTELS = [
     { "name": "Grand Bávaro Princess 5*" }
 ]
 
+
+
+export const COLUMN_NAMES = {
+    VALUES_TO_ASSIGN: 'Por asignar',
+    VALUES_ASSIGNED: 'Asignados',
+}
+
+export const TABLE_NAMES = {
+    TABLE_AEROLINE :"AEROLINE",
+    TABLE_HOTEL: "HOTEL"
+
+}
