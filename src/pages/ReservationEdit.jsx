@@ -53,7 +53,6 @@ export default function ReservationEdit() {
 
   useEffect(() => {
     if (selector) {
-      console.log({ selector });
       setDetail(selector.cotizationDetail);
       setAerolines(selector.aerolinePrices);
       setHotels(selector.hotelPrices);

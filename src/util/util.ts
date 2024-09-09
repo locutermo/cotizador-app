@@ -141,8 +141,6 @@ export const getNewPrices = (
   options: Option[],
   prices: AerolinePriceObject[] | HotelPriceObject[]
 ): AerolinePriceObject[] | HotelPriceObject[] => {
-
-
   const newArrayWithId = newArray.map((e) => e.value);
 
   const setSelected = new Set(newArrayWithId);
@@ -179,4 +177,55 @@ export const getNewPrices = (
   }
 
   return newPrices;
+};
+
+export const formatPlaceWithAerolineAndHotelToObject = (place:DestinationWithAerolinesAndHotelsTable):DestinationWithAerolinesAndHotelsObject => {
+  const {
+    id,
+    name,
+    country,
+    places_hotels,
+    places_aerolines
+  } = place
+
+  return {
+    id,
+    country,
+    name,
+    aerolines: places_aerolines.map( e => formatPlaceAerolineToObject(e)),
+    hotels: places_hotels.map(e => formatPlaceHotelToObject(e))
+  }
+}
+
+export const formatPlaceAerolineToObject = (
+  place_aeroline: PlaceAerolineTable
+): PlaceAerolineObject => {
+  const { id, aerolines_id, aerolines, places_id } = place_aeroline;
+
+  let newObject: PlaceAerolineObject = {
+    id,
+    placeId: places_id,
+    tableId: aerolines_id,
+  };
+
+  if (aerolines) newObject["name"] = aerolines.name;
+
+  return newObject;
+};
+
+export const formatPlaceHotelToObject = (
+  place_hotel: PlaceHotelTable
+): PlaceHotelObject => {
+  const { id, hotels_id, hotels, places_id, stars } = place_hotel;
+
+  let newObject: PlaceHotelObject = {
+    id,
+    placeId: places_id,
+    tableId: hotels_id,
+  };
+
+  if (hotels) newObject["name"] = hotels.name;
+  if (stars) newObject["stars"] = stars;
+
+  return newObject;
 };

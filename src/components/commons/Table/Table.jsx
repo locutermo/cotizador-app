@@ -8,7 +8,7 @@ const renderElementByType = (element, header) => {
   switch (header['type']) {
     case 'text': return (
       <h5 className="font-medium text-black dark:text-white">
-        {element[header['attribute']]}
+        {element ? element[header['attribute']] : ""}
       </h5>
     );
     case 'custom': return (

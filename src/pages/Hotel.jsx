@@ -47,7 +47,7 @@ export default function Hotels() {
             callbacks: [
                 {
                     Component: (props) => (<button {...props}>Editar</button>),
-                    callback: e => { console.log({ e }); setSelected(e) }
+                    callback: e => { setSelected(e) }
                 },
                 {
                     Component: (props) => (
@@ -83,7 +83,6 @@ export default function Hotels() {
                         if (e.reservations > 0) {
                             alert("No se puede eliminar porque tiene cotizaciones realizadas para este hotel")
                         } else {
-                            console.log("Eliminando")
                             dispatch(removeHotel(e.id))
                         }
 

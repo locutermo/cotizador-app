@@ -62,7 +62,6 @@ export const addManyClients = async (clients: Client[]) => {
 }
 
 export const updateClient = async (id: number, client: Client) => {
-    console.log("El cliente essss",id,client)
     return await supabase
         .from('clients')
         .update(client)

@@ -121,7 +121,6 @@ const Column = ({ children, className, title }) => {
     }),
     // Override monitor.canDrop() function
     canDrop: (item) => {
-      console.log({ item })
       const { VALUES_TO_ASSIGN, VALUES_ASSIGNED } = COLUMN_NAMES;
       const { currentColumnName } = item;
       return (
@@ -147,21 +146,24 @@ const Column = ({ children, className, title }) => {
   return (
     <div
       ref={drop}
-      className={`p-4 gap-2 flex flex-col text-center ${className}`}
+      className={`p-4 flex flex-col  text-center ${className}`}
       style={{ backgroundColor: getBackgroundColor() }}
     >
-      <p>{title}</p>
-      {children}
+      <p className="w-auto my-2">{title}</p>
+      <div className="max-h-64 overflow-y-scroll gap-2 flex flex-col">
+        {children}
+      </div>
+
     </div>
   );
 };
 
-export default function DragAsign({items}) {
+export default function DragAsign({ items, save }) {
   const [_items, setItems] = useState(tasks);
 
-  useEffect(()=> {
+  useEffect(() => {
     setItems(items)
-  },[])
+  }, [items])
 
   const moveCardHandler = (dragIndex, hoverIndex) => {
     const dragItem = _items[dragIndex];
@@ -186,7 +188,7 @@ export default function DragAsign({items}) {
       .filter((item) => item.column === columnName)
       .map((item, index) => (
         <MovableItem
-          key={item.id}
+          key={item.tableId}
           name={item.name}
           currentColumnName={item.column}
           setItems={setItems}
@@ -200,8 +202,8 @@ export default function DragAsign({items}) {
 
   return (
     <>
-      <div className="flex min-w-132.5 gap-6">
-        <DndProvider backend={HTML5Backend}>
+      <div className="flex w-full lg:min-w-171.5 gap-6">
+        <DndProvider context={window} backend={HTML5Backend}>
           <Column title={VALUES_TO_ASSIGN} className="bg-blue-200 w-1/2">
             {returnItemsForColumn(VALUES_TO_ASSIGN)}
           </Column>
@@ -210,7 +212,15 @@ export default function DragAsign({items}) {
           </Column>
         </DndProvider>
       </div>
-      {JSON.stringify(_items)}
+      <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+        <button
+          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          onClick={e => { save(_items) }}
+        >
+          Guardar
+        </button>
+      </div>
     </>
   );
 };
