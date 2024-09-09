@@ -1,8 +1,10 @@
 import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 import Select from "../primitive/Select";
+import { useState } from "react";
 export default function QuoteForm({
   clientOptions = [],
+  destinations = [],
   save,
   optionsSelected = {},
   updateOnAttribute,
@@ -12,6 +14,8 @@ export default function QuoteForm({
   onChangeAerolines,
   onChangeHotels,
 }) {
+
+
   const onChangeInput = (e, attribute) => {
     const value = e.target.value;
     updateOnAttribute({ attribute, value });
@@ -33,8 +37,10 @@ export default function QuoteForm({
   };
 
   return (
-    <div className="grid grid-cols-4 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-      <div className="col-span-2">
+    <div className="grid grid-cols-6 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+      <div className="col-span-6">
+      </div>
+      <div className="col-span-3">
         <Select
           options={[
             { label: "Selecciona el cliente", value: "" },
@@ -47,7 +53,20 @@ export default function QuoteForm({
           value={detail?.customer}
         />
       </div>
-      <div className="col-span-2">
+      <div className="col-span-3">
+        <Select
+          options={[
+            { label: "Selecciona el destino", value: "" },
+            ...destinations.map(e => ({ value: e.id, label: e.name })),
+          ]}
+          title="Destino de viaje"
+          onChange={(e) => {
+            onChangeInput(e, "placeId");
+          }}
+          value={detail?.placeId}
+        />
+      </div>
+      <div className="col-span-3">
         <Input
           title="Fecha de Salida"
           type="date"
@@ -164,29 +183,30 @@ export default function QuoteForm({
           onChangeInputNumber(e, "islaSaona");
         }}
       />
-      <Input
-        title="Santo Domingo"
-        onBlur={(e) => {
-          onFocusOut(e, "santoDomingo");
-        }}
-        onFocus={(e) => {
-          onFocus(e, "santoDomingo");
-        }}
-        type="number"
-        min={0}
-        value={detail.santoDomingo}
-        onChange={(e) => {
-          onChangeInputNumber(e, "santoDomingo");
-        }}
-      />
-
-      <div className="col-span-4  flex gap-4">
+      <div className="col-span-2">
+        <Input
+          title="Santo Domingo"
+          onBlur={(e) => {
+            onFocusOut(e, "santoDomingo");
+          }}
+          onFocus={(e) => {
+            onFocus(e, "santoDomingo");
+          }}
+          type="number"
+          min={0}
+          value={detail.santoDomingo}
+          onChange={(e) => {
+            onChangeInputNumber(e, "santoDomingo");
+          }}
+        />
+      </div>
+      <div className="col-span-6  flex gap-4">
         <div className="w-1/2">
           <MultiSelectDropdown
             prompt="Aerolineas"
             formFieldName="Aerolineas"
-            options={aerolines}
-            optionsSelected={optionsSelected?.aerolines||[]}
+            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.aerolines.map(e => ({value:e.tableId,label:e.name}))}
+            optionsSelected={optionsSelected?.aerolines || []}
             onChange={(e) => {
               onChangeAerolines(e);
             }}
@@ -196,15 +216,15 @@ export default function QuoteForm({
           <MultiSelectDropdown
             prompt="Hoteles"
             formFieldName="Hoteles"
-            options={hotels}
-            optionsSelected={optionsSelected?.hotels||[]}
+            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.hotels.map(e => ({value:e.tableId,label:e.name}))}
+            optionsSelected={optionsSelected?.hotels || []}
             onChange={(e) => {
               onChangeHotels(e);
             }}
           />
         </div>
       </div>
-      <div className="col-span-4 text-center p-2 dark:bg-boxdark dark:text-white hover:animate-pulse">
+      <div className="col-span-6 text-center p-2 dark:bg-boxdark dark:text-white hover:animate-pulse">
         <button
           className="shadow-default dark:bg-blue-900 bg-blue-700 text-white w-full rounded-lg p-2"
           onClick={save}

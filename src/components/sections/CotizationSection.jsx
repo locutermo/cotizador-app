@@ -20,6 +20,7 @@ import { getNewPrices } from "../../util/util";
 
 export default function CotizationSection() {
     const { cotizationDetail, aerolinePrices, hotelPrices } = useSelector(state => state.cotization)
+    const {destinations} = useSelector(state => state.destination)
     const clientOptions = useSelector(clientOptionsSelector)
     const hotelOptions = useSelector(hotelOptionsSelector)
     const aerolineOptions = useSelector(aerolineOptionsSelector)
@@ -33,11 +34,13 @@ export default function CotizationSection() {
 
     return (
         <div className="flex flex-col gap-4 ">
+            {JSON.stringify({aerolinePrices})}
             <QuoteForm
                 save={e => {
                     dispatch(createReservationWithAerolinesAndHotels({ cotizationDetail, aerolinePrices, hotelPrices }));
                     dispatch(clean())
                 }}
+                destinations={destinations}
                 detail={cotizationDetail}
                 clientOptions={clientOptions}
                 aerolines={aerolineOptions}

@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 
 export default function MultiSelectDropdown({
   formFieldName,
-  optionsSelected=[],
-  options,
+  optionsSelected = [],
+  options = [],
   onChange,
   prompt = "Selecciona una o más opciones",
 }) {
@@ -14,18 +14,25 @@ export default function MultiSelectDropdown({
   const optionsListRef = useRef();
 
   useEffect(() => {
+    // handleClearSelectionClick();
+    console.log("Renderizando cuando cambia option")
+    onChange([])
+  }, [])
+
+  useEffect(() => {
     console.log("Renderizando MultipleDropDown")
+
     if (selectedOptions.length === 0 && optionsSelected.length > 0) {
       const optionsInputs = optionsListRef.current.querySelectorAll("input");
       optionsInputs.forEach((input) => {
-        if(optionsSelected.find(e => e.id === parseInt(input.value)))
+        if (optionsSelected.find(e => e.id === parseInt(input.value)))
           input.checked = true;
       });
-  
-      const newOptions = [...optionsSelected.map(e => ({value:e.id,label:e.name}))]
+
+      const newOptions = [...optionsSelected.map(e => ({ value: e.id, label: e.name }))]
       setSelectedOptions(newOptions);
       onChange(newOptions);
-      
+
     }
 
 
@@ -48,7 +55,7 @@ export default function MultiSelectDropdown({
     }
 
     let newSelectedOptions = Array.from(selectedOptionSet);
-    newSelectedOptions = newSelectedOptions.map( idSelected => {
+    newSelectedOptions = newSelectedOptions.map(idSelected => {
       const found = options.find(e => e?.value === idSelected)
       return found
     })
@@ -73,7 +80,7 @@ export default function MultiSelectDropdown({
   const isClearSelectionEnabled = selectedOptions.length > 0;
 
   const handleClearSelectionClick = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const optionsInputs = optionsListRef.current.querySelectorAll("input");
     optionsInputs.forEach((input) => {
@@ -84,14 +91,19 @@ export default function MultiSelectDropdown({
     onChange([]);
   };
 
-  return (
+  return (<>
+    {JSON.stringify({
+      optionsSelected,
+      options,
+      onChange
+    })}
     <label className="relative">
       <input type="checkbox" className="hidden peer" />
 
       <div className="w-full cursor-pointer after:absolute after:right-3  after:content-['▼'] after:text-xs after:ml-1 after:inline-flex after:items-center peer-checked:after:-rotate-180 after:transition-transform inline-flex border rounded px-5 py-2">
         {prompt}
         {isJsEnabled && selectedOptions.length > 0 && (
-          <span className="ml-1 text-blue-500">{`(${selectedOptions.length} selected)`}</span>
+          <span className="ml-1 text-blue-500">{`(${selectedOptions.length} seleccionados)`}</span>
         )}
       </div>
 
@@ -141,5 +153,6 @@ export default function MultiSelectDropdown({
         </ul>
       </div>
     </label>
+  </>
   );
 }
