@@ -145,10 +145,8 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
     try {
       const cotizationDetailFormattedToDatabase =
         formatCotizationToDatabase(cotizationDetail);
-      const responseReservation = await createReservation({
-        ...cotizationDetailFormattedToDatabase,
-        places_id: 1,
-      });
+      const responseReservation = await createReservation(cotizationDetailFormattedToDatabase
+      );
       const reservationCreated = responseReservation.data[0];
       const aerolinesReservationFiltered = aerolinePrices.filter(
         (e) => e.price > 0

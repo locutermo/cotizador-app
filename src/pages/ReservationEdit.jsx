@@ -16,10 +16,14 @@ export default function ReservationEdit() {
   const clientOptions = useSelector(clientOptionsSelector);
   const hotelOptions = useSelector(hotelOptionsSelector);
   const aerolineOptions = useSelector(aerolineOptionsSelector);
+  const {destinations} = useSelector(state => state.destination)
+
   const selector = useSelector(reservationFoundSelector(reservationId));
   const [detail, setDetail] = useState({});
   const [aerolines, setAerolines] = useState([]);
   const [hotels, setHotels] = useState([]);
+  const [aerolinesSelected, setAerolinesSelected] = useState([]);
+  const [hotelsSelected, setHotelsSelected] = useState([]);
 
   const { traslado, islaSaona, adults, kids, adultFee, kidFee, santoDomingo } =
     Object(selector?.cotizationDetail);
@@ -96,11 +100,15 @@ export default function ReservationEdit() {
       <div className="flex gap-4">
         <div className="flex flex-col gap-6 w-1/2">
           <QuoteForm
-            initialValues={{}}
+            setAerolinesSelected={e => { setAerolinesSelected(e) }}
+            setHotelsSelected={e => {setHotelsSelected(e) }}
+            hotelsSelected={hotelsSelected}
+            aerolinesSelected={aerolinesSelected}
+            destinations={destinations}
             detail={detail}
             optionsSelected={{
-              hotels:selector?.hotelPrices,
-              aerolines:selector?.aerolinePrices,
+              hotels: selector?.hotelPrices,
+              aerolines: selector?.aerolinePrices,
             }}
             clientOptions={clientOptions}
             aerolines={aerolineOptions}

@@ -4,39 +4,34 @@ import { useState, useEffect, useRef } from "react";
 
 export default function MultiSelectDropdown({
   formFieldName,
+  initialValues = [],
   optionsSelected = [],
   options = [],
   onChange,
   prompt = "Selecciona una o más opciones",
 }) {
   const [isJsEnabled, setIsJsEnabled] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const optionsListRef = useRef();
 
-  useEffect(() => {
-    // handleClearSelectionClick();
-    console.log("Renderizando cuando cambia option")
-    onChange([])
-  }, [])
+
 
   useEffect(() => {
-    console.log("Renderizando MultipleDropDown")
-
-    if (selectedOptions.length === 0 && optionsSelected.length > 0) {
+    if (initialValues.length > 0) {
       const optionsInputs = optionsListRef.current.querySelectorAll("input");
       optionsInputs.forEach((input) => {
-        if (optionsSelected.find(e => e.id === parseInt(input.value)))
+        if (initialValues.find(e => e.id === parseInt(input.value)))
           input.checked = true;
       });
 
-      const newOptions = [...optionsSelected.map(e => ({ value: e.id, label: e.name }))]
-      setSelectedOptions(newOptions);
+      const newOptions = [...initialValues.map(e => ({ value: e.id, label: e.name }))]
+      //setSelectedOptions(newOptions);
+      //Refactorizar
       onChange(newOptions);
 
     }
 
 
-  }, [optionsSelected])
+  }, [initialValues])
 
   useEffect(() => {
     setIsJsEnabled(true);
@@ -45,7 +40,7 @@ export default function MultiSelectDropdown({
   const handleChange = (e) => {
     const isChecked = e.target.checked;
     const optionId = parseInt(e.target.value)
-    const selectedOptionsFormatted = selectedOptions.map(e => e?.value)
+    const selectedOptionsFormatted = optionsSelected.map(e => e?.value)
     const selectedOptionSet = new Set(selectedOptionsFormatted);
 
     if (isChecked) {
@@ -58,12 +53,12 @@ export default function MultiSelectDropdown({
     newSelectedOptions = newSelectedOptions.map(idSelected => {
       const found = options.find(e => e?.value === idSelected)
       return found
-    })
-    setSelectedOptions(newSelectedOptions);
+    }).filter(e => e)
+    //setSelectedOptions(newSelectedOptions);
     onChange(newSelectedOptions);
   };
 
-  const isSelectAllEnabled = selectedOptions.length < options.length;
+  const isSelectAllEnabled = optionsSelected.length < options.length;
 
   const handleSelectAllClick = (e) => {
     e.preventDefault();
@@ -73,11 +68,11 @@ export default function MultiSelectDropdown({
       input.checked = true;
     });
 
-    setSelectedOptions([...options]);
+    //setSelectedOptions([...options]);
     onChange([...options]);
   };
 
-  const isClearSelectionEnabled = selectedOptions.length > 0;
+  const isClearSelectionEnabled = optionsSelected.length > 0;
 
   const handleClearSelectionClick = (e) => {
     // e.preventDefault();
@@ -87,23 +82,18 @@ export default function MultiSelectDropdown({
       input.checked = false;
     });
 
-    setSelectedOptions([]);
+    //setSelectedOptions([]);
     onChange([]);
   };
 
   return (<>
-    {JSON.stringify({
-      optionsSelected,
-      options,
-      onChange
-    })}
     <label className="relative">
       <input type="checkbox" className="hidden peer" />
 
       <div className="w-full cursor-pointer after:absolute after:right-3  after:content-['▼'] after:text-xs after:ml-1 after:inline-flex after:items-center peer-checked:after:-rotate-180 after:transition-transform inline-flex border rounded px-5 py-2">
         {prompt}
-        {isJsEnabled && selectedOptions.length > 0 && (
-          <span className="ml-1 text-blue-500">{`(${selectedOptions.length} seleccionados)`}</span>
+        {isJsEnabled && optionsSelected.length > 0 && (
+          <span className="ml-1 text-blue-500">{`(${optionsSelected.length} seleccionados)`}</span>
         )}
       </div>
 
@@ -139,7 +129,7 @@ export default function MultiSelectDropdown({
                 >
                   <input
                     type="checkbox"
-                    checked={selectedOptions.find(e => e === option.label)}
+                    checked={optionsSelected.length > 0 &&  optionsSelected.find(e => e === option.label)}
                     name={option.label}
                     value={option.value}
                     className="cursor-pointer dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

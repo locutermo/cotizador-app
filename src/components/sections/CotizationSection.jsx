@@ -9,7 +9,9 @@ import {
     setHotelPrices,
     updateAerolineOption,
     updateHotelOption,
-    updateOnAttributeDetail
+    updateOnAttributeDetail,
+    sethotelsSelected,
+    setAerolinesSelected
 } from '../../features/cotization/cotizationSlice'
 
 import { createReservationWithAerolinesAndHotels } from "../../features/reservations/thunks";
@@ -19,7 +21,7 @@ import { aerolineOptionsSelector } from "../../features/aerolines/aerolineSlice"
 import { getNewPrices } from "../../util/util";
 
 export default function CotizationSection() {
-    const { cotizationDetail, aerolinePrices, hotelPrices } = useSelector(state => state.cotization)
+    const { cotizationDetail, aerolinePrices, hotelPrices,hotelsSelected,aerolinesSelected } = useSelector(state => state.cotization)
     const {destinations} = useSelector(state => state.destination)
     const clientOptions = useSelector(clientOptionsSelector)
     const hotelOptions = useSelector(hotelOptionsSelector)
@@ -34,7 +36,6 @@ export default function CotizationSection() {
 
     return (
         <div className="flex flex-col gap-4 ">
-            {JSON.stringify({aerolinePrices})}
             <QuoteForm
                 save={e => {
                     dispatch(createReservationWithAerolinesAndHotels({ cotizationDetail, aerolinePrices, hotelPrices }));
@@ -43,6 +44,10 @@ export default function CotizationSection() {
                 destinations={destinations}
                 detail={cotizationDetail}
                 clientOptions={clientOptions}
+                aerolinesSelected={aerolinesSelected}
+                setAerolinesSelected={e => {dispatch(setAerolinesSelected(e))}}
+                setHotelsSelected={e => {dispatch(sethotelsSelected(e))}}
+                hotelsSelected={hotelsSelected}
                 aerolines={aerolineOptions}
                 hotels={hotelOptions}
                 updateOnAttribute={({ attribute, value }) => dispatch(updateOnAttributeDetail({ attribute, value }))}

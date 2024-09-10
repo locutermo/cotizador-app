@@ -12,7 +12,7 @@ interface CotizationDetail {
   endDate?: string;
   place?: string;
   created_at?: string;
-  places_id: number;
+  placeId: number;
   customerName?: string;
 }
 

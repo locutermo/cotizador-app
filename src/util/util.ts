@@ -25,7 +25,7 @@ export const formatCotizationToDatabase = (
     santoDomingo,
     adults,
     days,
-    places_id,
+    placeId,
     kids,
   } = cotization;
 
@@ -33,7 +33,7 @@ export const formatCotizationToDatabase = (
     adults,
     kids,
     days,
-    places_id,
+    places_id:placeId,
     start_date: startDate,
     fee_adults: adultFee || 0,
     tours: {
@@ -110,7 +110,7 @@ export const formatReservationWithDestinations = (
       adultFee: fee_adults,
       kidFee: fee_kids,
       customer: customer_id,
-      places_id,
+      placeId:places_id,
       customerName: clients?.name,
     },
     aerolinePrices: reservations_aerolines?.map(
@@ -141,7 +141,8 @@ export const getNewPrices = (
   options: Option[],
   prices: AerolinePriceObject[] | HotelPriceObject[]
 ): AerolinePriceObject[] | HotelPriceObject[] => {
-  const newArrayWithId = newArray.map((e) => e.value);
+  console.log({newArray, options, prices})
+  const newArrayWithId = newArray.filter(e => e).map((e) => e.value);
 
   const setSelected = new Set(newArrayWithId);
   const setPrevious = new Set(prices.map((e) => e.id));

@@ -9,12 +9,13 @@ export default function QuoteForm({
   optionsSelected = {},
   updateOnAttribute,
   detail,
-  hotels,
-  aerolines,
   onChangeAerolines,
   onChangeHotels,
+  aerolinesSelected,
+  setAerolinesSelected,
+  hotelsSelected,
+  setHotelsSelected,
 }) {
-
 
   const onChangeInput = (e, attribute) => {
     const value = e.target.value;
@@ -37,6 +38,7 @@ export default function QuoteForm({
   };
 
   return (
+
     <div className="grid grid-cols-6 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="col-span-6">
       </div>
@@ -62,6 +64,10 @@ export default function QuoteForm({
           title="Destino de viaje"
           onChange={(e) => {
             onChangeInput(e, "placeId");
+            setAerolinesSelected([]);
+            setHotelsSelected([]);
+            onChangeAerolines([])
+            onChangeHotels([])
           }}
           value={detail?.placeId}
         />
@@ -206,9 +212,11 @@ export default function QuoteForm({
             prompt="Aerolineas"
             formFieldName="Aerolineas"
             options={destinations.find(e => e.id == parseInt(detail?.placeId))?.aerolines.map(e => ({value:e.tableId,label:e.name}))}
-            optionsSelected={optionsSelected?.aerolines || []}
+            initialValues={optionsSelected?.aerolines||[]}
+            optionsSelected={ aerolinesSelected}
             onChange={(e) => {
               onChangeAerolines(e);
+              setAerolinesSelected(e); //
             }}
           />
         </div>
@@ -217,9 +225,11 @@ export default function QuoteForm({
             prompt="Hoteles"
             formFieldName="Hoteles"
             options={destinations.find(e => e.id == parseInt(detail?.placeId))?.hotels.map(e => ({value:e.tableId,label:e.name}))}
-            optionsSelected={optionsSelected?.hotels || []}
+            initialValues={optionsSelected?.hotels || []}
+            optionsSelected={hotelsSelected}
             onChange={(e) => {
               onChangeHotels(e);
+              setHotelsSelected(e)
             }}
           />
         </div>

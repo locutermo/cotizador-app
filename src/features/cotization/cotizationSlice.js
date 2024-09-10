@@ -14,7 +14,9 @@ const initialState = {
     santoDomingo: SANTO_DOMINGO
   },
   aerolinePrices: [],
-  hotelPrices: []
+  hotelPrices: [],
+  aerolinesSelected: [],
+  hotelsSelected:[]
 }
 
 export const cotizationSlice = createSlice({
@@ -55,7 +57,13 @@ export const cotizationSlice = createSlice({
     },
     updateHotelOption: (state, { payload }) => {
       state.hotelPrices = state.hotelPrices.map(hotelPrice => hotelPrice.name === payload.name ? payload : hotelPrice)
-    }
+    },
+    setAerolinesSelected: (state, action) => {
+      state.aerolinesSelected = action.payload
+    },
+    sethotelsSelected: (state, action) => {
+      state.hotelsSelected = action.payload
+    },
   },
   extraReducers: (builder) => {
 
@@ -70,7 +78,9 @@ export const {
   setHotelPrices,
   updateAerolineOption,
   updateHotelOption,
-  updateOnAttributeDetail
+  updateOnAttributeDetail,
+  sethotelsSelected,
+  setAerolinesSelected
 } = cotizationSlice.actions
 
 export default cotizationSlice.reducer
