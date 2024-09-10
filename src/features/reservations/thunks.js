@@ -50,7 +50,7 @@ export const editReservation = createAsyncThunk(
         id,
         formatCotizationToDatabase(cotizationDetail)
       );
-
+      console.log({res})
       /**
        * Creacion de cotizaciones y vuelos
        */

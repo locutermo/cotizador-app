@@ -10,6 +10,7 @@ import Aerolines from "../pages/Aeroline";
 import Hotels from "../pages/Hotel";
 import ReservationDetail from "../pages/ReservationDetail";
 import ReservationEdit from "../pages/ReservationEdit";
+import Tours from "../pages/Tour";
 
 export const routes = [
     {
@@ -24,6 +25,7 @@ export const routes = [
             { path: 'reservations/:reservationId/edit', element: <ReservationEdit/>},
             { path: 'destinations', element: <Destination/>},
             { path: 'hotels', element: <Hotels/>},
+            { path: 'tours', element: <Tours/>},
             { path: 'aerolines', element: <Aerolines/>},
             { path: 'customers', element: <Clients/>},
             { path: 'customers/:id/reservations', element: <ClientCotizations/>},

@@ -11,7 +11,9 @@ import {
     updateHotelOption,
     updateOnAttributeDetail,
     sethotelsSelected,
-    setAerolinesSelected
+    setAerolinesSelected,
+    updateTour,
+    cleanTours
 } from '../../features/cotization/cotizationSlice'
 
 import { createReservationWithAerolinesAndHotels } from "../../features/reservations/thunks";
@@ -51,6 +53,8 @@ export default function CotizationSection() {
                 aerolines={aerolineOptions}
                 hotels={hotelOptions}
                 updateOnAttribute={({ attribute, value }) => dispatch(updateOnAttributeDetail({ attribute, value }))}
+                updateTour={({ attribute, value }) => dispatch(updateTour({ attribute, value }))}
+                cleanTour={e => {dispatch(cleanTours())}}
                 onChangeAerolines={newArray => { dispatch(setAerolinePrices(getNewPrices(newArray, aerolineOptions, aerolinePrices))) }}
                 onChangeHotels={newArray => { dispatch(setHotelPrices(getNewPrices(newArray, hotelOptions, hotelPrices))) }}
 

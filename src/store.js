@@ -5,6 +5,7 @@ import destinationReducer from './features/destinations/destinationSlice'
 import reservationReducer from './features/reservations/reservationSlice'
 import aerolineReducer from './features/aerolines/aerolineSlice'
 import hotelReducer from './features/hotels/hotelSlice'
+import tourReducer from './features/tours/tourSlice'
 export const store = configureStore({
   reducer: {
     cotization: cotizationReducer,
@@ -12,6 +13,7 @@ export const store = configureStore({
     hotel:hotelReducer,
     aeroline:aerolineReducer,
     reservation:reservationReducer,
-    destination:destinationReducer
+    destination:destinationReducer,
+    tour:tourReducer
   },
 })

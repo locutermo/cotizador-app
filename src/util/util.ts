@@ -21,25 +21,21 @@ export const formatCotizationToDatabase = (
     customer,
     kidFee,
     traslado,
-    islaSaona,
-    santoDomingo,
     adults,
     days,
     placeId,
     kids,
+    tours
   } = cotization;
 
   return {
     adults,
     kids,
     days,
-    places_id:placeId,
+    places_id: placeId,
     start_date: startDate,
     fee_adults: adultFee || 0,
-    tours: {
-      islaSaona,
-      santoDomingo,
-    },
+    tours: tours||{},
     fee_kids: kidFee,
     relocation: traslado,
     customer_id: customer,
@@ -103,14 +99,13 @@ export const formatReservationWithDestinations = (
       days,
       place: places?.name,
       startDate: start_date,
-      islaSaona: tours.islaSaona,
-      santoDomingo: tours.santoDomingo,
+      tours,
       endDate: end_date,
       traslado: relocation,
       adultFee: fee_adults,
       kidFee: fee_kids,
       customer: customer_id,
-      placeId:places_id,
+      placeId: places_id,
       customerName: clients?.name,
     },
     aerolinePrices: reservations_aerolines?.map(
@@ -141,8 +136,8 @@ export const getNewPrices = (
   options: Option[],
   prices: AerolinePriceObject[] | HotelPriceObject[]
 ): AerolinePriceObject[] | HotelPriceObject[] => {
-  console.log({newArray, options, prices})
-  const newArrayWithId = newArray.filter(e => e).map((e) => e.value);
+  console.log({ newArray, options, prices });
+  const newArrayWithId = newArray.filter((e) => e).map((e) => e.value);
 
   const setSelected = new Set(newArrayWithId);
   const setPrevious = new Set(prices.map((e) => e.id));
@@ -180,23 +175,20 @@ export const getNewPrices = (
   return newPrices;
 };
 
-export const formatPlaceWithAerolineAndHotelToObject = (place:DestinationWithAerolinesAndHotelsTable):DestinationWithAerolinesAndHotelsObject => {
-  const {
-    id,
-    name,
-    country,
-    places_hotels,
-    places_aerolines
-  } = place
-
+export const formatPlaceWithAerolineAndHotelToObject = (
+  place: DestinationWithAerolinesAndHotelsTable
+): DestinationWithAerolinesAndHotelsObject => {
+  const { id, name, country, places_hotels, places_aerolines,tours } = place;
+  console.log({tours})
   return {
     id,
     country,
     name,
-    aerolines: places_aerolines.map( e => formatPlaceAerolineToObject(e)),
-    hotels: places_hotels.map(e => formatPlaceHotelToObject(e))
-  }
-}
+    aerolines: places_aerolines.map((e) => formatPlaceAerolineToObject(e)),
+    hotels: places_hotels.map((e) => formatPlaceHotelToObject(e)),
+    tours
+  };
+};
 
 export const formatPlaceAerolineToObject = (
   place_aeroline: PlaceAerolineTable
@@ -227,6 +219,34 @@ export const formatPlaceHotelToObject = (
 
   if (hotels) newObject["name"] = hotels.name;
   if (stars) newObject["stars"] = stars;
+
+  return newObject;
+};
+
+export const formatTourToObject = (tour: TourTable): TourObject => {
+  const { id, places_id, name, places } = tour;
+  const newObjext:TourObject = { placeId: places_id, name };
+  if(places)
+    newObjext['placeName'] = places.name
+  if(id)
+    newObjext['id'] = id
+
+  return {
+    id,
+    placeId: places_id,
+    placeName: places?.name,
+    name,
+  };
+};
+
+export const formatTourToTable = (tour: TourObject): TourTable => {
+  const { placeId, name } = tour;
+  let newObject: TourTable = {
+    places_id: placeId ,
+    name,
+  };
+
+  if (tour.id) newObject["id"] = tour.id;
 
   return newObject;
 };

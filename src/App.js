@@ -11,6 +11,7 @@ import { getReservations } from './features/reservations/thunks'
 import { getDestinations } from "./features/destinations/thunks";
 import { getHotels } from "./features/hotels/thunks";
 import { getAerolines } from "./features/aerolines/thunks";
+import { getTours } from "./features/tours/thunks";
 const router = createHashRouter(routes)
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
 
 
   useEffect(() => {
-
+    dispatch(getTours())
     dispatch(getDestinations())
     dispatch(getHotels())
     dispatch(getAerolines())

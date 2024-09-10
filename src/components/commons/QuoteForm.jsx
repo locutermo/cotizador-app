@@ -8,6 +8,7 @@ export default function QuoteForm({
   save,
   optionsSelected = {},
   updateOnAttribute,
+  updateTour,
   detail,
   onChangeAerolines,
   onChangeHotels,
@@ -15,6 +16,7 @@ export default function QuoteForm({
   setAerolinesSelected,
   hotelsSelected,
   setHotelsSelected,
+  cleanTour
 }) {
 
   const onChangeInput = (e, attribute) => {
@@ -27,22 +29,29 @@ export default function QuoteForm({
     updateOnAttribute({ attribute, value: parseInt(value) });
   };
 
-  const onFocus = (e, attribute) => {
+  const onChangeInputObject = (e, attribute) => {
     const value = e.target.value;
-    if (value === 0) updateOnAttribute({ attribute, value: "" });
+    updateTour({ attribute, value: parseInt(value) });
+  }
+
+  const onFocus = (e, attribute, callback) => {
+    const value = e.target.value;
+    if (value === 0) callback ? callback({ attribute, value: "" }) : updateOnAttribute({ attribute, value: "" });
   };
 
-  const onFocusOut = (e, attribute) => {
+  const onFocusOut = (e, attribute, callback) => {
     const value = e.target.value;
-    if (value === "") updateOnAttribute({ attribute, value: 0 });
+    if (value === 0) callback ? callback({ attribute, value: "" }) : updateOnAttribute({ attribute, value: "" });
   };
+
+  const destination = destinations.find(e => e.id == parseInt(detail?.placeId))
 
   return (
 
     <div className="grid grid-cols-6 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="col-span-6">
       </div>
-      <div className="col-span-3">
+      <div className="col-span-2">
         <Select
           options={[
             { label: "Selecciona el cliente", value: "" },
@@ -55,7 +64,7 @@ export default function QuoteForm({
           value={detail?.customer}
         />
       </div>
-      <div className="col-span-3">
+      <div className="col-span-2">
         <Select
           options={[
             { label: "Selecciona el destino", value: "" },
@@ -63,16 +72,18 @@ export default function QuoteForm({
           ]}
           title="Destino de viaje"
           onChange={(e) => {
+            cleanTour();
             onChangeInput(e, "placeId");
             setAerolinesSelected([]);
             setHotelsSelected([]);
-            onChangeAerolines([])
-            onChangeHotels([])
+            onChangeAerolines([]);
+            onChangeHotels([]);
+            // onChangeInputObject()
           }}
           value={detail?.placeId}
         />
       </div>
-      <div className="col-span-3">
+      <div className="col-span-2">
         <Input
           title="Fecha de Salida"
           type="date"
@@ -174,7 +185,7 @@ export default function QuoteForm({
           onChangeInputNumber(e, "traslado");
         }}
       />
-      <Input
+      {/* <Input
         title="Isla Saona"
         onBlur={(e) => {
           onFocusOut(e, "islaSaona");
@@ -205,15 +216,38 @@ export default function QuoteForm({
             onChangeInputNumber(e, "santoDomingo");
           }}
         />
+      </div> */}
+      <div className={`col-span-6 grid grid-cols-${destination?.tours.length<=5 ? destination?.tours.length : "4"} gap-4 border-2 border-blue-200 border-dotted p-4`}>
+        {destination?.tours.map(tour => (
+          <Input
+            title={tour.name}
+            onBlur={(e) => {
+              onFocusOut(e, `tour_${tour.id}`, updateTour);
+            }}
+            onFocus={(e) => {
+              onFocusOut(e, `tour_${tour.id}`, updateTour);
+            }}
+            type="number"
+            min={0}
+            value={detail?.tours[`tour_${tour.id}`] ? detail?.tours[`tour_${tour.id}`] : ''}
+            onChange={(e) => {
+              console.log({ e })
+              onChangeInputObject(e, `tour_${tour.id}`);
+            }}
+          />
+
+        ))}
+
+
       </div>
       <div className="col-span-6  flex gap-4">
         <div className="w-1/2">
           <MultiSelectDropdown
             prompt="Aerolineas"
             formFieldName="Aerolineas"
-            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.aerolines.map(e => ({value:e.tableId,label:e.name}))}
-            initialValues={optionsSelected?.aerolines||[]}
-            optionsSelected={ aerolinesSelected}
+            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.aerolines.map(e => ({ value: e.tableId, label: e.name }))}
+            initialValues={optionsSelected?.aerolines || []}
+            optionsSelected={aerolinesSelected}
             onChange={(e) => {
               onChangeAerolines(e);
               setAerolinesSelected(e); //
@@ -224,7 +258,7 @@ export default function QuoteForm({
           <MultiSelectDropdown
             prompt="Hoteles"
             formFieldName="Hoteles"
-            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.hotels.map(e => ({value:e.tableId,label:e.name}))}
+            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.hotels.map(e => ({ value: e.tableId, label: e.name }))}
             initialValues={optionsSelected?.hotels || []}
             optionsSelected={hotelsSelected}
             onChange={(e) => {

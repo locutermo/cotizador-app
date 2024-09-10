@@ -5,8 +5,6 @@ interface CotizationDetail {
   adultFee: number;
   kidFee: number;
   traslado: number;
-  islaSaona: number;
-  santoDomingo: number;
   customer: number;
   startDate?: string;
   endDate?: string;
@@ -14,6 +12,7 @@ interface CotizationDetail {
   created_at?: string;
   placeId: number;
   customerName?: string;
+  tours: any;
 }
 
 interface AerolinePrice {
@@ -157,6 +156,7 @@ interface DestinationWithAerolinesAndHotelsTable {
   name: string;
   places_aerolines: PlaceAerolineTable[];
   places_hotels: PlaceHotelTable[];
+  tours: DefaultTable[]
 }
 
 interface DestinationWithAerolinesAndHotelsObject {
@@ -164,7 +164,8 @@ interface DestinationWithAerolinesAndHotelsObject {
     id: number;
     name: string;
     aerolines: PlaceAerolineObject[];
-    hotels: PlaceHotelObject[]
+    hotels: PlaceHotelObject[],
+    tours: DefaultTable[]
   }
 
 interface PlaceAerolineTable {

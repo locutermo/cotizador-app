@@ -11,7 +11,8 @@ const initialState = {
     kidFee: 100,
     traslado: TRASLADO_PRICE,
     islaSaona: ISLA_SAONA,
-    santoDomingo: SANTO_DOMINGO
+    santoDomingo: SANTO_DOMINGO,
+    tours:{}
   },
   aerolinePrices: [],
   hotelPrices: [],
@@ -33,12 +34,18 @@ export const cotizationSlice = createSlice({
         traslado: TRASLADO_PRICE,
         islaSaona: ISLA_SAONA,
         santoDomingo: SANTO_DOMINGO,
-        customer:''
+        customer:'',
+        tours:{}
       }
       state.aerolinePrices = []
       state.hotelPrices = []
 
     },
+
+    cleanTours: (state,action) => {
+      state.cotizationDetail.tours = {}
+    },
+
     setCotizationDetail: (state, action) => {
       state.cotizationDetail = action.payload
     },
@@ -46,6 +53,12 @@ export const cotizationSlice = createSlice({
       const { attribute, value } = payload
       state.cotizationDetail[attribute] = value
     },
+
+    updateTour:(state,{payload})=> {
+      const { attribute, value } = payload
+      state.cotizationDetail.tours[attribute] = value;
+    },
+
     setAerolinePrices: (state, action) => {
       state.aerolinePrices = action.payload
     },
@@ -80,7 +93,9 @@ export const {
   updateHotelOption,
   updateOnAttributeDetail,
   sethotelsSelected,
-  setAerolinesSelected
+  setAerolinesSelected,
+  updateTour,
+  cleanTours
 } = cotizationSlice.actions
 
 export default cotizationSlice.reducer

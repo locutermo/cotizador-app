@@ -13,6 +13,7 @@ import { getNewPrices } from "../util/util";
 export default function ReservationEdit() {
   let { reservationId } = useParams();
   const dispatch = useDispatch();
+  const {tours} = useSelector(state => state.tour);
   const clientOptions = useSelector(clientOptionsSelector);
   const hotelOptions = useSelector(hotelOptionsSelector);
   const aerolineOptions = useSelector(aerolineOptionsSelector);
@@ -93,6 +94,11 @@ export default function ReservationEdit() {
     };
   };
 
+  const getTourObject = (tourId,tours) => {
+    const found = tours.find(e => e.id == tourId);
+    return found
+  }
+
   return (
     <div>
       <Breadcrumb
@@ -100,6 +106,7 @@ export default function ReservationEdit() {
         previous={{ name: "Detalle", url: "reservations" }}
       />
       <div className="flex gap-4">
+
         <div className="flex flex-col gap-6 w-1/2">
           <QuoteForm
             setAerolinesSelected={e => { setAerolinesSelected(e) }}
@@ -115,6 +122,7 @@ export default function ReservationEdit() {
             clientOptions={clientOptions}
             aerolines={aerolineOptions}
             hotels={hotelOptions}
+
             save={(e) => {
               dispatch(
                 editReservation({
@@ -127,13 +135,30 @@ export default function ReservationEdit() {
                   hotelPrices: matchOlderWithNewer(
                     selector?.hotelPrices,
                     hotels
-                  ),
+                  )
                 })
               );
             }}
             updateOnAttribute={({ attribute, value }) => {
               setDetail((prev) => ({ ...prev, [attribute]: value }));
             }}
+
+            updateTour={({ attribute, value }) => {
+              setDetail((prev) => ({
+                ...prev, tours: {
+                  ...prev.tours,
+                  [attribute]: value
+                }
+              }))
+            }}
+
+            cleanTour={e => {
+              setDetail(prev => ({
+                ...prev,
+                tours: {}
+              }))
+            }}
+
             onChangeAerolines={(newArray) => {
               setAerolines(getNewPrices(newArray, aerolineOptions, aerolines));
             }}
@@ -208,6 +233,9 @@ export default function ReservationEdit() {
               </tbody>
             </table>
           )}
+
+
+          {JSON.stringify({detail,tours})}
           <div className="grid grid-cols-2 grid-rows-3 gap-4 ">
 
 
