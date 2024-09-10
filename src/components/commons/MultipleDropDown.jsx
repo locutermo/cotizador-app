@@ -17,15 +17,19 @@ export default function MultiSelectDropdown({
 
   useEffect(() => {
     if (initialValues.length > 0) {
+      console.log({ initialValues, optionsSelected })
       const optionsInputs = optionsListRef.current.querySelectorAll("input");
       optionsInputs.forEach((input) => {
-        if (initialValues.find(e => e.id === parseInt(input.value)))
+        if (initialValues.find(e => e.id === parseInt(input.value))) {
           input.checked = true;
+        }
+
       });
 
       const newOptions = [...initialValues.map(e => ({ value: e.id, label: e.name }))]
       //setSelectedOptions(newOptions);
       //Refactorizar
+      console.log({ newOptions })
       onChange(newOptions);
 
     }
@@ -129,7 +133,7 @@ export default function MultiSelectDropdown({
                 >
                   <input
                     type="checkbox"
-                    checked={optionsSelected.length > 0 &&  optionsSelected.find(e => e === option.label)}
+                    checked={optionsSelected.length > 0 && optionsSelected.find(e => e.value === option.value)}
                     name={option.label}
                     value={option.value}
                     className="cursor-pointer dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

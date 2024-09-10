@@ -16,7 +16,7 @@ export default function ReservationEdit() {
   const clientOptions = useSelector(clientOptionsSelector);
   const hotelOptions = useSelector(hotelOptionsSelector);
   const aerolineOptions = useSelector(aerolineOptionsSelector);
-  const {destinations} = useSelector(state => state.destination)
+  const { destinations } = useSelector(state => state.destination)
 
   const selector = useSelector(reservationFoundSelector(reservationId));
   const [detail, setDetail] = useState({});
@@ -57,6 +57,8 @@ export default function ReservationEdit() {
 
   useEffect(() => {
     if (selector) {
+      setHotelsSelected(selector.hotelPrices.map(e => ({ value: e.id, label: e.name })))
+      setAerolinesSelected(selector.aerolinePrices.map(e => ({ value: e.id, label: e.name })))
       setDetail(selector.cotizationDetail);
       setAerolines(selector.aerolinePrices);
       setHotels(selector.hotelPrices);
@@ -101,7 +103,7 @@ export default function ReservationEdit() {
         <div className="flex flex-col gap-6 w-1/2">
           <QuoteForm
             setAerolinesSelected={e => { setAerolinesSelected(e) }}
-            setHotelsSelected={e => {setHotelsSelected(e) }}
+            setHotelsSelected={e => { setHotelsSelected(e) }}
             hotelsSelected={hotelsSelected}
             aerolinesSelected={aerolinesSelected}
             destinations={destinations}
@@ -161,7 +163,7 @@ export default function ReservationEdit() {
             }}
           />
         </div>
-        <div className="w-1/2 gap-6">
+        <div className="w-1/2 flex flex-col gap-4">
           {hotels.length > 0 && (
             <table className="min-w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
               <thead className="[&_th]:p-4  [&_th]:border-2 [&_th]:border-blue-300">
@@ -206,7 +208,74 @@ export default function ReservationEdit() {
               </tbody>
             </table>
           )}
+          <div className="grid grid-cols-2 grid-rows-3 gap-4 ">
+
+
+            {[...hotels]
+              .sort((a, b) => a.price - b.price).map(({ name, priceByAdults, priceByKids }, index) => (
+                <table key={index} className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 ">
+                  <thead className="[&_th]:p-4 ">
+                    <th className="text-start" >Servicio</th>
+                    <th>1 Adulto</th>
+                    {kids > 0 && (<th>1 Niño</th>)}
+                  </thead>
+                  <tbody className="text-center [&_td]:py-2 [&_td]:px-4 ">
+                    <tr>
+                      <td className="text-start">Boleto Aereo</td>
+                      <td>${aerolinePriceByOne}</td>
+                      {kids > 0 && (<td>${aerolinePriceByOne}</td>)}
+
+                    </tr>
+                    <tr>
+                      {traslado > 0 && (<td className="text-start">Traslado Compartido</td>)}
+                      {traslado > 0 && (<td>${traslado}</td>)}
+                      {kids > 0 && (<td>${trasladoKid}</td>)}
+
+                    </tr>
+                    <tr>
+                      {islaSaona > 0 && (<td className="text-start">Isla Saona</td>)}
+                      {islaSaona > 0 && (<td>${islaSaona}</td>)}
+                      {kids > 0 && (<td>${islaSaonaKid}</td>)}
+                    </tr>
+                    <tr>
+                      {santoDomingo > 0 && (<td className="text-start">Santo Domingo</td>)}
+                      {santoDomingo > 0 && (<td>${santoDomingo}</td>)}
+                      {(kids > 0 && santoDomingo > 0) && (<td>${santoDomingoKid}</td>)}
+                    </tr>
+                    <tr>
+                      <td className="text-start">{name}</td>
+                      <td>${priceByAdults}</td>
+                      {kids > 0 && (<td>${priceByKids}</td>)}
+
+                    </tr>
+                    <tr>
+                      <td className="text-start">Total operatividad</td>
+                      <td>${totalOperativity(aerolinePriceByOne, priceByAdults, traslado, islaSaona, santoDomingo)}</td>
+                      {kids > 0 && (<td>${totalOperativity(aerolinePriceByOne, priceByKids, trasladoKid, islaSaonaKid, santoDomingoKid)}</td>)}
+                    </tr>
+                    <tr>
+                      {(adultFee > 0 || kidFee) && (<td className="text-start">Fee</td>)}
+                      {<td>${adultFee || 0}</td>}
+                      {kids > 0 && (<td>${kidFee}</td>)}
+                    </tr>
+                    <tr>
+                      {(adultFee > 0 || kidFee) && (<td className="text-start">IGV (Sobre Fee)</td>)}
+                      {<td>${((adultFee || 0) * 0.18).toFixed(2)}</td>}
+                      {kids > 0 && (<td>${(kidFee * 0.18).toFixed(2)}</td>)}
+                    </tr>
+                    <tr className="[&_td]:text-blue-800 dark:[&_td]:text-yellow-400 [&_td]:font-semibold">
+                      <td></td>
+                      <td>${totalOperativity(aerolinePriceByOne, priceByAdults, traslado, islaSaona, santoDomingo) + ((adultFee || 0) * 1.18)}</td>
+                      {kids > 0 && (<td>${totalOperativity(aerolinePriceByOne, priceByKids, trasladoKid, islaSaonaKid, santoDomingoKid) + ((kidFee || 0) * 1.18)}</td>)}
+                    </tr>
+                  </tbody>
+                </table>
+              ))}
+          </div>
         </div>
+
+
+
       </div>
     </div>
   );
