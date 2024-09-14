@@ -53,7 +53,8 @@ const Table = ({ data, headers }) => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((element, key) => (
+
+            { data?.length > 0 ? data?.map((element, key) => (
               <tr key={key}>
                 {headers.map(header => (
                   <td key={Math.random()} className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11 text-center">
@@ -61,7 +62,13 @@ const Table = ({ data, headers }) => {
                   </td>
                 ))}
               </tr>
-            ))}
+            )):(
+              <tr>
+                <td className="p-6 text-center dark:text-white" colSpan={headers.length}>NO HAY DATOS PARA MOSTRAR</td>
+              </tr>
+            )
+          
+          }
           </tbody>
         </table>
       </div>

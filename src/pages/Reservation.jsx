@@ -4,9 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { reservationsOrdered } from "../features/reservations/reservationSlice";
 import { useNavigate } from "react-router-dom";
 import { removeReservation } from "../features/reservations/thunks";
+import Input from "../components/primitive/Input";
+import { Component, useState } from "react";
+import moment from "moment";
 
 export default function Reservation() {
   const reservations = useSelector(reservationsOrdered);
+
+  const [filterStates, setFilterStates] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,7 +54,14 @@ export default function Reservation() {
     {
       attribute: "endDate",
       title: "Retorno",
-      type: "date",
+      type: "custom",
+      Component: ({ element }) => (
+        <p className="text-black dark:text-white">
+          {moment(element.startDate)
+            .add(element.days - 1, "days")
+            .format("ll")}
+        </p>
+      ),
     },
     {
       title: "Acciones",
@@ -142,17 +154,71 @@ export default function Reservation() {
     },
   ];
 
+  const getFiltered = (reservations, search="") => {
+    let searchLower = search.trim().toLowerCase();
+    if (searchLower !== "") {
+      const filtered = reservations.filter(({ cotizationDetail }) => {
+        return (
+          cotizationDetail.place.toLowerCase().includes(searchLower) ||
+          (cotizationDetail.customerName &&
+            cotizationDetail?.customerName.toLowerCase().includes(searchLower))
+        );
+      });
+
+      return filtered;
+    }
+
+    return reservations;
+  };
+
   return (
     <>
       <Breadcrumb pageName="Reservas" homeName="Inicio" />
+      <Filter
+        filterInputs={filterInputs}
+        states={filterStates}
+        onChange={(attribute, value) => {
+          setFilterStates((prev) => ({ ...prev, [attribute]: value }));
+        }}
+      />
 
       <Table
-        data={reservations
+        data={getFiltered(reservations, filterStates['search'])
           .map((e) => ({ ...e.cotizationDetail, id: e.id }))
-          .sort((a, b) => new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
+          .sort(
+            (a, b) =>
+              new Date(b?.created_at).getTime() -
+              new Date(a?.created_at).getTime()
           )}
         headers={headers}
       />
     </>
   );
 }
+
+const filterInputs = [
+  {
+    attribute: "search",
+    title: "Buscar",
+  }
+];
+
+const Filter = ({ filterInputs, states, onChange }) => {
+  return (
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="max-w-full pb-6 overflow-x-auto">
+        <div className="w-auto flex">
+          {filterInputs.map((input) => (
+            <Input
+              title={input.title}
+              value={states[input.attribute]}
+              onChange={(e) => {
+                onChange(input.attribute, e.target.value);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
