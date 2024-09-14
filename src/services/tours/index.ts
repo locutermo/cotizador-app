@@ -23,7 +23,7 @@ export const createTour = async (tour: TourTable) => {
         .select(`
             *,
             places(
-                id,name
+                id,name,
             )
         `)
 }

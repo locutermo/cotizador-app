@@ -12,7 +12,7 @@ export const fetchDestinations = async () => {
                 *,
                 hotels(*)
             ),
-            tours(id,name),
+            tours(id,name,kidPrice,adultPrice),
             places_aerolines(*,aerolines(*))
         `);
 };
@@ -24,7 +24,7 @@ export const createDestination = async (destination: Destination) => {
                 *,
                 hotels(*)
             ),
-            tours(id,name),
+            tours(id,name,kidPrice,adultPrice),
             places_aerolines(*,aerolines(*))
         `);
 };
@@ -36,7 +36,7 @@ export const addManyDestinations = async (destinations: Destination[]) => {
                 *,
                 hotels(*)
             ),
-            tours(id,name),
+            tours(id,name,kidPrice,adultPrice),
             places_aerolines(*,aerolines(*))
         `);
 };
@@ -51,7 +51,7 @@ export const updateDestination = async (
                 *,
                 hotels(*)
             ),
-            tours(id,name),
+            tours(id,name,kidPrice,adultPrice),
             places_aerolines(*,aerolines(*))
         `);
 };

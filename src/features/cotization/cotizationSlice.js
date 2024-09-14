@@ -56,7 +56,7 @@ export const cotizationSlice = createSlice({
 
     updateTour:(state,{payload})=> {
       const { attribute, value } = payload
-      state.cotizationDetail.tours[attribute] = value;
+      state.cotizationDetail.tours[attribute] = value
     },
 
     setAerolinePrices: (state, action) => {

@@ -5,17 +5,28 @@ import { useSelector, useDispatch } from "react-redux";
 import { addTour, editTour, removeTour } from "../features/tours/thunks";
 import { toursFormattedSelector } from "../features/tours/tourSlice";
 import { useState } from "react";
+import { formatTourToTable } from "../util/util";
 export default function Tours() {
     const dispatch = useDispatch()
     const [selected, setSelected] = useState()
     const tours = useSelector(toursFormattedSelector)
-    const {destinations} = useSelector( state => state.destination)
+    const { destinations } = useSelector(state => state.destination)
 
     const headers = [
         {
             attribute: 'name',
             title: 'Nombre',
             type: 'text',
+        },
+        {
+            attribute: 'adultPrice',
+            title: 'Precio por adulto',
+            type: 'number',
+        },
+        {
+            attribute: 'kidPrice',
+            title: 'Precio por niño',
+            type: 'number',
         },
         {
             attribute: 'placeName',
@@ -79,10 +90,20 @@ export default function Tours() {
             type: 'text'
         },
         {
+            title: 'Precio x adulto',
+            attribute: 'adultPrice',
+            type: 'number'
+        },
+        {
+            title: 'Precio x niño',
+            attribute: 'kidPrice',
+            type: 'number'
+        },
+        {
             title: 'Destino',
             attribute: 'placeId',
             type: 'select',
-            options: [{label:"Seleccione un destino",value:""},...destinations.map( e => ({value:e.id,label:e.name}))]
+            options: [{ label: "Seleccione un destino", value: "" }, ...destinations.map(e => ({ value: e.id, label: e.name }))]
         },
     ]
 
@@ -92,14 +113,14 @@ export default function Tours() {
             <Breadcrumb current={{ name: 'Touras' }} previous={{ name: "Inicio", url: '' }} />
             <div className="flex gap-4">
                 <div className="w-3/12 flex flex-col gap-4 h-auto">
-                    <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addTour(data)) }} />
+                    <Form title="Creación" inputs={inputs} callback={(data) => { dispatch(addTour(formatTourToTable(data))) }} />
                     {selected && (
                         <Form
                             title="Edición"
                             initialValues={selected}
                             inputs={[{ title: "ID", disabled: true, attribute: 'id', type: 'text' }, ...inputs]}
                             callback={(data) => {
-                                dispatch(editTour(data));
+                                dispatch(editTour(formatTourToTable(data)));
                                 setSelected(null)
                             }}
                         />

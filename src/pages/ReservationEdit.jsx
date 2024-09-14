@@ -6,18 +6,23 @@ import QuoteForm from "../components/commons/QuoteForm";
 import { clientOptionsSelector } from "../features/clients/clientSlice";
 import { hotelOptionsSelector } from "../features/hotels/hotelSlice";
 import { aerolineOptionsSelector } from "../features/aerolines/aerolineSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { editReservation } from "../features/reservations/thunks";
 import TablePrice from "../components/commons/TablePrice";
-import { getNewPrices } from "../util/util";
+import {
+  convertTourFormat,
+  getNewPrices,
+  totalOperativity,
+} from "../util/util";
+import { keyboardImplementationWrapper } from "@testing-library/user-event/dist/keyboard";
 export default function ReservationEdit() {
   let { reservationId } = useParams();
   const dispatch = useDispatch();
-  const {tours} = useSelector(state => state.tour);
+  const { tours } = useSelector((state) => state.tour);
   const clientOptions = useSelector(clientOptionsSelector);
   const hotelOptions = useSelector(hotelOptionsSelector);
   const aerolineOptions = useSelector(aerolineOptionsSelector);
-  const { destinations } = useSelector(state => state.destination)
+  const { destinations } = useSelector((state) => state.destination);
 
   const selector = useSelector(reservationFoundSelector(reservationId));
   const [detail, setDetail] = useState({});
@@ -26,10 +31,8 @@ export default function ReservationEdit() {
   const [aerolinesSelected, setAerolinesSelected] = useState([]);
   const [hotelsSelected, setHotelsSelected] = useState([]);
 
-  const { traslado, islaSaona, adults, kids, adultFee, kidFee, santoDomingo } =
-    Object(selector?.cotizationDetail);
-  const islaSaonaKid = islaSaona / 2;
-  const santoDomingoKid = santoDomingo / 2;
+  const { traslado, adults, kids, adultFee, kidFee } = Object(detail);
+
   const trasladoKid = traslado;
   const aerolinePricesFiltered = aerolines
     ?.filter((e) => e.price)
@@ -40,26 +43,14 @@ export default function ReservationEdit() {
     minAerolinePrice / ((kids | 0) + adults)
   );
 
-  const totalOperativity = (
-    minAerolinePrice,
-    hotelPrice,
-    traslado,
-    islaSaona,
-    santoDomingo
-  ) => {
-    return (
-      (!isNaN(parseInt(minAerolinePrice)) ? parseInt(minAerolinePrice) : 0) +
-      (!isNaN(parseInt(traslado)) ? parseInt(traslado) : 0) +
-      (!isNaN(parseInt(islaSaona)) ? parseInt(islaSaona) : 0) +
-      (!isNaN(parseInt(hotelPrice)) ? parseInt(hotelPrice) : 0) +
-      (!isNaN(parseInt(santoDomingo)) ? parseInt(santoDomingo) : 0)
-    );
-  };
-
   useEffect(() => {
     if (selector) {
-      setHotelsSelected(selector.hotelPrices.map(e => ({ value: e.id, label: e.name })))
-      setAerolinesSelected(selector.aerolinePrices.map(e => ({ value: e.id, label: e.name })))
+      setHotelsSelected(
+        selector.hotelPrices.map((e) => ({ value: e.id, label: e.name }))
+      );
+      setAerolinesSelected(
+        selector.aerolinePrices.map((e) => ({ value: e.id, label: e.name }))
+      );
       setDetail(selector.cotizationDetail);
       setAerolines(selector.aerolinePrices);
       setHotels(selector.hotelPrices);
@@ -94,10 +85,15 @@ export default function ReservationEdit() {
     };
   };
 
-  const getTourObject = (tourId,tours) => {
-    const found = tours.find(e => e.id == tourId);
-    return found
-  }
+  const toursConverted = convertTourFormat(detail?.tours || []);
+  const tourAdultPrices = toursConverted.reduce(
+    (acc, tour) => tour.adultPrice + acc,
+    0
+  );
+  const tourKidPrices = toursConverted.reduce(
+    (acc, tour) => tour.kidPrice + acc,
+    0
+  );
 
   return (
     <div>
@@ -105,12 +101,16 @@ export default function ReservationEdit() {
         current={{ name: `Edición de reserva` }}
         previous={{ name: "Detalle", url: "reservations" }}
       />
-      <div className="flex gap-4">
 
+      <div className="flex gap-4">
         <div className="flex flex-col gap-6 w-1/2">
           <QuoteForm
-            setAerolinesSelected={e => { setAerolinesSelected(e) }}
-            setHotelsSelected={e => { setHotelsSelected(e) }}
+            setAerolinesSelected={(e) => {
+              setAerolinesSelected(e);
+            }}
+            setHotelsSelected={(e) => {
+              setHotelsSelected(e);
+            }}
             hotelsSelected={hotelsSelected}
             aerolinesSelected={aerolinesSelected}
             destinations={destinations}
@@ -122,7 +122,6 @@ export default function ReservationEdit() {
             clientOptions={clientOptions}
             aerolines={aerolineOptions}
             hotels={hotelOptions}
-
             save={(e) => {
               dispatch(
                 editReservation({
@@ -135,30 +134,28 @@ export default function ReservationEdit() {
                   hotelPrices: matchOlderWithNewer(
                     selector?.hotelPrices,
                     hotels
-                  )
+                  ),
                 })
               );
             }}
             updateOnAttribute={({ attribute, value }) => {
               setDetail((prev) => ({ ...prev, [attribute]: value }));
             }}
-
             updateTour={({ attribute, value }) => {
               setDetail((prev) => ({
-                ...prev, tours: {
-                  ...prev.tours,
-                  [attribute]: value
-                }
-              }))
-            }}
-
-            cleanTour={e => {
-              setDetail(prev => ({
                 ...prev,
-                tours: {}
-              }))
+                tours: {
+                  ...prev.tours,
+                  [attribute]: value,
+                },
+              }));
             }}
-
+            cleanTour={(e) => {
+              setDetail((prev) => ({
+                ...prev,
+                tours: {},
+              }));
+            }}
             onChangeAerolines={(newArray) => {
               setAerolines(getNewPrices(newArray, aerolineOptions, aerolines));
             }}
@@ -202,16 +199,112 @@ export default function ReservationEdit() {
                 {[...hotels]
                   .sort((a, b) => a.price - b.price)
                   .map(({ name, priceByAdults, priceByKids }, index) => (
-                    <tr key={index} className="[&_td]:border-2 [&_td]:border-blue-200">
+                    <tr className="[&_td]:border-2 [&_td]:border-blue-200">
                       <td className="text-start">{name}</td>
+                      <td>${totalOperativity(aerolinePriceByOne, priceByAdults, traslado, tourAdultPrices) + ((adultFee || 0) * 1.18)}</td>
+                      {kids > 0 && (<td>${totalOperativity(aerolinePriceByOne, priceByKids, trasladoKid, tourKidPrices) + ((kidFee || 0) * 1.18)}</td>)}
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          )}
+
+          <div className="grid grid-cols-2 grid-rows-3 gap-4 ">
+            {[...hotels]
+              .sort((a, b) => a.price - b.price)
+              .map(({ name, priceByAdults, priceByKids }, index) => (
+                <table
+                  key={index}
+                  className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 "
+                >
+                  <thead className="[&_th]:p-4 ">
+                    <th className="text-start">Servicio</th>
+                    <th>1 Adulto</th>
+                    {kids > 0 && <th>1 Niño</th>}
+                  </thead>
+                  <tbody className="text-center [&_td]:py-2 [&_td]:px-4 ">
+                    <tr>
+                      <td className="text-start">Boleto Aereo</td>
+                      <td>${aerolinePriceByOne}</td>
+                      {kids > 0 && <td>${aerolinePriceByOne}</td>}
+                    </tr>
+                    <tr>
+                      <td className="text-start">{name}</td>
+                      <td>${priceByAdults}</td>
+                      {kids > 0 && <td>${priceByKids}</td>}
+                    </tr>
+                    <tr>
+                      {traslado > 0 && (
+                        <td className="text-start">Traslado Compartido</td>
+                      )}
+                      {traslado > 0 && <td>${traslado}</td>}
+                      {kids > 0 && <td>${trasladoKid}</td>}
+                    </tr>
+
+                    {toursConverted.map((tour) => (
+                      <tr>
+                        <td className="text-start">{tour.name}</td>
+                        {tour.adultPrice > 0 && <td>${tour.adultPrice}</td>}
+                        {kids > 0 && <td>${tour.kidPrice}</td>}
+                      </tr>
+                    ))}
+
+                    {/* {
+                      toursWithPrices.map(e => (
+                        <tr>
+                          <td className="text-start">{e.name}</td>
+                          <td className="text-center">{e.price}</td>
+                          {(kids > 0 && e.price>0) && (<td>${e.price/2}</td>)}
+                        </tr>
+                      ))
+                    } */}
+
+                    <tr className="[&_td]:text-red-800 [&_td]:font-semibold">
+                      <td className="text-start">Sub total</td>
                       <td>
                         $
                         {totalOperativity(
                           aerolinePriceByOne,
                           priceByAdults,
                           traslado,
-                          islaSaona,
-                          santoDomingo
+                          tourAdultPrices
+                        )}
+                      </td>
+                      {kids > 0 && (
+                        <td>
+                          $
+                          {totalOperativity(
+                            aerolinePriceByOne,
+                            priceByKids,
+                            trasladoKid,
+                            tourKidPrices
+                          )}
+                        </td>
+                      )}
+                    </tr>
+                    <tr>
+                      {(adultFee > 0 || kidFee) && (
+                        <td className="text-start">Fee</td>
+                      )}
+                      {<td>${adultFee || 0}</td>}
+                      {kids > 0 && <td>${kidFee}</td>}
+                    </tr>
+                    <tr>
+                      {(adultFee > 0 || kidFee) && (
+                        <td className="text-start">IGV (Sobre Fee)</td>
+                      )}
+                      {<td>${((adultFee || 0) * 0.18).toFixed(2)}</td>}
+                      {kids > 0 && <td>${(kidFee * 0.18).toFixed(2)}</td>}
+                    </tr>
+                    <tr className="[&_td]:text-blue-800 dark:[&_td]:text-yellow-400 [&_td]:font-semibold">
+                      <td className="text-start">Total</td>
+                      <td>
+                        $
+                        {totalOperativity(
+                          aerolinePriceByOne,
+                          priceByAdults,
+                          traslado,
+                          tourAdultPrices
                         ) +
                           (adultFee || 0) * 1.18}
                       </td>
@@ -222,88 +315,17 @@ export default function ReservationEdit() {
                             aerolinePriceByOne,
                             priceByKids,
                             trasladoKid,
-                            islaSaonaKid,
-                            santoDomingoKid
+                            tourKidPrices
                           ) +
                             (kidFee || 0) * 1.18}
                         </td>
                       )}
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
-
-
-          {JSON.stringify({detail,tours})}
-          <div className="grid grid-cols-2 grid-rows-3 gap-4 ">
-
-
-            {[...hotels]
-              .sort((a, b) => a.price - b.price).map(({ name, priceByAdults, priceByKids }, index) => (
-                <table key={index} className="rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 ">
-                  <thead className="[&_th]:p-4 ">
-                    <th className="text-start" >Servicio</th>
-                    <th>1 Adulto</th>
-                    {kids > 0 && (<th>1 Niño</th>)}
-                  </thead>
-                  <tbody className="text-center [&_td]:py-2 [&_td]:px-4 ">
-                    <tr>
-                      <td className="text-start">Boleto Aereo</td>
-                      <td>${aerolinePriceByOne}</td>
-                      {kids > 0 && (<td>${aerolinePriceByOne}</td>)}
-
-                    </tr>
-                    <tr>
-                      {traslado > 0 && (<td className="text-start">Traslado Compartido</td>)}
-                      {traslado > 0 && (<td>${traslado}</td>)}
-                      {kids > 0 && (<td>${trasladoKid}</td>)}
-
-                    </tr>
-                    <tr>
-                      {islaSaona > 0 && (<td className="text-start">Isla Saona</td>)}
-                      {islaSaona > 0 && (<td>${islaSaona}</td>)}
-                      {kids > 0 && (<td>${islaSaonaKid}</td>)}
-                    </tr>
-                    <tr>
-                      {santoDomingo > 0 && (<td className="text-start">Santo Domingo</td>)}
-                      {santoDomingo > 0 && (<td>${santoDomingo}</td>)}
-                      {(kids > 0 && santoDomingo > 0) && (<td>${santoDomingoKid}</td>)}
-                    </tr>
-                    <tr>
-                      <td className="text-start">{name}</td>
-                      <td>${priceByAdults}</td>
-                      {kids > 0 && (<td>${priceByKids}</td>)}
-
-                    </tr>
-                    <tr>
-                      <td className="text-start">Total operatividad</td>
-                      <td>${totalOperativity(aerolinePriceByOne, priceByAdults, traslado, islaSaona, santoDomingo)}</td>
-                      {kids > 0 && (<td>${totalOperativity(aerolinePriceByOne, priceByKids, trasladoKid, islaSaonaKid, santoDomingoKid)}</td>)}
-                    </tr>
-                    <tr>
-                      {(adultFee > 0 || kidFee) && (<td className="text-start">Fee</td>)}
-                      {<td>${adultFee || 0}</td>}
-                      {kids > 0 && (<td>${kidFee}</td>)}
-                    </tr>
-                    <tr>
-                      {(adultFee > 0 || kidFee) && (<td className="text-start">IGV (Sobre Fee)</td>)}
-                      {<td>${((adultFee || 0) * 0.18).toFixed(2)}</td>}
-                      {kids > 0 && (<td>${(kidFee * 0.18).toFixed(2)}</td>)}
-                    </tr>
-                    <tr className="[&_td]:text-blue-800 dark:[&_td]:text-yellow-400 [&_td]:font-semibold">
-                      <td></td>
-                      <td>${totalOperativity(aerolinePriceByOne, priceByAdults, traslado, islaSaona, santoDomingo) + ((adultFee || 0) * 1.18)}</td>
-                      {kids > 0 && (<td>${totalOperativity(aerolinePriceByOne, priceByKids, trasladoKid, islaSaonaKid, santoDomingoKid) + ((kidFee || 0) * 1.18)}</td>)}
                     </tr>
                   </tbody>
                 </table>
               ))}
           </div>
         </div>
-
-
-
       </div>
     </div>
   );

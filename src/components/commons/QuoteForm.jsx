@@ -2,6 +2,7 @@ import Input from "../primitive/Input";
 import MultiSelectDropdown from "./MultipleDropDown";
 import Select from "../primitive/Select";
 import { useState } from "react";
+import { convertTourFormat, formatTours } from "../../util/util";
 export default function QuoteForm({
   clientOptions = [],
   destinations = [],
@@ -29,9 +30,15 @@ export default function QuoteForm({
     updateOnAttribute({ attribute, value: parseInt(value) });
   };
 
-  const onChangeInputObject = (e, attribute) => {
-    const value = e.target.value;
-    updateTour({ attribute, value: parseInt(value) });
+  const onChangeInputObject = (e, attribute, options) => {
+    const value = e.target.checked;
+    if (value) {
+      const found = options.find(e => e.id == attribute)
+      console.log({ found })
+      updateTour({ attribute, value: { name: found.name, adultPrice: found.adultPrice, kidPrice: found.kidPrice } });
+    } else {
+      updateTour({ attribute, value: null });
+    }
   }
 
   const onFocus = (e, attribute, callback) => {
@@ -45,6 +52,9 @@ export default function QuoteForm({
   };
 
   const destination = destinations.find(e => e.id == parseInt(detail?.placeId))
+
+
+
 
   return (
 
@@ -83,6 +93,7 @@ export default function QuoteForm({
           value={detail?.placeId}
         />
       </div>
+
       <div className="col-span-2">
         <Input
           title="Fecha de Salida"
@@ -185,54 +196,18 @@ export default function QuoteForm({
           onChangeInputNumber(e, "traslado");
         }}
       />
-      {/* <Input
-        title="Isla Saona"
-        onBlur={(e) => {
-          onFocusOut(e, "islaSaona");
-        }}
-        onFocus={(e) => {
-          onFocus(e, "islaSaona");
-        }}
-        type="number"
-        min={0}
-        value={detail.islaSaona}
-        onChange={(e) => {
-          onChangeInputNumber(e, "islaSaona");
-        }}
-      />
-      <div className="col-span-2">
-        <Input
-          title="Santo Domingo"
-          onBlur={(e) => {
-            onFocusOut(e, "santoDomingo");
-          }}
-          onFocus={(e) => {
-            onFocus(e, "santoDomingo");
-          }}
-          type="number"
-          min={0}
-          value={detail.santoDomingo}
-          onChange={(e) => {
-            onChangeInputNumber(e, "santoDomingo");
-          }}
-        />
-      </div> */}
-      <div className={`col-span-6 grid grid-cols-${destination?.tours.length<=5 ? destination?.tours.length : "4"} gap-4 border-2 border-blue-200 border-dotted p-4`}>
+
+      <div className="col-span-6">
+      </div>
+      <div className={`col-span-6 grid grid-cols-${destination?.tours.length <= 5 ? destination?.tours.length : "4"} gap-4 border-2 border-blue-200 border-dotted p-4`}>
         {destination?.tours.map(tour => (
           <Input
             title={tour.name}
-            onBlur={(e) => {
-              onFocusOut(e, `tour_${tour.id}`, updateTour);
-            }}
-            onFocus={(e) => {
-              onFocusOut(e, `tour_${tour.id}`, updateTour);
-            }}
-            type="number"
+            type="checkbox"
             min={0}
-            value={detail?.tours[`tour_${tour.id}`] ? detail?.tours[`tour_${tour.id}`] : ''}
+            checked={detail.tours && detail.tours[tour.id] != null}
             onChange={(e) => {
-              console.log({ e })
-              onChangeInputObject(e, `tour_${tour.id}`);
+              onChangeInputObject(e, tour.id, destination?.tours);
             }}
           />
 

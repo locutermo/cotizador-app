@@ -224,8 +224,8 @@ export const formatPlaceHotelToObject = (
 };
 
 export const formatTourToObject = (tour: TourTable): TourObject => {
-  const { id, places_id, name, places } = tour;
-  const newObjext:TourObject = { placeId: places_id, name };
+  const { id, places_id, name, places,kidPrice,adultPrice } = tour;
+  const newObjext:TourObject = { placeId: places_id, name,kidPrice,adultPrice};
   if(places)
     newObjext['placeName'] = places.name
   if(id)
@@ -235,18 +235,60 @@ export const formatTourToObject = (tour: TourTable): TourObject => {
     id,
     placeId: places_id,
     placeName: places?.name,
+    kidPrice,
+    adultPrice,
     name,
   };
 };
 
 export const formatTourToTable = (tour: TourObject): TourTable => {
-  const { placeId, name } = tour;
+  const { placeId, name,kidPrice,adultPrice } = tour;
   let newObject: TourTable = {
     places_id: placeId ,
     name,
+    kidPrice,
+    adultPrice
   };
 
   if (tour.id) newObject["id"] = tour.id;
 
   return newObject;
 };
+
+
+export const formatTours = (tours: any) => {
+  return Object.entries(tours).reduce((acc:any, [id, tour]) => {
+    if (tour !== null) {
+      acc[id] = tour;
+    }
+    return acc;
+  }, {});
+};
+
+export const convertTourFormat = (originalTours:any) => {
+  console.log({originalTours})
+  if(!originalTours) return null
+  if(Object.keys(originalTours).length !== 0){
+    const convertedTours = Object.entries(originalTours).map(([id, tour]) => {
+      if (tour) {
+        return { id, ...tour };
+      }
+
+      return null
+      
+    }).filter((tour:any) => tour?.adultPrice > 0);
+    return convertedTours;
+
+  }
+  
+  return []
+};
+
+export const totalOperativity = (minAerolinePrice:string, hotelPrice:string, traslado:string, tourPrices:string) => {
+  return (
+      (!isNaN(parseInt(minAerolinePrice)) ? parseInt(minAerolinePrice) : 0) +
+      (!isNaN(parseInt(traslado)) ? parseInt(traslado) : 0) +
+      (!isNaN(parseInt(hotelPrice)) ? parseInt(hotelPrice) : 0) +
+      (!isNaN(parseInt(tourPrices)) ? parseInt(tourPrices) : 0)
+  )
+}

@@ -16,6 +16,7 @@ import {
   formatAerolineReservationToDatabase,
   formatCotizationToDatabase,
   formatHotelReservationToDatabase,
+  formatTours,
 } from "../../util/util";
 
 export const getReservations = createAsyncThunk(
@@ -48,7 +49,7 @@ export const editReservation = createAsyncThunk(
     try {
       const res = await updateReservation(
         id,
-        formatCotizationToDatabase(cotizationDetail)
+        formatCotizationToDatabase({...cotizationDetail,tours: formatTours(cotizationDetail.tours)})
       );
       console.log({res})
       /**
@@ -144,7 +145,7 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
   async ({ cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
     try {
       const cotizationDetailFormattedToDatabase =
-        formatCotizationToDatabase(cotizationDetail);
+      formatCotizationToDatabase({...cotizationDetail,tours: formatTours(cotizationDetail.tours)});
       const responseReservation = await createReservation(cotizationDetailFormattedToDatabase
       );
       const reservationCreated = responseReservation.data[0];

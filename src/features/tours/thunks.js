@@ -26,7 +26,7 @@ export const addTour = createAsyncThunk(
   'tours/addTour',
   async (data,thunkAPI) => {
     try {
-      const res = await createTour(formatTourToTable(data))
+      const res = await createTour(data)
       console.log({res,data})
       return res.data[0]
     } catch (err) {
@@ -53,6 +53,7 @@ export const editTour = createAsyncThunk(
   async ({id,...tour},thunkAPI) => {
     try {
       const res = await updateTour(id,tour)
+      console.log({res,tour,id})
       return res.data[0]
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message })
