@@ -7,21 +7,21 @@ const renderElementByType = (element, header) => {
 
   switch (header['type']) {
     case 'text': return (
-      <h5 className="font-medium text-black dark:text-white">
+      <p className="text-black dark:text-white">
         {element ? element[header['attribute']] : ""}
-      </h5>
+      </p>
     );
     case 'custom': return (
-      <header.Component element={element}/>
+      <header.Component element={element} />
     );
     case 'date': return (
-      <p className="font-medium text-black dark:text-white">
+      <p className=" text-black dark:text-white">
         {element[header['attribute']] ? moment(element[header['attribute']]).format('ll') : '-'}
       </p>
     )
 
     case 'datetime': return (
-      <p className="font-medium text-black dark:text-white">
+      <p className=" text-black dark:text-white">
         {moment(element[header['attribute']]).format('lll')}
       </p>
     )

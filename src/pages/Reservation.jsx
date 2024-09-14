@@ -6,79 +6,103 @@ import { useNavigate } from "react-router-dom";
 import { removeReservation } from "../features/reservations/thunks";
 
 export default function Reservation() {
-  const reservations = useSelector(reservationsOrdered)
+  const reservations = useSelector(reservationsOrdered);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-
-
-
+  const dispatch = useDispatch();
 
   const headers = [
     {
-      attribute: 'created_at',
-      title: 'Cotizado',
-      type: 'datetime',
+      attribute: "id",
+      title: "ID",
+      type: "custom",
+      Component: ({ element }) => (
+        <p className=" font-bold text-black dark:text-white">
+          R-{element.id.split("-")[1].toUpperCase()}
+        </p>
+      ),
     },
     {
-      attribute: 'customerName',
-      title: 'Cliente',
-      type: 'text',
+      attribute: "created_at",
+      title: "Cotizado",
+      type: "datetime",
     },
     {
-      attribute: 'place',
-      title: 'Destino',
-      type: 'text'
+      attribute: "customerName",
+      title: "Cliente",
+      type: "text",
     },
     {
-      attribute: 'startDate',
+      attribute: "place",
+      title: "Destino",
+      type: "text",
+    },
+    {
+      attribute: "startDate",
       title: "Salida",
-      type: 'date'
+      type: "date",
     },
     {
-      attribute: 'days',
+      attribute: "days",
       title: "Días",
-      type: 'number'
+      type: "number",
     },
     {
-      attribute: 'endDate',
+      attribute: "endDate",
       title: "Retorno",
-      type: 'date'
+      type: "date",
     },
     {
-      title: 'Acciones',
-      type: 'callbacks',
+      title: "Acciones",
+      type: "callbacks",
       callbacks: [
         {
-          Component: (props) => (<button {...props} className="hover:text-primary">
-            <svg
-              className="fill-current"
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                fill=""
-              />
-              <path
-                d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                fill=""
-              />
-            </svg>
-          </button>),
-          callback: (e) => { navigate(`/reservations/${e.id}/detail`) }
+          Component: (props) => (
+            <button {...props} className="hover:text-primary">
+              <svg
+                className="fill-current"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                  fill=""
+                />
+                <path
+                  d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                  fill=""
+                />
+              </svg>
+            </button>
+          ),
+          callback: (e) => {
+            alert("No disponible");
+          },
         },
         {
-          Component: (props) => (<button {...props}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-
-
-          </button>),
-          callback: (e) => { navigate(`/reservations/${e.id}/edit`) }
+          Component: (props) => (
+            <button {...props}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+            </button>
+          ),
+          callback: (e) => {
+            navigate(`/reservations/${e.id}/edit`);
+          },
         },
         {
           Component: (props) => (
@@ -111,18 +135,24 @@ export default function Reservation() {
             </button>
           ),
           callback: (e) => {
-            dispatch(removeReservation(e.id))
-          }
-
-        }
-      ]
-    }
-  ]
+            dispatch(removeReservation(e.id));
+          },
+        },
+      ],
+    },
+  ];
 
   return (
     <>
-      <Breadcrumb pageName="Reservas" homeName='Inicio' />
-      <Table data={reservations.map(e => ({...e.cotizationDetail,id:e.id}))} headers={headers} />
+      <Breadcrumb pageName="Reservas" homeName="Inicio" />
+
+      <Table
+        data={reservations
+          .map((e) => ({ ...e.cotizationDetail, id: e.id }))
+          .sort((a, b) => new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
+          )}
+        headers={headers}
+      />
     </>
-  )
+  );
 }
