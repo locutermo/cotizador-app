@@ -3,6 +3,7 @@ import MultiSelectDropdown from "./MultipleDropDown";
 import Select from "../primitive/Select";
 import { useState } from "react";
 import { convertTourFormat, formatTours } from "../../util/util";
+import CheckBox from "../primitive/CheckBox";
 export default function QuoteForm({
   clientOptions = [],
   destinations = [],
@@ -17,9 +18,8 @@ export default function QuoteForm({
   setAerolinesSelected,
   hotelsSelected,
   setHotelsSelected,
-  cleanTour
+  cleanTour,
 }) {
-
   const onChangeInput = (e, attribute) => {
     const value = e.target.value;
     updateOnAttribute({ attribute, value });
@@ -33,34 +33,44 @@ export default function QuoteForm({
   const onChangeInputObject = (e, attribute, options) => {
     const value = e.target.checked;
     if (value) {
-      const found = options.find(e => e.id == attribute)
-      console.log({ found })
-      updateTour({ attribute, value: { name: found.name, adultPrice: found.adultPrice, kidPrice: found.kidPrice } });
+      const found = options.find((e) => e.id == attribute);
+      console.log({ found });
+      updateTour({
+        attribute,
+        value: {
+          name: found.name,
+          adultPrice: found.adultPrice,
+          kidPrice: found.kidPrice,
+        },
+      });
     } else {
       updateTour({ attribute, value: null });
     }
-  }
+  };
 
   const onFocus = (e, attribute, callback) => {
     const value = e.target.value;
-    if (value === 0) callback ? callback({ attribute, value: "" }) : updateOnAttribute({ attribute, value: "" });
+    if (value === 0)
+      callback
+        ? callback({ attribute, value: "" })
+        : updateOnAttribute({ attribute, value: "" });
   };
 
   const onFocusOut = (e, attribute, callback) => {
     const value = e.target.value;
-    if (value === 0) callback ? callback({ attribute, value: "" }) : updateOnAttribute({ attribute, value: "" });
+    if (value === 0)
+      callback
+        ? callback({ attribute, value: "" })
+        : updateOnAttribute({ attribute, value: "" });
   };
 
-  const destination = destinations.find(e => e.id == parseInt(detail?.placeId))
-
-
-
+  const destination = destinations.find(
+    (e) => e.id == parseInt(detail?.placeId)
+  );
 
   return (
-
     <div className="grid grid-cols-6 gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-      <div className="col-span-6">
-      </div>
+      <div className="col-span-6"></div>
       <div className="col-span-2">
         <Select
           options={[
@@ -78,7 +88,7 @@ export default function QuoteForm({
         <Select
           options={[
             { label: "Selecciona el destino", value: "" },
-            ...destinations.map(e => ({ value: e.id, label: e.name })),
+            ...destinations.map((e) => ({ value: e.id, label: e.name })),
           ]}
           title="Destino de viaje"
           onChange={(e) => {
@@ -197,30 +207,32 @@ export default function QuoteForm({
         }}
       />
 
-      <div className="col-span-6">
-      </div>
-      <div className={`col-span-6 grid grid-cols-${destination?.tours.length <= 5 ? destination?.tours.length : "4"} gap-4 border-2 border-blue-200 border-dotted p-4`}>
-        {destination?.tours.map(tour => (
-          <Input
+      <div className="col-span-6"></div>
+      <div
+        className={`col-span-6 grid grid-cols-${destination?.tours.length <= 5
+          ? destination?.tours.length
+          : "4"
+          } gap-4 border-2 border-blue-200 border-dotted p-4 ${Object.keys(destination?.tours || {}).length === 0 && "hidden"
+          } `}
+      >
+        {destination?.tours.map((tour) => (
+          <CheckBox
             title={tour.name}
-            type="checkbox"
-            min={0}
             checked={detail.tours && detail.tours[tour.id] != null}
             onChange={(e) => {
               onChangeInputObject(e, tour.id, destination?.tours);
             }}
           />
-
         ))}
-
-
       </div>
       <div className="col-span-6  flex gap-4">
         <div className="w-1/2">
           <MultiSelectDropdown
             prompt="Aerolineas"
             formFieldName="Aerolineas"
-            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.aerolines.map(e => ({ value: e.tableId, label: e.name }))}
+            options={destinations
+              .find((e) => e.id == parseInt(detail?.placeId))
+              ?.aerolines.map((e) => ({ value: e.tableId, label: e.name }))}
             initialValues={optionsSelected?.aerolines || []}
             optionsSelected={aerolinesSelected}
             onChange={(e) => {
@@ -233,12 +245,14 @@ export default function QuoteForm({
           <MultiSelectDropdown
             prompt="Hoteles"
             formFieldName="Hoteles"
-            options={destinations.find(e => e.id == parseInt(detail?.placeId))?.hotels.map(e => ({ value: e.tableId, label: e.name }))}
+            options={destinations
+              .find((e) => e.id == parseInt(detail?.placeId))
+              ?.hotels.map((e) => ({ value: e.tableId, label: e.name }))}
             initialValues={optionsSelected?.hotels || []}
             optionsSelected={hotelsSelected}
             onChange={(e) => {
               onChangeHotels(e);
-              setHotelsSelected(e)
+              setHotelsSelected(e);
             }}
           />
         </div>
