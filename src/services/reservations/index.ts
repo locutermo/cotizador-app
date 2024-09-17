@@ -11,7 +11,7 @@ export const createReservation = async (reservation: Reservation) => {
 
 export const updateReservation = async (
   id: string,
-  reservation: Reservation
+  reservation: Reservation| {status: string}
 ) => {
   return await supabase.from("reservations").update(reservation).eq("id", id)
     .select(`

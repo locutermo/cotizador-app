@@ -3,7 +3,8 @@ import {
   getReservations,
   createReservationWithAerolinesAndHotels,
   editReservation,
-  removeReservation
+  removeReservation,
+  editReservationStatus
 } from "./thunks";
 import { formatReservationWithDestinations } from "../../util/util";
 
@@ -62,10 +63,12 @@ export const reservationSlice = createSlice({
               ...hotelPrices.toUpdate,
             ],
           });
-        } 
+        }
         return e;
       });
     });
+
+
 
     builder.addCase(
       createReservationWithAerolinesAndHotels.fulfilled,
@@ -84,6 +87,29 @@ export const reservationSlice = createSlice({
         state.error = action.error;
       }
     );
+
+
+    builder.addCase(
+      editReservationStatus.fulfilled,
+      (state, action) => {
+        const { id, status } = action.payload;
+        console.log({id,status})
+        state.reservations = state.reservations.map(reservation => {
+          if (reservation.id === id)
+            return {
+              ...reservation,
+              cotizationDetail: {
+                ...reservation.cotizationDetail,
+                status: status
+              }
+            }
+
+          else return reservation
+        })
+      }
+    );
+
+
   },
 });
 

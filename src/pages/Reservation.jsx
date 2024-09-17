@@ -3,14 +3,22 @@ import Table from "../components/commons/Table/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { reservationsOrdered } from "../features/reservations/reservationSlice";
 import { useNavigate } from "react-router-dom";
-import { removeReservation } from "../features/reservations/thunks";
+import { editReservationStatus, removeReservation } from "../features/reservations/thunks";
 import Input from "../components/primitive/Input";
 import { Component, useState } from "react";
 import moment from "moment";
+import { useModal } from "../hooks/useModal";
+import Modal from "../components/commons/Modal/Modal";
+import Select from "../components/primitive/Select";
+import { STATUS } from "../util/constants";
+import Button from "../components/primitive/Button";
+import { Label } from "../components/primitive/Label";
+import { getColorByStatus } from "../util/util";
 
 export default function Reservation() {
   const reservations = useSelector(reservationsOrdered);
-
+  const [isOpen, toogle] = useModal();
+  const [selected, setSelected] = useState()
   const [filterStates, setFilterStates] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,7 +42,12 @@ export default function Reservation() {
     {
       attribute: "status",
       title: "Estado",
-      type: "string",
+      type: "custom",
+      Component: ({element}) => (
+        <Label color={getColorByStatus(element.status)}>
+          {element.status}
+        </Label>
+      )
     },
     {
       attribute: "customerName",
@@ -72,6 +85,20 @@ export default function Reservation() {
       title: "Acciones",
       type: "callbacks",
       callbacks: [
+        {
+          Component: (props) => (
+            <button {...props} className="hover:text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+              </svg>
+            </button>
+          ),
+          callback: (e) => {
+            console.log("EDITANDO ESTADO DE ", { e })
+            setSelected(e)
+            toogle()
+          },
+        },
         {
           Component: (props) => (
             <button {...props} className="hover:text-primary">
@@ -159,7 +186,10 @@ export default function Reservation() {
     },
   ];
 
-  const getFiltered = (reservations, search="") => {
+
+
+
+  const getFiltered = (reservations, search = "") => {
     let searchLower = search.trim().toLowerCase();
     if (searchLower !== "") {
       const filtered = reservations.filter(({ cotizationDetail }) => {
@@ -176,6 +206,8 @@ export default function Reservation() {
     return reservations;
   };
 
+
+
   return (
     <>
       <Breadcrumb pageName="Reservas" homeName="Inicio" />
@@ -186,7 +218,9 @@ export default function Reservation() {
           setFilterStates((prev) => ({ ...prev, [attribute]: value }));
         }}
       />
-
+      <Modal isOpen={isOpen} toogle={toogle}>
+        <StatusForm options={STATUS} initialValue={selected ? selected.status : ''} save={status => { dispatch(editReservationStatus({ id: selected?.id, status })); toogle() }} />
+      </Modal>
       <Table
         data={getFiltered(reservations, filterStates['search'])
           .map((e) => ({ ...e.cotizationDetail, id: e.id }))
@@ -199,6 +233,15 @@ export default function Reservation() {
       />
     </>
   );
+}
+
+const StatusForm = ({ options, save, initialValue }) => {
+  const [status, setStatus] = useState(initialValue)
+
+  return <div className="flex flex-col gap-4">
+    <Select title="Estado de Reserva" options={Object.values(options).map(e => ({ label: e, value: e }))} value={status} onChange={e => { setStatus(e.target.value) }} />
+    <Button onClick={e => { save(status) }}>Guardar</Button>
+  </div>
 }
 
 const filterInputs = [

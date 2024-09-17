@@ -1,3 +1,5 @@
+import { STATUS } from "./constants";
+
 export const formatClients = (data: any) => {
   return data?.map((element: any) => ({
     ...element,
@@ -293,4 +295,25 @@ export const totalOperativity = (minAerolinePrice:string, hotelPrice:string, tra
       (!isNaN(parseInt(hotelPrice)) ? parseInt(hotelPrice) : 0) +
       (!isNaN(parseInt(tourPrices)) ? parseInt(tourPrices) : 0)
   )
+}
+
+
+export const getColorByStatus = (status:string) => {
+  console.log({status})
+  switch (status){
+    case STATUS.COTIZADO: 
+      return "bg-slate-500";
+    case STATUS.PENDIENTE: 
+      return "bg-orange-500";
+    case STATUS.RESERVADO: 
+      return "bg-red-500";
+    case STATUS["EN CURSO"]: 
+      return "bg-blue-500";
+    case STATUS.FINALIZADO: 
+      return "bg-green-800";
+    default: 
+      return "bg-slate-500"
+
+  }
+
 }

@@ -32,3 +32,11 @@ export const TABLE_NAMES = {
     TABLE_HOTEL: "HOTEL"
 
 }
+
+export const STATUS = {
+    COTIZADO: "COTIZADO",
+    PENDIENTE: "PENDIENTE",
+    RESERVADO: "RESERVADO",
+    "EN CURSO" : "EN CURSO",
+    FINALIZADO: "FINALIZADO"
+}

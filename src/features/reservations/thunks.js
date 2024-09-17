@@ -43,6 +43,13 @@ export const removeReservation = createAsyncThunk(
   }
 );
 
+export const editReservationStatus = createAsyncThunk("reservations/editReservationStatus",
+  async ({ id, status }, thunkAPI) => { 
+    const res = await updateReservation(id, {status: status});
+    console.log(res)
+    return {id,status};
+  })
+
 export const editReservation = createAsyncThunk(
   "reservations/editReservation",
   async ({ id, cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
