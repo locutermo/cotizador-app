@@ -270,7 +270,6 @@ export const formatTours = (tours: any) => {
 };
 
 export const convertTourFormat = (originalTours:any) => {
-  console.log({originalTours})
   if(!originalTours) return null
   if(Object.keys(originalTours).length !== 0){
     const convertedTours = Object.entries(originalTours).map(([id, tour]) => {
@@ -299,7 +298,6 @@ export const totalOperativity = (minAerolinePrice:string, hotelPrice:string, tra
 
 
 export const getColorByStatus = (status:string) => {
-  console.log({status})
   switch (status){
     case STATUS.COTIZADO: 
       return "bg-slate-500";

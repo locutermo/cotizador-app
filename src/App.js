@@ -12,6 +12,8 @@ import { getDestinations } from "./features/destinations/thunks";
 import { getHotels } from "./features/hotels/thunks";
 import { getAerolines } from "./features/aerolines/thunks";
 import { getTours } from "./features/tours/thunks";
+import "react-toastify/dist/ReactToastify.css";
+
 const router = createHashRouter(routes)
 
 function App() {

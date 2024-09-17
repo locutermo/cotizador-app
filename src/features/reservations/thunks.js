@@ -18,6 +18,7 @@ import {
   formatHotelReservationToDatabase,
   formatTours,
 } from "../../util/util";
+import { toast } from 'react-toastify';
 
 export const getReservations = createAsyncThunk(
   "reservations/fetchReservations",
@@ -35,7 +36,34 @@ export const removeReservation = createAsyncThunk(
   "reservations/deleteReservation",
   async (id, thunkAPI) => {
     try {
-      await deleteReservation(id);
+
+      const res = await toast.promise(
+        deleteReservation(id),
+        {
+          pending: {
+            render() {
+              return "Cargando"
+            },
+            icon: false,
+          },
+          success: {
+            render({ data }) {
+              if (data.status === 201 || data.status === 200 || data.status === 204)
+                return `Se eliminó correctamente 😏`
+              return `Ocurrió un error 😞`
+
+            },
+            icon: "🚀",
+          },
+          error: {
+            render({ data }) {
+              return `Ocurrió un error`
+            }
+          }
+        }
+      );
+
+
       return id;
     } catch (err) {
       return thunkAPI.rejectWithValue({ error: err.message });
@@ -44,21 +72,73 @@ export const removeReservation = createAsyncThunk(
 );
 
 export const editReservationStatus = createAsyncThunk("reservations/editReservationStatus",
-  async ({ id, status }, thunkAPI) => { 
-    const res = await updateReservation(id, {status: status});
+  async ({ id, status }, thunkAPI) => {
+
+    const res = await toast.promise(
+      updateReservation(id, { status: status }),
+      {
+        pending: {
+          render() {
+            return "Cargando"
+          },
+          icon: false,
+        },
+        success: {
+          render({ data }) {
+            if (data.status === 201 || data.status === 200 || data.status === 204)
+              return `Se actualizó el estado de la reserva 😏`
+            return `Ocurrió un error 😞`
+
+          },
+          icon: "🚀",
+        },
+        error: {
+          render({ data }) {
+            return `Ocurrió un error`
+          }
+        }
+      }
+    );
+
     console.log(res)
-    return {id,status};
+    return { id, status };
   })
 
 export const editReservation = createAsyncThunk(
   "reservations/editReservation",
   async ({ id, cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
     try {
-      const res = await updateReservation(
-        id,
-        formatCotizationToDatabase({...cotizationDetail,tours: formatTours(cotizationDetail.tours)})
+
+      const res = await toast.promise(
+        updateReservation(
+          id,
+          formatCotizationToDatabase({ ...cotizationDetail, tours: formatTours(cotizationDetail.tours) })
+        ),
+        {
+          pending: {
+            render() {
+              return "Cargando"
+            },
+            icon: false,
+          },
+          success: {
+            render({ data }) {
+              if (data.status === 201 || data.status === 200 || data.status === 204)
+                return `Se actualizó correctamente 😏`
+              return `Ocurrió un error 😞`
+
+            },
+            icon: "🚀",
+          },
+          error: {
+            render({ data }) {
+              return `Ocurrió un error`
+            }
+          }
+        }
       );
-      console.log({res})
+
+
       /**
        * Creacion de cotizaciones y vuelos
        */
@@ -117,6 +197,7 @@ export const editReservation = createAsyncThunk(
         formatHotelReservationToDatabase(element)
       );
 
+
       const aerolinesUpdatedResponses = await Promise.all(
         aerolinesReservationFormatted.map(({ id, ...aeroline }) =>
           updateAerolineByReservation(id, aeroline)
@@ -152,9 +233,35 @@ export const createReservationWithAerolinesAndHotels = createAsyncThunk(
   async ({ cotizationDetail, aerolinePrices, hotelPrices }, thunkAPI) => {
     try {
       const cotizationDetailFormattedToDatabase =
-      formatCotizationToDatabase({...cotizationDetail,tours: formatTours(cotizationDetail.tours)});
-      const responseReservation = await createReservation(cotizationDetailFormattedToDatabase
+        formatCotizationToDatabase({ ...cotizationDetail, tours: formatTours(cotizationDetail.tours) });
+
+      const responseReservation = await toast.promise(
+        createReservation(cotizationDetailFormattedToDatabase
+        ),
+        {
+          pending: {
+            render() {
+              return "Cargando"
+            },
+            icon: false,
+          },
+          success: {
+            render({ data }) {
+              if (data.status === 201 || data.status === 200 || data.status === 204)
+                return `Se creó la reserva 😏`
+              return `Ocurrió un error 😞`
+
+            },
+            icon: "🚀",
+          },
+          error: {
+            render({ data }) {
+              return `Ocurrió un error`
+            }
+          }
+        }
       );
+
       const reservationCreated = responseReservation.data[0];
       const aerolinesReservationFiltered = aerolinePrices.filter(
         (e) => e.price > 0
