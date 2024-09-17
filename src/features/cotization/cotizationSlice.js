@@ -12,7 +12,8 @@ const initialState = {
     traslado: TRASLADO_PRICE,
     islaSaona: ISLA_SAONA,
     santoDomingo: SANTO_DOMINGO,
-    tours:{}
+    tours:{},
+    status:"COTIZADO"
   },
   aerolinePrices: [],
   hotelPrices: [],

@@ -32,6 +32,11 @@ export default function Reservation() {
       type: "datetime",
     },
     {
+      attribute: "status",
+      title: "Estado",
+      type: "string",
+    },
+    {
       attribute: "customerName",
       title: "Cliente",
       type: "text",

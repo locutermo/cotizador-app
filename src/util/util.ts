@@ -25,7 +25,8 @@ export const formatCotizationToDatabase = (
     days,
     placeId,
     kids,
-    tours
+    tours,
+    status,
   } = cotization;
 
   return {
@@ -39,6 +40,7 @@ export const formatCotizationToDatabase = (
     fee_kids: kidFee,
     relocation: traslado,
     customer_id: customer,
+    status
   };
 };
 

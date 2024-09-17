@@ -13,6 +13,7 @@ interface CotizationDetail {
   placeId: number;
   customerName?: string;
   tours: any;
+  status: string;
 }
 
 interface AerolinePrice {
@@ -90,6 +91,7 @@ interface Reservation {
   };
   customer_id: Number;
   places_id: Number;
+  status:string;
 }
 
 interface AerolineReservations {
@@ -132,6 +134,7 @@ interface ReservationTable {
     islaSaona: number;
     santoDomingo: number;
   };
+  status:string;
 }
 
 /**
