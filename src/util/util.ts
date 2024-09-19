@@ -38,11 +38,11 @@ export const formatCotizationToDatabase = (
     places_id: placeId,
     start_date: startDate,
     fee_adults: adultFee || 0,
-    tours: tours||{},
+    tours: tours || {},
     fee_kids: kidFee,
     relocation: traslado,
     customer_id: customer,
-    status
+    status,
   };
 };
 
@@ -182,15 +182,15 @@ export const getNewPrices = (
 export const formatPlaceWithAerolineAndHotelToObject = (
   place: DestinationWithAerolinesAndHotelsTable
 ): DestinationWithAerolinesAndHotelsObject => {
-  const { id, name, country, places_hotels, places_aerolines,tours } = place;
-  console.log({tours})
+  const { id, name, country, places_hotels, places_aerolines, tours } = place;
+  console.log({ tours });
   return {
     id,
     country,
     name,
     aerolines: places_aerolines.map((e) => formatPlaceAerolineToObject(e)),
     hotels: places_hotels.map((e) => formatPlaceHotelToObject(e)),
-    tours
+    tours,
   };
 };
 
@@ -228,12 +228,15 @@ export const formatPlaceHotelToObject = (
 };
 
 export const formatTourToObject = (tour: TourTable): TourObject => {
-  const { id, places_id, name, places,kidPrice,adultPrice } = tour;
-  const newObjext:TourObject = { placeId: places_id, name,kidPrice,adultPrice};
-  if(places)
-    newObjext['placeName'] = places.name
-  if(id)
-    newObjext['id'] = id
+  const { id, places_id, name, places, kidPrice, adultPrice } = tour;
+  const newObjext: TourObject = {
+    placeId: places_id,
+    name,
+    kidPrice,
+    adultPrice,
+  };
+  if (places) newObjext["placeName"] = places.name;
+  if (id) newObjext["id"] = id;
 
   return {
     id,
@@ -246,12 +249,12 @@ export const formatTourToObject = (tour: TourTable): TourObject => {
 };
 
 export const formatTourToTable = (tour: TourObject): TourTable => {
-  const { placeId, name,kidPrice,adultPrice } = tour;
+  const { placeId, name, kidPrice, adultPrice } = tour;
   let newObject: TourTable = {
-    places_id: placeId ,
+    places_id: placeId,
     name,
     kidPrice,
-    adultPrice
+    adultPrice,
   };
 
   if (tour.id) newObject["id"] = tour.id;
@@ -259,9 +262,8 @@ export const formatTourToTable = (tour: TourObject): TourTable => {
   return newObject;
 };
 
-
 export const formatTours = (tours: any) => {
-  return Object.entries(tours).reduce((acc:any, [id, tour]) => {
+  return Object.entries(tours).reduce((acc: any, [id, tour]) => {
     if (tour !== null) {
       acc[id] = tour;
     }
@@ -269,49 +271,120 @@ export const formatTours = (tours: any) => {
   }, {});
 };
 
-export const convertTourFormat = (originalTours:any) => {
-  if(!originalTours) return null
-  if(Object.keys(originalTours).length !== 0){
-    const convertedTours = Object.entries(originalTours).map(([id, tour]) => {
-      if (tour) {
-        return { id, ...tour };
-      }
+export const convertTourFormat = (originalTours: any) => {
+  if (!originalTours) return null;
+  if (Object.keys(originalTours).length !== 0) {
+    const convertedTours = Object.entries(originalTours)
+      .map(([id, tour]) => {
+        if (tour) {
+          return { id, ...tour };
+        }
 
-      return null
-      
-    }).filter((tour:any) => tour?.adultPrice > 0);
+        return null;
+      })
+      .filter((tour: any) => tour?.adultPrice > 0);
     return convertedTours;
-
   }
-  
-  return []
+
+  return [];
 };
 
-export const totalOperativity = (minAerolinePrice:string, hotelPrice:string, traslado:string, tourPrices:string) => {
+export const totalOperativity = (
+  minAerolinePrice: string,
+  hotelPrice: string,
+  traslado: string,
+  tourPrices: string
+) => {
   return (
-      (!isNaN(parseInt(minAerolinePrice)) ? parseInt(minAerolinePrice) : 0) +
-      (!isNaN(parseInt(traslado)) ? parseInt(traslado) : 0) +
-      (!isNaN(parseInt(hotelPrice)) ? parseInt(hotelPrice) : 0) +
-      (!isNaN(parseInt(tourPrices)) ? parseInt(tourPrices) : 0)
-  )
-}
+    (!isNaN(parseInt(minAerolinePrice)) ? parseInt(minAerolinePrice) : 0) +
+    (!isNaN(parseInt(traslado)) ? parseInt(traslado) : 0) +
+    (!isNaN(parseInt(hotelPrice)) ? parseInt(hotelPrice) : 0) +
+    (!isNaN(parseInt(tourPrices)) ? parseInt(tourPrices) : 0)
+  );
+};
 
-
-export const getColorByStatus = (status:string) => {
-  switch (status){
-    case STATUS.COTIZADO: 
+export const getColorByStatus = (status: string) => {
+  switch (status) {
+    case STATUS.COTIZADO:
       return "bg-slate-500";
-    case STATUS.PENDIENTE: 
+    case STATUS.PENDIENTE:
       return "bg-orange-500";
-    case STATUS.RESERVADO: 
+    case STATUS.RESERVADO:
       return "bg-red-500";
-    case STATUS["EN CURSO"]: 
+    case STATUS["EN CURSO"]:
       return "bg-blue-500";
-    case STATUS.FINALIZADO: 
+    case STATUS.FINALIZADO:
       return "bg-green-800";
-    default: 
-      return "bg-slate-500"
-
+    default:
+      return "bg-slate-500";
   }
+};
 
-}
+export const getTotalPriceByHotels = (
+  hotels: any,
+  aerolinePrice: number,
+  adultTraslado: number,
+  kidTraslado: number,
+  tourAdultPrice: number,
+  tourKidPrice: number,
+  adultFee: number,
+  kidFee: number
+) => {
+  const adultsPrices = [aerolinePrice, adultTraslado, tourAdultPrice].reduce(
+    (acc, current) => acc + current,
+    0
+  );
+  const kidsPrices = [aerolinePrice, kidTraslado, tourKidPrice].reduce(
+    (acc, current) => acc + current,
+    0
+  );
+  // (9-(number % 10)) + number
+  return hotels.map(({ name, priceByAdults, priceByKids }: any) => {
+
+    const totalAdults = Math.round(priceByAdults + adultsPrices + adultFee * 1.18)
+    const totalKids = Math.round(priceByKids + kidsPrices + kidFee * 1.18)
+
+    return {
+      name: name,
+      services: [
+        {
+          name: "Boleto aereo",
+          adultPrice: aerolinePrice,
+          kidPrice: aerolinePrice,
+        },
+        {
+          name,
+          adultPrice: priceByAdults,
+          kidPrice: priceByKids,
+        },
+        {
+          name: "Traslado Compartido",
+          adultPrice: adultTraslado,
+          kidPrice: kidTraslado,
+        },
+        {
+          name: "Sub Total",
+          adultPrice: priceByAdults + adultsPrices,
+          kidPrice: priceByKids + kidsPrices,
+        },
+        {
+          name: "Fee",
+          adultPrice: adultFee,
+          kidPrice: kidFee,
+        },
+        {
+          name: "IGV (Sobre Fee)",
+          adultPrice: (adultFee * 0.18).toFixed(2),
+          kidPrice: (kidFee * 0.18).toFixed(2),
+        },
+        {
+          name: "Total",
+          adultPrice: priceByAdults + adultsPrices + adultFee * 1.18,
+          kidPrice: priceByKids + kidsPrices + kidFee * 1.18,
+        },
+      ],
+      totalByAdults:(9-(totalAdults % 10)) + totalAdults ,
+      totalByKids: (9-(totalKids % 10)) + totalKids
+    };
+  });
+};

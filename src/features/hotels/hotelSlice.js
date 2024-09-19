@@ -53,7 +53,7 @@ export const hotelsFormattedSelector = (state) => formatHotels(state.hotel.hotel
 
 export const hotelOptionsSelector = createDraftSafeSelector(
   hotelsFormattedSelector,
-  (state) => state.map(element => ({label:`${element.name} - ${element.stars}*`,value:element.id})),
+  (state) => state.map(element => ({label:`${element.name}`,value:element.id})),
 )
 
 export const hotelToAssign = createDraftSafeSelector(
