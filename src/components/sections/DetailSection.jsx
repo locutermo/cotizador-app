@@ -32,7 +32,7 @@ export default function DetailSection() {
                 rows={totalPriceByHotels}
             />
 
-            <div className="grid grid-cols-2 grid-rows-3 gap-4 ">
+            <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-3 gap-4 ">
                 {totalPriceByHotels.map((e) => <PriceCard kids={kids} services={e.services} />)}
             </div>
 
