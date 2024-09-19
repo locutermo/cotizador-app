@@ -97,7 +97,7 @@ export default function MultiSelectDropdown({
       <div className="w-full cursor-pointer after:absolute after:right-3  after:content-['▼'] after:text-xs after:ml-1 after:inline-flex after:items-center peer-checked:after:-rotate-180 after:transition-transform inline-flex border rounded px-5 py-2">
         {prompt}
         {isJsEnabled && optionsSelected.length > 0 && (
-          <span className="ml-1 text-blue-500">{`(${optionsSelected.length} seleccionados)`}</span>
+          <span className="ml-1 text-blue-500">{`(${optionsSelected.length} ${optionsSelected.length === 1 ? 'seleccionado':'seleccionados'})`}</span>
         )}
       </div>
 
