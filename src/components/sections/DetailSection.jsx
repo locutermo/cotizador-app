@@ -19,10 +19,8 @@ export default function DetailSection() {
     }, [cotizationDetail])
 
     const toursConverted = convertTourFormat(tours)
-    const tourAdultPrices = toursConverted.reduce((acc, tour) => tour.adultPrice + acc, 0)
-    const tourKidPrices = toursConverted.reduce((acc, tour) => tour.kidPrice + acc, 0)
 
-    const totalPriceByHotels = getTotalPriceByHotels([...hotels].sort((a, b) => a.price - b.price), aerolinePriceByOne, traslado, trasladoKid, tourAdultPrices, tourKidPrices, adultFee, kidFee)
+    const totalPriceByHotels = getTotalPriceByHotels([...hotels].sort((a, b) => a.price - b.price), aerolinePriceByOne, traslado, trasladoKid, toursConverted, adultFee, kidFee)
 
 
     return (
@@ -31,7 +29,6 @@ export default function DetailSection() {
                 kids={kids}
                 rows={totalPriceByHotels}
             />
-
             <div className="grid grid-cols-1 lg:grid-cols-2 grid-rows-3 gap-4 ">
                 {totalPriceByHotels.map((e) => <PriceCard kids={kids} services={e.services} />)}
             </div>

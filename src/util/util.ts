@@ -325,11 +325,19 @@ export const getTotalPriceByHotels = (
   aerolinePrice: number,
   adultTraslado: number,
   kidTraslado: number,
-  tourAdultPrice: number,
-  tourKidPrice: number,
+  tours: any,
   adultFee: number,
   kidFee: number
 ) => {
+  const tourAdultPrice = tours?.reduce(
+    (acc: number, tour: any) => tour.adultPrice + acc,
+    0
+  );
+  const tourKidPrice = tours?.reduce(
+    (acc: number, tour: any) => tour.kidPrice + acc,
+    0
+  );
+
   const adultsPrices = [aerolinePrice, adultTraslado, tourAdultPrice].reduce(
     (acc, current) => acc + current,
     0
@@ -340,9 +348,15 @@ export const getTotalPriceByHotels = (
   );
   // (9-(number % 10)) + number
   return hotels.map(({ name, priceByAdults, priceByKids }: any) => {
-
-    const totalAdults = Math.round(priceByAdults + adultsPrices + adultFee * 1.18)
-    const totalKids = Math.round(priceByKids + kidsPrices + kidFee * 1.18)
+    const totalAdults = Math.round(
+      priceByAdults + adultsPrices + adultFee * 1.18
+    );
+    const totalKids = Math.round(priceByKids + kidsPrices + kidFee * 1.18);
+    const tourServices = tours.map((tour: any) => ({
+      name: tour.name,
+      adultPrice: tour.adultPrice,
+      kidPrice: tour.kidPrice,
+    }));
 
     return {
       name: name,
@@ -362,6 +376,7 @@ export const getTotalPriceByHotels = (
           adultPrice: adultTraslado,
           kidPrice: kidTraslado,
         },
+        ...tourServices,
         {
           name: "Sub Total",
           adultPrice: priceByAdults + adultsPrices,
@@ -383,8 +398,8 @@ export const getTotalPriceByHotels = (
           kidPrice: priceByKids + kidsPrices + kidFee * 1.18,
         },
       ],
-      totalByAdults:(9-(totalAdults % 10)) + totalAdults ,
-      totalByKids: (9-(totalKids % 10)) + totalKids
+      totalByAdults: 9 - (totalAdults % 10) + totalAdults,
+      totalByKids: 9 - (totalKids % 10) + totalKids,
     };
   });
 };

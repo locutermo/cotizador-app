@@ -88,18 +88,8 @@ export default function ReservationEdit() {
   };
 
   const toursConverted = convertTourFormat(detail?.tours || []);
-  const tourAdultPrices = toursConverted.reduce(
-    (acc, tour) => tour.adultPrice + acc,
-    0
-  );
-  const tourKidPrices = toursConverted.reduce(
-    (acc, tour) => tour.kidPrice + acc,
-    0
-  );
-
-
-
-  const totalPriceByHotels = getTotalPriceByHotels([...hotels].sort((a, b) => a.price - b.price), aerolinePriceByOne, traslado, trasladoKid, tourAdultPrices, tourKidPrices, adultFee, kidFee)
+ 
+  const totalPriceByHotels = getTotalPriceByHotels([...hotels].sort((a, b) => a.price - b.price), aerolinePriceByOne, traslado, trasladoKid, toursConverted, adultFee, kidFee)
 
   return (
     <div>
