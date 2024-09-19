@@ -6,32 +6,37 @@ export default function TablePrice({ options, type, detail, onUpdateOptions }) {
     useEffect(() => {
     }, [detail])
 
-    return <table className="min-w-full rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-        <thead className="[&_th]:px-4 py-2">
-            <tr>
-                <th>Nombre</th>
-                <th>Total</th>
-                <th>P. x adulto</th>
-                {kids>0 && (<th>P. x niño</th>)}
-                {adults > 1 && (<th>P. x {adults} adultos</th>)}
-                {kids > 1 && (<th>P. x {kids} niños</th>)}
-            </tr>
-        </thead>
-        <tbody className="[&_td]:text-sm">
-            {options?.length > 0 ? options.map((option, index) => (
-                <TablePriceRow key={index} option={option} type={type} detail={detail} onUpdateOptions={onUpdateOptions} />
+    return (
+        <div className="flex flex-col gap-4 p-4 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
 
-            )) : (<tr>
-                <td
-                    className="border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8 text-center p-8 my-10"
-                    colSpan={5}
-                >
-                    No hay opciones seleccionadas
-                </td>
-            </tr>)
-            }
-        </tbody>
-    </table>
+            <table className="min-w-full ">
+                <thead className="[&_th]:px-4 py-6">
+                    <tr>
+                        <th className="text-start">Nombre</th>
+                        <th>Total</th>
+                        <th className="hidden md:table-cell">PxA</th>
+                        {adults > 1 && (<th className="hidden md:table-cell">Px{adults}A</th>)}
+                        {kids > 0 && (<th className="hidden md:table-cell">PxN</th>)}
+                        {kids > 1 && (<th className="hidden md:table-cell">Px{kids}N</th>)}
+                    </tr>
+                </thead>
+                <tbody className="[&_td]:text-sm">
+                    {options?.length > 0 ? options.map((option, index) => (
+                        <TablePriceRow key={index} option={option} type={type} detail={detail} onUpdateOptions={onUpdateOptions} />
+
+                    )) : (<tr>
+                        <td
+                            className=" text-center p-8 my-10"
+                            colSpan={5}
+                        >
+                            No hay opciones seleccionadas
+                        </td>
+                    </tr>)
+                    }
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
@@ -69,18 +74,18 @@ const TablePriceRow = ({ option, detail, type, onUpdateOptions }) => {
 
 
 
-    return <tr className="text-center [&_td]:py-2 [&_td]:px-4">
-        <td className="text-start w-5/12">{option?.name}</td>
-        <td className="w-2/12">
+    return <tr className="text-center [&_td]:py-2 [&_td]:px-4 dark:text-white">
+        <td className="text-start w-1/2 md:w-6/12">{option?.name}</td>
+        <td className="w-1/2 md:w-2/12">
             <Input type="number"
                 value={option.price || ''}
                 min={0}
                 onChange={onUpdateRow}
             />
         </td>
-        <td className="w-2/12">{type === "aeroline" ? calAdultPriceToAeroline(price) : calAdultPriceToHotel(price)}</td>
-        {kids>0 && (<td className="w-2/12">{type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price)}</td>)}
-        {adults > 1 && (<td className="w-1/12">{type === "aeroline" ? (price > 0 && adults * calAdultPriceToAeroline(price)) : (price && adults * calAdultPriceToHotel(price))}</td>)}
-        {kids > 1  && (<td className="w-1/12">{type === "aeroline" ? (price > 0 && kids * calKidsPriceToAeroline(price)) : (price > 0 && kids * calKidsPriceToHotel(price))}</td>)}
+        <td className="hidden md:table-cell font-extrabold dark:font-bold md:w-2/12">{type === "aeroline" ? calAdultPriceToAeroline(price) : calAdultPriceToHotel(price)}</td>
+        {adults > 1 && (<td className="hidden md:table-cell md:w-1/12">{type === "aeroline" ? (price > 0 && adults * calAdultPriceToAeroline(price)) : (price && adults * calAdultPriceToHotel(price))}</td>)}
+        {kids > 0 && (<td className="hidden font-extrabold dark:font-bold md:table-cell md:w-1/12">{type === "aeroline" ? calKidsPriceToAeroline(price) : calKidsPriceToHotel(price)}</td>)}
+        {kids > 1 && (<td className="hidden md:table-cell md:w-1/12">{type === "aeroline" ? (price > 0 && kids * calKidsPriceToAeroline(price)) : (price > 0 && kids * calKidsPriceToHotel(price))}</td>)}
     </tr>
 }
