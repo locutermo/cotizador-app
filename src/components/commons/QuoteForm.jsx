@@ -73,7 +73,7 @@ export default function QuoteForm({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Select
           options={[
-            { label: "", value: "" },
+            { label: "Seleccione el cliente", value: "" },
             ...clientOptions,
           ]}
           title="Cliente"
@@ -84,7 +84,7 @@ export default function QuoteForm({
         />
         <Select
           options={[
-            { label: "", value: "" },
+            { label: "Seleccione el destino", value: "" },
             ...destinations.map((e) => ({ value: e.id, label: e.name })),
           ]}
           title="Destino"
